@@ -64,6 +64,8 @@ var-dirs-{{cfg.name}}:
     - names:
       - {{data.doc_root}}
       - {{data.ui}}
+      - {{data.buildout.settings.locations['locations-blob-storage']}}
+      - {{data.buildout.settings.locations['locations-blob-backup']}}
       - {{data.buildout.settings.buildout['download-cache']}}
       - {{data.buildout.settings.buildout['download-directory']}}
       - {{data.buildout.settings.buildout['parts-directory']}}
@@ -71,6 +73,7 @@ var-dirs-{{cfg.name}}:
     - makedirs: true
     - user: {{cfg.user}}
     - group: {{cfg.group}}
+    - mode: 2770
 
 var-dir-{{cfg.name}}:
   file.symlink:

@@ -1,5 +1,4 @@
 bin
-project
 *.pyc
 cron_scripts/
 develop-eggs/
@@ -14,7 +13,7 @@ etc/init.d/
 etc/loadbalancing/
 etc/logrotate.conf
 etc/project/kgs.cfg
-etc/project/eau-kgs.cfg
+etc/project/*-kgs.cfg
 etc/sys/settings-local.cfg
 etc/sys/settings-prod.cfg
 etc/varnish.vcl
@@ -30,7 +29,7 @@ var/log/instance?.log
 !eggs/*.empty
 !etc/sys
 !src/zopelib
-!src/*eau*
+!src/*cgwb*
 bin
 cron_scripts/
 develop-eggs/

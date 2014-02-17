@@ -1,4 +1,5 @@
 ##############################################################################
+import socket;socket.setdefaulttimeout(2)
 #
 # Copyright (c) 2006 Zope Foundation and Contributors.
 # All Rights Reserved.

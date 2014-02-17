@@ -7,7 +7,7 @@
 {{ base.install_generic_zope_project(
       name,
       url=url,
-      salt_branch='phpfpm-salt',
+      salt_branch='zope-salt',
       project_branch='zope-project',
       domain=domain,
       domains=['otherzope.bar.com'], full=full) }}

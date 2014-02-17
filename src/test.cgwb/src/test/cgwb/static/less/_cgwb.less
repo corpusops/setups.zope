@@ -1,0 +1,302 @@
+/*
+ * MAIN PROJECT LESS FILE
+ */
+@import "bootstrap.less";
+@import "responsive-utilities.less";
+/*
+ * variables
+ */
+
+@color-site: #636466;
+@color-focus: #EFEDDB;
+@color-footer-link: #8c8882;
+@color-header-links: inherit;
+@color-portlet: #454435;
+@color-title: #5b5644;
+
+@color-bg-site: white;
+@color-bg-content: transparent;
+@color-bg-footer: transparent;
+@color-bg-header-content: transparent;
+@color-bg-header:  transparent;
+@color-bg-portlet: transparent;
+@color-bg-nav: #5b5644;
+@color-bg-wrappernav: #ddd;
+
+@font-size-breadcrubms: 12px;
+@font-size-portal-siteactions: 8pt;
+@font-size-title: 21px;
+@font-size-title2: 15px;
+@font-size-content: 12px;
+@font-size-portlet: 12px;
+@font-size-footer: 10px;
+@font-size-footer-social: 13px;
+@font-size-submenu: 13px;
+
+/* global layout */
+body #content,
+input,
+textarea,
+select {
+  font-size: @font-size-content;
+	font-family: Arial, Verdana, sans-serif;
+}
+
+body, body p{
+  color: @color-site;
+}
+body, body p{
+}
+.container > .row {
+  background-color: @color-bg-site;
+}
+h1{
+  font-size: @font-size-title;
+  font-weight: normal;
+  color: @color-title;
+  letter-spacing: 0; word-spacing: 0.1em;
+}
+h2{
+  font-size: @font-size-title2;
+}
+a:focus{
+  outline: @color-focus dotted 3px;
+}
+#visual-portal-wrapper {
+  margin-top: 1em;
+}
+
+/* header */
+#header-wrapper{
+  background-color: @color-bg-header;
+  .row{
+     background-color: @color-bg-header-content;
+  }
+  > .row {
+    min-height: 130px;
+  }
+}
+#portal-logo-wrapper{
+  min-height: 10px;
+}
+#portal-logo{
+  margin-top: 0;
+  margin-bottom: 0;
+}
+#portal-logo img{
+  position: absolute;
+  z-index: 5;
+}
+#portal-searchbox{
+  margin: 5px 0;
+  margin-top: 7em;
+}
+#nolivesearchGadget{
+  width: 146px; height: 20px;
+  vertical-align: top;
+}
+#portal-searchbox-wrapper{
+  height: 42px;
+}
+#portal-languageselector{
+  background-color: transparent;
+  max-width: 100%;
+}
+#portal-globalnav {
+  font-size: 100%;
+  margin: 0;
+  clear: none;
+}
+#portal-personaltools{
+  #anon-personalbar a {
+  }
+  a{
+    font-size: @font-size-footer;
+  }
+}
+.addthis-wrapper{
+  width: 100%;
+  height: 25px;
+}
+
+/*
+ * content layout & breadcrumbs
+ */
+#portal-breadcrumbs{
+  margin: 10px 0 10px 0;
+  font-size: @font-size-breadcrubms;
+
+  #breadcrumbs-current{
+    border-bottom: 1px solid #bbb;
+  }
+}
+body#content{
+  background-color: White;
+}
+div#nav-wrapper{
+  background: @color-bg-wrappernav;
+  margin-top:    15px;
+  margin-bottom: 10px;
+}
+div#content-wrapper{
+  .box-shadow(0 4px 7px  rgba(0,0,0,1));
+}
+div#content{
+  background-color: @color-bg-content;
+  margin: 0;
+  font-size: @font-size-content;
+  #content-core,
+  #parent-fieldname-description{
+    padding: 10px;
+  }
+  .documentByLine{
+    padding-left: 10px;
+  }
+}
+#portal-column-one, #portal-column-two{
+  padding-top: 10px;
+  padding-top: 10px;
+}
+#portal-column-one,
+#portal-column-two{
+  /* TODO: Add all content types here*/
+  .contenttype-folder,
+  .contenttype-topic,
+  .contenttype-plone-site,
+  .contenttype-formfolder,
+  .contenttype-document{
+    background: none;
+    padding-left: 0!important;
+  }
+}
+/* content */
+#portlets-below, #portlets-above {
+  padding: 0 10px;
+  .portletWrapper{width: 100%}
+}
+.template-manage-portlets #portletmanager-plone-leftcolumn{
+  margin-top: 50px;
+}
+.portlet{
+  background-color: @color-bg-portlet;
+  font-size: @font-size-portlet;
+}
+#edit-bar {
+  border-bottom: none;
+  min-height: 26px;
+}
+#content-views li  a{
+  line-height: 21px;
+}
+#content-views li a:hover,
+#content-views li.selected a{
+  border-bottom: 2px solid white;
+}
+#contentActionMenus {
+  margin-top: 1px;
+  right: 0;
+}
+#contentActionMenus  dl {
+  margin-bottom: 0px;
+}
+dl.portlet.portletCollection dd.portletItem{
+  padding-bottom: 5px;
+}
+dl.portlet dt.portletHeader,
+div.portletAssignments div.portletHeader {
+  background-color: transparent;
+  height: 29px;
+  padding: 10px 0 0 10px;
+}
+#portal-footer-wrapper{
+  padding-top: 30px;
+  li{
+    font-size: @font-size-footer;
+    a{
+      color: @color-footer-link;
+    }
+  }
+}
+#portal-colophon{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: @color-footer-link;
+}
+
+
+/*
+ * RESPONSIVE
+ */
+/* Extra small devices (phones, less than 768px) */
+/* No media query since this is the default in Bootstrap */
+div.searchSection,
+#globalnav-wrapper,
+#portal-personaltools,
+#edit-bar{
+  display:none;
+}
+#portal-logo{
+  display: block;
+  float: left;
+  img{
+    display: block;
+    position: static;
+  }
+}
+
+#footer-wrapper {
+  margin-top: 15px;
+}
+#portal-siteactions{
+}
+#portal-siteactions a{
+}
+#portal-siteactions li a:hover {
+}
+
+/* custom */
+/* only extra small devices */
+@media (max-width: @screen-xs-max) {
+  .documentFirstHeading{
+    height: auto;
+    background: transparent;
+    font-size: 18px;
+  }
+  /* make some content disappear*/
+  #socialtools{
+    display: none;
+  }
+  /* zoom some font sizes*/
+  #footer li{
+    font-size: 15px;
+    padding-top: 5px;
+  }
+  #nolivesearchGadget{
+    width: 228px;
+  }
+}
+/* only small devices */
+@media (min-width: @screen-sm-min) and (max-width: @screen-sm-max) {
+}
+/* Small devices (tablets, 768px and up) */
+@media (min-width: @screen-sm-min) {
+  div.searchSection,
+  #globalnav-wrapper,
+  #portal-personaltools,
+  #edit-bar{
+    display: block;
+    #contentActionMenus dl.actionMenu {
+    }
+  }
+}
+/* only medium devices */
+@media (min-width: @screen-md-min) and (max-width: @screen-md-max) {
+}
+/* Medium devices (desktops, 992px and up) */
+@media (min-width: @screen-md-min) {
+}
+/* Large devices (large desktops, 1200px and up) */
+@media (min-width: @screen-lg-min) {
+}
+@media print{
+}

@@ -1,0 +1,53 @@
+upstream ${uname} {
+    server ${hosts:zope-front}:${ports:zope-front};
+}
+server {
+    listen ${port};
+    server_name ${host};
+    root ${v:reverse-proxy-docroot};
+    access_log ${buildout:directory}/var/log/nginx/${host}.access.log;
+    error_log  ${buildout:directory}/var/log/nginx/${host}.error.log;
+    location / {
+        set $maint "n";
+        if ( -f ${v:reverse-proxy-docroot}/maintainance/index.html ){
+            set $maint "m";
+        }
+        if ( $uri ~ ^/maintainance ) {
+            set $maint "o$maint";
+        }
+        if ( $maint = "m" ) {
+            rewrite ^(.*)$ /maintainance/index.html permanent;
+        }
+        if ( $maint = "n" ){
+            rewrite ^(/zmiroot/.*)$ /VirtualHostBase/http/${host}:${port}/_vh_zmiroot/$1 break;
+            rewrite ^(.*)$ /VirtualHostBase/http/${host}:${port}/${v:plonesite}/VirtualHostRoot/$1 break;
+            proxy_pass http://${uname};
+        }
+    }
+}
+server {
+    listen ${port};
+    server_name ${edit-host};
+    root ${v:reverse-proxy-docroot};
+    access_log ${buildout:directory}/var/log/nginx/${host}.access.log;
+    error_log  ${buildout:directory}/var/log/nginx/${host}.error.log;
+    location / {
+        set $maint "n";
+        if ( -f ${v:reverse-proxy-docroot}/maintainance/index.html ){
+            set $maint "m";
+        }
+        if ( $uri ~ ^/maintainance ) {
+            set $maint "o$maint";
+        }
+        if ( $maint = "m" ) {
+            rewrite ^(.*)$ /maintainance/index.html permanent;
+        }
+        if ( $maint = "n" ){
+            rewrite ^(/zmiroot/.*)$ /VirtualHostBase/http/${host}:${port}/_vh_zmiroot/$1 break;
+            rewrite ^(.*)$ /VirtualHostBase/http/${host}:${port}/${v:plonesite}/VirtualHostRoot/$1 break;
+            proxy_pass http://${uname};
+        }
+    }
+}
+
+# vim: set sts=4 ts=4 et tw=0 ai et nocompatible:

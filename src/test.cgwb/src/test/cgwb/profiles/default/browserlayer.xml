@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<layers>
+  <layer name="test.cgwb-theme" interface="test.cgwb.interfaces.IThemeSpecific"/>
+  <layer name="test.cgwb" interface="test.cgwb.interfaces.ILayer"/>
+</layers>

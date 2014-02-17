@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<object name="portal_skins" allow_any="False" cookie_persistence="False" default_skin="test.cgwb">
+
+  <object name="test_cgwb_custom"
+      meta_type="Filesystem Directory View"
+      directory="test.cgwb:skins/test_cgwb_custom"/>
+  <skin-path name="test.cgwb" based-on="Sunburst Theme">
+    <layer name="test_cgwb_custom"
+        insert-after="custom"/>
+  </skin-path>
+
+</object>

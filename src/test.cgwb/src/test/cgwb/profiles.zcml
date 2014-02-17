@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="test.cgwb">
+  <!-- Include direct package dependencies -->
+  <genericsetup:registerProfile
+      name="qi"
+      title="test Policy QI"
+      directory="profiles/qi"
+      description="Turn a Plone site into the test QIINFO site."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+  <genericsetup:registerProfile
+      name="default"
+      title="test.cgwb"
+      directory="profiles/default"
+      description="Install the test.cgwb addon on this plone site."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+    />
+  <genericsetup:registerProfile
+      title="test.cgwb uninstall"
+      name="uninstall"
+      description="Uninstall the test.cgwb addon on tbis plone site."
+      directory="profiles/uninstall"
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      for="Products.CMFPlone.interfaces.IPloneSiteRoot"
+      />
+  <genericsetup:importStep
+      name="test_cgwb setupVarious"
+      title="various setup for test.cgwb "
+      description="description"
+      handler="test.cgwb.setuphandlers.setupVarious">
+    <depends name="plone-content"/>
+  </genericsetup:importStep>
+  <!-- migration steps -->
+  <genericsetup:importStep
+      name="test_cgwb setupQi"
+      title="Quick Installer products dependencies setup for test.cgwb"
+      description="description"
+      handler="test.cgwb.setuphandlers.setupQi">
+    <depends name="plone-content"/>
+  </genericsetup:importStep>
+  <!-- -->
+  <include package=".upgrades"/>
+</configure>

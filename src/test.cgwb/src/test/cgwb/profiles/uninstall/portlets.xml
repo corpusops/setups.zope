@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<portlets
+    xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+    i18n:domain="test.cgwb">
+<!--
+  <portlet
+      addview="test.cgwb.browser.portlet.Portlet"
+      title = "test.cgwb portlet"
+      title = "Add a test.cgwb portlet"
+      remove="True"
+    />
+-->
+</portlets>

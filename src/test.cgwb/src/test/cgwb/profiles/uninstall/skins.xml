@@ -1,0 +1,8 @@
+<?xml version="1.0"?>
+<object name="portal_skins" allow_any="False" cookie_persistence="False" default_skin="test.cgwb">
+
+  <object name="test_cgwb_custom"
+    remove="True" />
+  <skin-path name="test.cgwb" remove="True" />
+
+</object>

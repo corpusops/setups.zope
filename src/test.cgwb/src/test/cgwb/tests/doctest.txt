@@ -1,0 +1,8 @@
+
+    >>> globals().update(layer['globs'])
+    >>> browser = Browser.new()
+    >>> browser.open(layer['portal'].absolute_url())
+    >>> 'Plone' in browser.contents
+    True
+
+

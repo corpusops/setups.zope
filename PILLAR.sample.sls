@@ -10,6 +10,7 @@ zope-salt-project-default-settings.buildout.settings:
     admin-user: admin
     reverse-proxy-scheme: http
     reverse-proxy-host: foobar.foo.com
+    reverse-proxy-admin: postmaster@localhost
     reverse-proxy-edit-host: edit.foobar.foo.com
   ports:
     zope-front: '${ports:balancer}'

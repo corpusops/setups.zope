@@ -1,0 +1,138 @@
+#
+# This file contains default values which are used
+# by the salt states deploying your project.
+# you may copy them to your relevant PILLAR file
+# before editing them.
+# If you need to add variables, this is where to begin.
+# Please keep defaults in there, but real passwords
+# must be putted inside pillar
+#
+# replace project_name in your pillar by
+# the current projectname
+# you can also merge parts of this file
+# with the relevant pillar
+makina-states.projectname:
+  data:
+    var-directory: '{data_root}/var'
+    cache-directory: '{var-directory}/cache'
+    cron_hour: 1
+    cron_minute: 5
+    nbinstances: 4
+    apache: true
+    nginx: false
+    reverse-proxy-scheme: http
+    reverse-proxy-host: foobar.foo.com
+    domain: "{reverse-proxy-host}"
+    buildout:
+      newest: false
+      settings:
+        buildout:
+          newest: "false"
+          unzip: "true"
+          cache-directory: '{cache-directory}/downloads'
+          download-cache: '{cache-directory}/downloads'
+          download-directory: '{cache-directory}/downloads'
+          eggs-directory: '{var-directory}/eggs'
+          parts-directory: '{var-directory}/parts'
+          newest: 'false'
+        v:
+          sys-user: "{user}"
+          sys-group: "{group}"
+          admin-password: secret
+          admin-user: admin
+          reverse-proxy-scheme: "{reverse-proxy-scheme}"
+          reverse-proxy-host: "{reverse-proxy-host}"
+          reverse-proxy-admin: "postmaster@e{reverse-proxy-host}"
+          reverse-proxy-edit-host: "edit.{reverse-proxy-host}"
+          logrotate: 365
+          admin-user: 'admin'
+          admin-password: 'secret'
+          project: 'ploneplone'
+          proxycache_size: '256M'
+          anon_cache_time: '600s'
+          autostart_instance1: 'true'
+          autostart_instance2: 'true'
+          autostart_instance3: 'true'
+          autostart_instance4: 'true'
+          plonesite: 'Plone'
+          zeo-pack-days: '0'
+          z2-log-level: 'INFO'
+          event-log-level: 'INFO'
+          debug: 'off'
+          verbose-security: 'off'
+          zeo-client-cache-size: '80MB'
+          session-timeout-minutes: '90'
+          sys-user: '{user}'
+          sys-group: '{group}'
+          varnish-debug: '${v:debug}'
+          rewrite-max-age: 'false'
+          supervisor-user: '${v:admin-user}'
+          supervisor-password: '${v:admin-password}'
+          reverse-proxy-admin: 'postmaster@localhost'
+          reverse-proxy-listen: '*'
+          reverse-proxy-scheme: 'http'
+          reverse-proxy-host: '{domain}'
+          reverse-proxy-edit-host: 'edit.{domain}'
+          reverse-proxy-port: '80'
+          package-min-coverage: '80'
+          flake8-ignore: 'C901'
+          flake8-max-complexity: '1000'
+          pre-commit-hook: 'True'
+        versions:
+          Pillow: 2.4.0
+          pillow: 2.4.0
+        ports:
+          supervisor: '8081'
+          zeo: '8082'
+          instance: '8084'
+          balancer: '8083'
+          instance1: '8085'
+          instance2: '8086'
+          instance3: '8087'
+          instance4: '8088'
+          varnish: '8094'
+          varnish-telnet: '8095'
+          zope-front: '${ports:balancer}'
+          cache-backend: '${ports:balancer}'
+          zope-front: '${ports:balancer}'
+          cache-backend: '${ports:balancer}'
+        crons:
+          zope-restart: '15 1 * * *'
+          zope-pack: '30 1 * * *'
+          repozo-daily: '05 1 * * *'
+          repozo-weekly: '10 1 * * 6'
+          nb_backups_to_keep: '35'
+          nb_fullbackups_to_keep: '5'
+        locations:
+          locations-tmp: '${buildout:directory}/var/tmp'
+          locations-blob-storage: '${buildout:directory}/var/blobstorage/storage'
+          locations-blob-backup: '${buildout:directory}/var/blobstorage/backup'
+        hosts:
+          syslog: '${hosts:ip}'
+          zeo: '${hosts:ip}'
+          supervisor: '${hosts:ip}'
+          balancer: '${hosts:ip}'
+          varnish: '${hosts:ip}'
+          instance: '${hosts:address}'
+          instance1: '${hosts:ip}'
+          instance2: '${hosts:ip}'
+          instance3: '${hosts:ip}'
+          instance4: '${hosts:ip}'
+          varnish: '${hosts:ip}'
+          varnish-telnet: '${hosts:ip}'
+          #zope-front: '${hosts:varnish}'
+          zope-front: '${hosts:balancer}'
+          cache-backend: '${hosts:balancer}'
+  env_defaults:
+    dev:
+      settings:
+        v:
+          autostart_instance1: 'false'
+          autostart_instance2: 'false'
+          autostart_instance3: 'false'
+          autostart_instance4: 'false'
+    prod:
+      settings:
+        v:
+          autostart_instance1: true
+# vim:set ft=yaml ts=2 sts=2:

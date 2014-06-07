@@ -1,4 +1,6 @@
 bin
+.buildout
+buildout-salt.cfg
 *.pyc
 cron_scripts/
 develop-eggs/

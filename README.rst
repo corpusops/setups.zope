@@ -1,14 +1,69 @@
-==============================================================
-BUILDOUT FOR cgwb DOCUMENTATION
-==============================================================
+=====================================================================
+Exemple of a generic plone portal deployment with salt/makina-states
+=====================================================================
 
-INSTALLING THIS PROJECT
+.. contents::
+
+USE/Install With makina-states
+-------------------------------
+- Iniatilise on the target platform the project if it is not already done::
+
+    salt mc_project.init_project name=<foo>
+
+- Keep under the hood both remotes (pillar & project).
+
+- Clone the project pillar remote inside your project top directory
+
+- Add/Relace your salt deployment code inside **.salt** inside your repository.
+
+- Add the project remote
+
+    - replace remotenickname with a sensible name (eg: prod)::
+    - replace the_project_remote_given_in_init with the real url
+
+    - Run the following commands::
+
+        git remote add <remotenickname>  <the_project_remote_given_in_init>
+        git fetch --all
+
+- Each time you need to deploy from your computer, run::
+
+    cd pillar
+    git push [--force] <remotenickname> <yourlocalbranch(eg: master,prod,whatever)>:master
+    cd ..
+    git push [--force] <remotenickname> <yourlocalbranch(eg: master,prod,whatever)>:master
+
+- Notes:
+
+    - The distant branch is always *master**
+    - If you force the push, the local working copy of the remote deployed site
+      will be resetted to the TIP changeset your are pushing.
+
+- If you want to install locally on the remote computer, or test it locally and
+  do not want to run the full deployement procedure, when you are on a shell
+  (connected via ssh on the remote computer or locally on your box), run::
+
+      salt mc_project.deploy only=install,fixperms
+
+- You can also run just specific step(s)::
+
+      salt mc_project.deploy only=install,fixperms only_steps=000_whatever
+      salt mc_project.deploy only=install,fixperms only_steps=000_whatever,001_else
+
+- If you want to commit in prod and then push back from the remote computer, remember
+  to push on the right branch, eg::
+
+    git remote add github https://github.com/orga/repo.git
+    git fetch --all
+    git push github master:prod
+
+ALT: INSTALLING THIS PROJECT  by hand
 -----------------------------------------
 ::
 
     cd cgwb
     mkdir workdir
-    git clone git@github.com:makinacorpus/cgwb-test.git cgwb
+    git clone <url> cgwb
     sudo apt-get install -y build-essential m4 libtool pkg-config autoconf gettext bzip2 groff man-db automake libsigc++-2.0-dev tcl8.5 git libssl-dev libxml2-dev libxslt1-dev libbz2-dev zlib1g-dev python-setuptools python-dev libjpeg62-dev libreadline-dev python-imaging wv poppler-utils libsqlite0-dev libgdbm-dev libdb-dev tcl8.5-dev tcl8.5-dev tcl8.4 tcl8.4-dev tk8.5-dev libsqlite3-dev libcurl4-openssl-dev
 
 Run buildout::
@@ -85,20 +140,4 @@ CONFIGURATION TEMPLATES
     `-- supervisor/supervisor.initd -> template for supervisor init script
 
 .. vim:set ft=rst:
-=======
-saltstates makina tree
-===========================
-
-.. contents::
-
-Salt states to install the zope sample project
-
-USE With makina-states
-=============================
-
-Install this project (as **root**)::
-
-    salt mc_project.init_project name=<foo>
-
-Then push the code and the pillar on the produced remotes
 

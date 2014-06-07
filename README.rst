@@ -85,3 +85,20 @@ CONFIGURATION TEMPLATES
     `-- supervisor/supervisor.initd -> template for supervisor init script
 
 .. vim:set ft=rst:
+=======
+saltstates makina tree
+===========================
+
+.. contents::
+
+Salt states to install the zope sample project
+
+USE With makina-states
+=============================
+
+Install this project (as **root**)::
+
+    salt mc_project.init_project name=<foo>
+
+Then push the code and the pillar on the produced remotes
+

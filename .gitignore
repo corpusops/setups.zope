@@ -14,6 +14,7 @@ etc/loadbalancing/
 etc/logrotate.conf
 etc/project/kgs.cfg
 etc/project/*-kgs.cfg
+etc/project/eau-kgs.cfg
 etc/sys/settings-local.cfg
 etc/sys/settings-prod.cfg
 etc/varnish.vcl
@@ -64,3 +65,4 @@ var/log/instance?.log
 !etc/sys
 !src/zopelib
 !src/*cgwb*
+!src/*eau*

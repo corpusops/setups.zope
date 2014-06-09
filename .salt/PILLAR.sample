@@ -11,7 +11,7 @@
 # the current projectname
 # you can also merge parts of this file
 # with the relevant pillar
-makina-states.projectname:
+makina-projects.projectname:
   data:
     var-directory: '{data_root}/var'
     cache-directory: '{var-directory}/cache'

@@ -33,7 +33,6 @@ makina-projects.projectname:
           download-directory: '{cache-directory}/downloads'
           eggs-directory: '{var-directory}/eggs'
           parts-directory: '{var-directory}/parts'
-          newest: 'false'
         v:
           sys-user: "{user}"
           sys-group: "{group}"
@@ -85,8 +84,6 @@ makina-projects.projectname:
           varnish-telnet: '8095'
           zope-front: '${ports:balancer}'
           cache-backend: '${ports:balancer}'
-          zope-front: '${ports:balancer}'
-          cache-backend: '${ports:balancer}'
         crons:
           zope-restart: '15 1 * * *'
           zope-pack: '30 1 * * *'
@@ -103,7 +100,6 @@ makina-projects.projectname:
           zeo: '${hosts:ip}'
           supervisor: '${hosts:ip}'
           balancer: '${hosts:ip}'
-          varnish: '${hosts:ip}'
           instance: '${hosts:address}'
           instance1: '${hosts:ip}'
           instance2: '${hosts:ip}'

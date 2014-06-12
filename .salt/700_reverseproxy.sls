@@ -25,7 +25,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - group: {{cfg.user}}
     - makedirs: true
     - dir_mode: 755
-  cmd.run:
+  {#cmd.run:
     - name: >
             ln -s {{cfg.project_root}}/www/apache.reverseproxy.conf {{cfg.project_root}}/etc/www/apache.reverseproxy.conf
             && ln -s {{cfg.project_root}}/www/nginx.reverseproxy.conf {{cfg.project_root}}/etc/www/nginx.reverseproxy.conf
@@ -33,7 +33,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - unless: ls {{cfg.project_root}}/etc/www/apache.reverseproxy.conf {{cfg.project_root}}/etc/www/nginx.reverseproxy.conf
     - onlyif: ls {{cfg.project_root}}/www/apache.reverseproxy.conf {{cfg.project_root}}/www/nginx.reverseproxy.conf
     - watch:
-      - file: {{cfg.name}}-buildout-vhost-directory
+      - file: {{cfg.name}}-buildout-vhost-directory#}
 
 {{cfg.name}}-buildout-apache-vhost:
   file.symlink:
@@ -41,7 +41,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - name: {{apacheSettings.vhostdir}}/100-{{cfg.data.domain}}.conf
     - makedirs: true
     - watch:
-      - cmd: {{cfg.name}}-buildout-vhost-directory
+      - file: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
       - mc_proxy: makina-apache-vhostconf
 
@@ -51,26 +51,26 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - name: {{apacheSettings.evhostdir}}/100-{{cfg.data.domain}}.conf
     - makedirs: true
     - watch:
-      - cmd: {{cfg.name}}-buildout-vhost-directory
+      - file: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
       - mc_proxy: makina-apache-vhostconf
 
 {{cfg.name}}-buildout-nginx-vhost:
   file.symlink:
     - target: {{cfg.project_root}}/etc/www/nginx.reverseproxy.conf
-    - name: /etc/nginx/sites.available/100-{{cfg.data.domain}}.conf
+    - name: /etc/nginx/sites-available/100-{{cfg.data.domain}}.conf
     - makedirs: true
     - watch:
-      - cmd: {{cfg.name}}-buildout-vhost-directory
+      - file: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
       - mc_proxy: nginx-post-conf-hook
 
 {{cfg.name}}-buildout-nginx-vhost-active:
   file.symlink:
-    - target: /etc/nginx/sites.available/100-{{cfg.data.domain}}.conf
-    - name: /etc/nginx/sites.enabled/100-{{cfg.data.domain}}.conf
+    - target: /etc/nginx/sites-available/100-{{cfg.data.domain}}.conf
+    - name: /etc/nginx/sites-enabled/100-{{cfg.data.domain}}.conf
     - makedirs: true
     - watch:
-      - cmd: {{cfg.name}}-buildout-vhost-directory
+      - file: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
       - mc_proxy: nginx-post-conf-hook

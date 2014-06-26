@@ -37,6 +37,8 @@
     - config: buildout-salt.cfg
     - runas: {{cfg.user}}
     - newest: {{cfg.data.buildout.newest}}
+    - use_vt: true
+    - output_loglevel: info
     - watch:
       - file: {{cfg.name}}-settings
       - file: {{cfg.name}}-buildout-project

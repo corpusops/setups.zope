@@ -19,6 +19,8 @@ prepreq-{{cfg.name}}:
       - libsigc++-2.0-dev
       - libsqlite0-dev
       - libsqlite3-dev
+      - libwebp5
+      - libwebp-dev
       - libssl-dev
       - libtool
       - libxml2-dev

@@ -1,4 +1,12 @@
 {% set cfg = opts.ms_project %}
+
+{# workaround the l;ibjpegturbo transitional
+ package hell by installing it explicitly #}
+prepreq-pre-{{cfg.name}}:
+  pkg.{{salt['mc_pkgs.settings']()['installmode']}}:
+    - pkgs:
+      - libjpeg-dev
+
 prepreq-{{cfg.name}}:
   pkg.{{salt['mc_pkgs.settings']()['installmode']}}:
     - pkgs:
@@ -13,7 +21,6 @@ prepreq-{{cfg.name}}:
       - libcurl4-openssl-dev
       - libdb-dev
       - libgdbm-dev
-      - libjpeg62-dev
       - libreadline-dev
       - libfreetype6-dev
       - libsigc++-2.0-dev

@@ -34,6 +34,9 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - onlyif: ls {{cfg.project_root}}/www/apache.reverseproxy.conf {{cfg.project_root}}/www/nginx.reverseproxy.conf
     - watch:
       - file: {{cfg.name}}-buildout-vhost-directory
+    - watch_in:
+      - mc_proxy: nginx-post-conf-hook
+
 
 {{cfg.name}}-buildout-apache-vhost:
   file.symlink:

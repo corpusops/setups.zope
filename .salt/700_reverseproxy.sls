@@ -25,7 +25,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - group: {{cfg.user}}
     - makedirs: true
     - dir_mode: 755
-  {#cmd.run:
+  cmd.run:
     - name: >
             ln -s {{cfg.project_root}}/www/apache.reverseproxy.conf {{cfg.project_root}}/etc/www/apache.reverseproxy.conf
             && ln -s {{cfg.project_root}}/www/nginx.reverseproxy.conf {{cfg.project_root}}/etc/www/nginx.reverseproxy.conf
@@ -33,7 +33,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - unless: ls {{cfg.project_root}}/etc/www/apache.reverseproxy.conf {{cfg.project_root}}/etc/www/nginx.reverseproxy.conf
     - onlyif: ls {{cfg.project_root}}/www/apache.reverseproxy.conf {{cfg.project_root}}/www/nginx.reverseproxy.conf
     - watch:
-      - file: {{cfg.name}}-buildout-vhost-directory#}
+      - file: {{cfg.name}}-buildout-vhost-directory
 
 {{cfg.name}}-buildout-apache-vhost:
   file.symlink:

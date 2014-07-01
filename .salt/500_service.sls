@@ -42,3 +42,24 @@ etc-init.d-supervisor.{{cfg.name}}:
     - user: root
     - watch:
       - service: {{cfg.name}}-service
+{{cfg.name}}-reboot:
+  file.managed:
+    - name: {{cfg.data_root}}/restart.sh
+    - user: root
+    - group: root
+    - mode: 755
+    - contents: |
+                {% for nb in range(1, cfg.data.nbinstances+1) %}
+                {%- set iid='instance{0}'.format(nb) %}
+                {%- set id='autostart_{0}'.format(iid) %}
+                {%- if cfg.data['buildout']['settings']['v'].get(id, 'false') == 'true' %}
+                {{ cfg.project_root}}/bin/supervisorctl restart {{iid}}
+                {%- endif %}
+                {%- endfor %}
+  cmd.run:
+    - name: {{cfg.data_root}}/restart.sh
+    - onlyif: test "$({{cfg.project_root}}/bin/supervisorctl status 2>&1 |grep "refused connection"|wc -l)" != 0
+    - user: root
+    - watch:
+      - cmd: {{cfg.name}}-service
+

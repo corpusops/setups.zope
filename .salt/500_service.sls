@@ -58,7 +58,6 @@ etc-init.d-supervisor.{{cfg.name}}:
                 {%- endfor %}
   cmd.run:
     - name: {{cfg.data_root}}/restart.sh
-    - onlyif: test "$({{cfg.project_root}}/bin/supervisorctl status 2>&1 |grep "refused connection"|wc -l)" != 0
     - user: root
     - watch:
       - cmd: {{cfg.name}}-service

@@ -1,3 +1,4 @@
+{% raw %}
 {% set cfg = opts['ms_project'] %}
 {# export macro to callees #}
 {% set ugs = salt['mc_usergroup.settings']() %}
@@ -29,6 +30,14 @@
               --groups {{cfg.group}} \
               --user {% if not cfg.no_user%}{{cfg.user}}{% else -%}root{% endif %} \
               --group {{cfg.group}};
+              "{{locs.resetperms}}" "${@}" \
+              --no-recursive -o\
+              --dmode '0555' --fmode '0644'  \
+              --paths "{{cfg.project_root}}" \
+              --paths "{{cfg.project_dir}}" \
+              --paths "{{cfg.project_dir}}"/.. \
+              --paths "{{cfg.project_dir}}"/../.. \
+              --users www-data ;
             fi
   cmd.run:
     - name: {{cfg.project_dir}}/global-reset-perms.sh
@@ -36,3 +45,4 @@
     - user: root
     - watch:
       - file: {{cfg.name}}-restricted-perms
+{% endraw %}

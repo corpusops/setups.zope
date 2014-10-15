@@ -10,6 +10,7 @@ prepreq-pre-{{cfg.name}}:
 prepreq-{{cfg.name}}:
   pkg.{{salt['mc_pkgs.settings']()['installmode']}}:
     - pkgs:
+      - liblcms2-dev
       - autoconf
       - automake
       - build-essential

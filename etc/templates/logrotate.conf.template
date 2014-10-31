@@ -5,6 +5,7 @@ compress
 delaycompress
 
 ${buildout:directory}/var/log/instance1*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -17,6 +18,7 @@ ${buildout:directory}/var/log/instance1*.log {
 }
 
 ${buildout:directory}/var/log/instance2*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -29,6 +31,7 @@ ${buildout:directory}/var/log/instance2*.log {
 }
 
 ${buildout:directory}/var/log/instance3*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -42,6 +45,7 @@ ${buildout:directory}/var/log/instance3*.log {
 
 
 ${buildout:directory}/var/log/instance4*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -54,6 +58,7 @@ ${buildout:directory}/var/log/instance4*.log {
 }
 
 ${buildout:directory}/var/log/zeoserver.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -65,6 +70,7 @@ ${buildout:directory}/var/log/zeoserver.log {
 }
 
 ${buildout:directory}/var/log/main*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -77,6 +83,7 @@ ${buildout:directory}/var/log/main*.log {
 }
 
 ${buildout:directory}/var/log/transform*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -88,6 +95,7 @@ ${buildout:directory}/var/log/transform*.log {
     endscript
 }
 ${buildout:directory}/var/log/supervisor*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -99,6 +107,7 @@ ${buildout:directory}/var/log/supervisor*.log {
 }
 
 ${buildout:directory}/var/log/apache/*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -112,6 +121,7 @@ ${buildout:directory}/var/log/apache/*.log {
 
 
 ${buildout:directory}/var/log/nginx/*.log {
+    user root ${v:sys-group}
     compress
     rotate 10
     daily

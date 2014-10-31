@@ -31,6 +31,10 @@
 
 {#- Logrotate #}
 etc-logrotate.d-{{cfg.name}}.conf:
-  file.symlink:
+  file.copy:
     - name: {{locations.conf_dir}}/logrotate.d/{{cfg.name}}.conf
-    - target: {{cfg.project_root}}/etc/logrotate.conf
+    - source: {{cfg.project_root}}/etc/logrotate.conf
+    - force: true
+    - user: root
+    - group: root
+    - mode: 640

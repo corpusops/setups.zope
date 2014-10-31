@@ -37,6 +37,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
     - watch_in:
       - mc_proxy: nginx-post-conf-hook
 
+{% if data.apache %}
 
 {{cfg.name}}-buildout-apache-vhost:
   file.symlink:
@@ -57,7 +58,26 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
       - file: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
       - mc_proxy: makina-apache-vhostconf
+{%else %}
+{{cfg.name}}-buildout-apache-vhost:
+  file.absent:
+    - name: {{apacheSettings.vhostdir}}/100-{{cfg.data.domain}}.conf
+    - watch:
+      - cmd: {{cfg.name}}-buildout-vhost-directory
+    - watch_in:
+      - mc_proxy: makina-apache-vhostconf
 
+{{cfg.name}}-buildout-vhost-active:
+  file.absent:
+    - name: {{apacheSettings.evhostdir}}/100-{{cfg.data.domain}}.conf
+    - watch:
+      - cmd: {{cfg.name}}-buildout-vhost-directory
+    - watch_in:
+      - mc_proxy: makina-apache-vhostconf
+ 
+
+{% endif %}
+{% if data.nginx %}
 {{cfg.name}}-buildout-nginx-vhost:
   file.symlink:
     - target: {{cfg.project_root}}/etc/www/nginx.reverseproxy.conf
@@ -77,3 +97,21 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
       - file: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
       - mc_proxy: nginx-post-conf-hook
+{%else %}
+
+{{cfg.name}}-buildout-nginx-vhost:
+  file.absent:
+    - name: /etc/nginx/sites-available/100-{{cfg.data.domain}}.conf
+    - watch:
+      - cmd: {{cfg.name}}-buildout-vhost-directory
+    - watch_in:
+      - mc_proxy: nginx-post-conf-hook
+
+{{cfg.name}}-buildout-nginx-vhost-active:
+  file.absent:
+    - name: /etc/nginx/sites-enabled/100-{{cfg.data.domain}}.conf
+    - watch:
+      - cmd: {{cfg.name}}-buildout-vhost-directory
+    - watch_in:
+      - mc_proxy: nginx-post-conf-hook
+{% endif %}

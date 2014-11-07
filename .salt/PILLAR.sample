@@ -22,11 +22,14 @@ makina-projects.projectname:
     autostart: 'true'
     nginx: false
     reverse-proxy-scheme: http
-    domain: "{domain}"
+    domain: "{fqdn}"
     buildout:
       newest: false
       settings:
         buildout:
+          extends: 'buildout-{default_env}.cfg'
+          'parts+': 'logrotate.conf'
+          'parts-': '${v:maintainance-parts} chmod chown'
           newest: "false"
           unzip: "true"
           cache-directory: '{cache-directory}/downloads'

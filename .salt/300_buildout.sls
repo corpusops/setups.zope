@@ -10,9 +10,7 @@
     - user: {{cfg.user}}
     - group: {{cfg.group}}
     - mode: 770
-    - defaults:
-      salt_data: |
-                 {{sdata}}
+
 
 {{cfg.name}}-buildout-project:
   file.managed:
@@ -25,18 +23,12 @@
     - watch:
       - file: {{cfg.name}}-settings
     - defaults:
-      skippedparts: |
-                    '    ${v:maintainance-parts}'
-                    '    chmod'
-                    '    chown'
-      salt_data: |
-                 {{sdata}}
-      config: buildout-{{cfg.default_env}}.cfg
+        project_name: '{{cfg.name}}'
   buildout.installed:
     - name: {{cfg.project_root}}
     - config: buildout-salt.cfg
     - runas: {{cfg.user}}
-    - newest: {{cfg.data.buildout.newest}}
+    - newest: {{{'true': True}.get(cfg.data.buildout.settings.buildout.get('newest', 'false').lower(), False) }}
     - use_vt: true
     - output_loglevel: info
     - watch:

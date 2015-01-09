@@ -63,3 +63,4 @@ backend zope
   option httpchk GET /
 
   server  zope0101 ${hosts:instance1}:${ports:instance1} cookie z0101 check maxconn 2 maxqueue 50
+  server  zope0102 ${hosts:instance2}:${ports:instance2} cookie z0101 check maxconn 2 maxqueue 50

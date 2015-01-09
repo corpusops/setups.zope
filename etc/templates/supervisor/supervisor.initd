@@ -23,7 +23,6 @@ INSTANCE_NAME="$(basename ${buildout:directory})"
 supervisorctl="${buildout:directory}/bin/supervisorctl"
 supervisord="${buildout:directory}/bin/supervisord"
 name="supervisord_${v:project}_$INSTANCE_NAME"
-lock="${buildout:directory}/var/$name "
 
 export TMPDIR
 
@@ -39,8 +38,6 @@ start() {
       "$supervisord"
     fi
     RETVAL=$?
-    [ $RETVAL -eq 0 ] && touch $lock
-    chown $EFFECTIVE_USER $lock
     echo
     return $RETVAL
 }
@@ -52,13 +49,24 @@ stop() {
         $supervisorctl shutdown
     fi
     RETVAL=$?
-    [ $RETVAL -eq 0 ] && rm -f $lock
     echo
     return $RETVAL
 }
+do_start() {
+    start
+    for i in `seq 60`;do
+       if [ "x$RETVAL" != "x0" ];then
+           stop
+           sleep 2
+           start
+       else
+           break
+       fi
+    done
+}
 case "$1" in
          start)
-             start
+             do_start
              ;;
 
          stop)
@@ -68,7 +76,7 @@ case "$1" in
          restart)
              stop
              sleep 2
-             start
+             do_start
              ;;
 esac
 exit $REVAL

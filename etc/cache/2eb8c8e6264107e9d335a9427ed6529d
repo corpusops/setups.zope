@@ -1,3 +1,4 @@
+# Downloaded from http://download.zope.org/zopetoolkit/index/1.0.8/ztk-versions.cfg
 [versions]
 # ZTK
 zope.annotation = 3.5.0

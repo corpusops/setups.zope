@@ -14,15 +14,27 @@
 makina-projects.projectname:
   data:
     var-directory: '{data_root}/var'
-    cache-directory: '{var-directory}/cache'
+    cache-directory: '{var-directory}/buildout-cache'
     cron_hour: 1
     cron_minute: 5
     nbinstances: 4
-    apache: true
+    apache: false
     autostart: 'true'
-    nginx: false
+    nginx: true
     reverse-proxy-scheme: http
     domain: "{fqdn}"
+    server_aliases: |
+                    SEE BELOW:
+                    buildout/settings/v/server_aliases
+    server_aliases: []
+    ui: "{data_root}/ui"
+    installer_url: "http://launchpad.net/plone/${plone_major}/${plone_ver}/+download/Plone-${plone_ver}-UnifiedInstaller.tgz"
+    plone_arc: "{data_root}/ui/unifiedinstaller.tgz"
+    zroot: "{project_root}"
+    py_ver: 2.7
+    py_root: "{project_root}/venv"
+    py: "{py_root}/bin/python"
+    requirements: "{project_root}/requirements.txt"
     buildout:
       newest: false
       settings:
@@ -32,12 +44,20 @@ makina-projects.projectname:
           'parts-': '${v:maintainance-parts} chmod chown'
           newest: "false"
           unzip: "true"
-          cache-directory: '{cache-directory}/downloads'
+          cache-directory: '{cache-directory}'
           download-cache: '{cache-directory}/downloads'
           download-directory: '{cache-directory}/downloads'
-          eggs-directory: '{var-directory}/eggs'
+          eggs-directory: '{cache-directory}/eggs'
           parts-directory: '{var-directory}/parts'
         v:
+          # activate http auth
+          #http_users: |
+          #
+          #            # comment is for buildout
+          #                foo:test
+          #                root:bar
+          #space separated list of domains
+          server_aliases: ""
           sys-user: "{user}"
           sys-group: "{group}"
           admin-user: admin
@@ -47,9 +67,9 @@ makina-projects.projectname:
           proxycache_size: '256M'
           anon_cache_time: '600s'
           autostart_instance1: '{autostart}'
-          autostart_instance2: '{autostart}'
-          autostart_instance3: '{autostart}'
-          autostart_instance4: '{autostart}'
+          autostart_instance2: 'false'
+          autostart_instance3: 'false'
+          autostart_instance4: 'false'
           plonesite: 'Plone'
           zeo-pack-days: '0'
           z2-log-level: 'INFO'
@@ -126,4 +146,7 @@ makina-projects.projectname:
       settings:
         v:
           autostart_instance1: 'true'
+          autostart_instance2: 'false'
+          autostart_instance3: 'false'
+          autostart_instance4: 'false'
 # vim:set ft=yaml ts=2 sts=2:

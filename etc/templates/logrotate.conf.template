@@ -5,12 +5,12 @@ compress
 delaycompress
 
 ${buildout:directory}/var/log/instance1*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
-    rotate 10
+    rotate ${v:rotate}
     daily
     notifempty
-    size 10M  
+    size 10M
     sharedscripts
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance1.pid)
@@ -18,12 +18,12 @@ ${buildout:directory}/var/log/instance1*.log {
 }
 
 ${buildout:directory}/var/log/instance2*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
-    rotate 10
+    rotate ${v:rotate}
     daily
     notifempty
-    size 10M  
+    size 10M
     sharedscripts
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance2.pid)
@@ -31,12 +31,12 @@ ${buildout:directory}/var/log/instance2*.log {
 }
 
 ${buildout:directory}/var/log/instance3*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
-    rotate 10
+    rotate ${v:rotate}
     daily
     notifempty
-    size 10M  
+    size 10M
     sharedscripts
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance3.pid)
@@ -45,12 +45,12 @@ ${buildout:directory}/var/log/instance3*.log {
 
 
 ${buildout:directory}/var/log/instance4*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
-    rotate 10
+    rotate ${v:rotate}
     daily
     notifempty
-    size 10M  
+    size 10M
     sharedscripts
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance4.pid)
@@ -58,24 +58,24 @@ ${buildout:directory}/var/log/instance4*.log {
 }
 
 ${buildout:directory}/var/log/zeoserver.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
-    rotate 10
+    rotate ${v:rotate}
     daily
     notifempty
-    size 10M  
+    size 10M
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/zeoserver.pid)
     endscript
 }
 
 ${buildout:directory}/var/log/main*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
     notifempty
-    size 10M  
+    size 10M
     sharedscripts
     postrotate
         /bin/kill -USR1 $(cat ${buildout:directory}/var/main.pid)
@@ -83,21 +83,21 @@ ${buildout:directory}/var/log/main*.log {
 }
 
 ${buildout:directory}/var/log/transform*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
-    rotate 10
+    rotate ${v:rotate}
     daily
     notifempty
-    size 10M 
+    size 10M
     sharedscripts
     postrotate
         /bin/kill -USR1 $(cat ${buildout:directory}/var/transform.pid)
     endscript
 }
 ${buildout:directory}/var/log/supervisor*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
-    rotate 10
+    rotate ${v:rotate}
     daily
     notifempty
     size 10M
@@ -108,7 +108,7 @@ ${buildout:directory}/var/log/supervisor*.log {
 
 ${buildout:directory}/var/log/apache/*_log
 ${buildout:directory}/var/log/apache/*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -116,13 +116,13 @@ ${buildout:directory}/var/log/apache/*.log {
     size 10M
     sharedscripts
     missingok
-    copytruncate 
+    copytruncate
 }
 
 
 
 ${buildout:directory}/var/log/nginx/*.log {
-    su root ${v:sys-group}
+    user root ${v:sys-group}
     compress
     rotate 10
     daily
@@ -130,5 +130,5 @@ ${buildout:directory}/var/log/nginx/*.log {
     size 10M
     sharedscripts
     missingok
-    copytruncate 
+    copytruncate
 }

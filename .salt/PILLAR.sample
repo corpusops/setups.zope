@@ -26,7 +26,6 @@ makina-projects.projectname:
     server_aliases: |
                     SEE BELOW:
                     buildout/settings/v/server_aliases
-    server_aliases: []
     ui: "{data_root}/ui"
     installer_url: "http://launchpad.net/plone/${plone_major}/${plone_ver}/+download/Plone-${plone_ver}-UnifiedInstaller.tgz"
     plone_arc: "{data_root}/ui/unifiedinstaller.tgz"
@@ -136,17 +135,19 @@ makina-projects.projectname:
           cache-backend: '${hosts:balancer}'
   env_defaults:
     dev:
-      settings:
-        v:
-          autostart_instance1: 'false'
-          autostart_instance2: 'false'
-          autostart_instance3: 'false'
-          autostart_instance4: 'false'
+      buildout:
+        settings:
+          v:
+            autostart_instance1: 'false'
+            autostart_instance2: 'false'
+            autostart_instance3: 'false'
+            autostart_instance4: 'false'
     prod:
-      settings:
-        v:
-          autostart_instance1: 'true'
-          autostart_instance2: 'false'
-          autostart_instance3: 'false'
-          autostart_instance4: 'false'
+      buildout:
+        settings:
+          v:
+            autostart_instance1: 'true'
+            autostart_instance2: 'false'
+            autostart_instance3: 'false'
+            autostart_instance4: 'false'
 # vim:set ft=yaml ts=2 sts=2:

@@ -50,7 +50,7 @@ makina-projects.projectname:
           parts-directory: '{var-directory}/parts'
         v:
           # activate http auth
-          #http_users: |
+          #http-users: |
           #
           #            # comment is for buildout
           #                foo:test

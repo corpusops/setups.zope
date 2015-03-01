@@ -84,8 +84,10 @@ var-dir-{{cfg.name}}:
             plone_ver="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){3})/\1/g")"
             plone_major="$(echo "${plone_ver}"|sed -re "s/^([0-9]+\.[0-9]+).*/\1/g")"
             wget -c "{{data.installer_url}}" -O "{{data.plone_arc}}"
-            touch skip_plone_download
-    - unless: test -e skip_plone_download && test -e "{{data.plone_arc}}"
+            touch "skip_plone_download${plone_ver}"
+    - unless: |
+              plone_ver="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){3})/\1/g")"
+              test -e "skip_plone_download${plone_ver}" && test -e "{{data.plone_arc}}"
     - cwd: {{data.ui}}
     - user: {{cfg.user}}
     - require:

@@ -26,10 +26,10 @@
     - name: {{data.zroot}}
     - config: buildout-salt.cfg
     - python: "{{data.py}}"
-    - runas: {{cfg.user}}
+    - user: {{cfg.user}}
     - newest: {{{'true': True}.get(cfg.data.buildout.settings.buildout.get('newest', 'false').lower(), False) }}
     - use_vt: true
-    - output_loglevel: info
+    - loglevel: info
     - watch:
       - file: {{cfg.name}}-settings
       - file: {{cfg.name}}-buildout-project

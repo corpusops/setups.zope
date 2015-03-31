@@ -24,6 +24,8 @@
               --dmode '0770' --fmode '0770'  \
               --paths "{{cfg.project_root}}" \
               --paths "{{cfg.data_root}}" \
+              --excludes=".*var/blob.*/backup.*"\
+              --excludes=".*var/blob.*/snapshot.*"\
               --users www-data \
               --users {% if not cfg.no_user%}{{cfg.user}}{% else -%}root{% endif %} \
               --groups {{cfg.group}} \

@@ -39,7 +39,11 @@ prepreq-{{cfg.name}}:
       - libxml2-dev
       - libxslt1-dev
       - libopenjpeg-dev
+      {% if grains['oscodename'] in ['trusty'] %}
       - libopenjpeg2
+      {% else %}
+      - libopenjpeg5
+      {% endif %}
       - m4
       - man-db
       - pkg-config
@@ -74,19 +78,18 @@ var-dir-{{cfg.name}}:
     - watch:
        - file: var-dirs-{{cfg.name}}
 
-
 # unpack the generic installer eggs cache to speed up installations
 {{cfg.name}}-wgetplone:
   cmd.run:
     - name: |
             set -e
             set -x
-            plone_ver="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){3})/\1/g")"
+            plone_ver="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){1,3})/\1/g")"
             plone_major="$(echo "${plone_ver}"|sed -re "s/^([0-9]+\.[0-9]+).*/\1/g")"
             wget -c "{{data.installer_url}}" -O "{{data.plone_arc}}"
             touch "skip_plone_download${plone_ver}"
     - unless: |
-              plone_ver="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){3})/\1/g")"
+              plone_ver="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){1,3})/\1/g")"
               test -e "skip_plone_download${plone_ver}" && test -e "{{data.plone_arc}}"
     - cwd: {{data.ui}}
     - user: {{cfg.user}}
@@ -97,7 +100,7 @@ var-dir-{{cfg.name}}:
   cmd.run:
     - name: tar xzvf {{data.plone_arc}} && touch skip_plone_unpack
     - unless: |
-              pv="$(grep dist.plone.org/release "{{data.zroot}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){3})/\1/g")"
+              pv="$(grep dist.plone.org/release "{{data.zroot}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){1,3})/\1/g")"
               test -e skip_plone_unpack && test -e "{{data.ui}}/Plone-${pv}-UnifiedInstaller/install.sh"
     - cwd: {{data.ui}}
     - user: {{cfg.user}}
@@ -107,7 +110,7 @@ var-dir-{{cfg.name}}:
 {{cfg.name}}-unpackcache:
   cmd.run:
     - name: |
-            pv="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){3})/\1/g")"
+            pv="$(grep dist.plone.org/release "{{cfg.project_root}}/etc/base.cfg"|head -n1|sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){1,3})/\1/g")"
             tar xjf "{{data.ui}}/Plone-${pv}-UnifiedInstaller/packages/buildout-cache.tar.bz2"
     - unless: test -e {{data.buildout.settings.buildout['eggs-directory']}}/Products.CMFCore*
     - cwd: {{data.buildout.settings.buildout['cache-directory']}}/..

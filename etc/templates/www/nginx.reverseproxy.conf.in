@@ -17,12 +17,10 @@ server {
     root ${parts.v['reverse-proxy-docroot']};
     access_log ${parts.buildout.directory}/var/log/nginx/${options.host}.access.log;
     error_log  ${parts.buildout.directory}/var/log/nginx/${options.host}.error.log;
-
-{% if parts.v.get('http-users', '').strip() %}
-auth_basic "Restricted website";
-auth_basic_user_file ${parts.buildout.directory}/www/htusers;
-{% end %}
-
+    {% if parts.v.get('http-users', '').strip() %}
+    auth_basic "Restricted website";
+    auth_basic_user_file ${parts.buildout.directory}/www/htusers;
+    {% end %}
     location /zmiroot/ {
         proxy_pass  http://${options.uname}/VirtualHostBase/http/${options.host}:${options.port}/VirtualHostRoot/_vh_zmiroot/;
     }
@@ -40,7 +38,38 @@ auth_basic_user_file ${parts.buildout.directory}/www/htusers;
         }
         if ( ${'$maint'} = "n" ){
             rewrite ^(/zmiroot/.*)$ /VirtualHostBase/http/${options.host}:${options.port}/_vh_zmiroot/$1 break;
-            rewrite ^(.*)$ /VirtualHostBase/http/${options.host}:${options.port}/${parts.v['plonesite']}/VirtualHostRoot/$1 break;
+            rewrite ^(.*)$ /VirtualHostBase/http/${options.host}:${options.port}/${parts.v.plonesite}/VirtualHostRoot/$1 break;
+            proxy_pass http://${options.uname};
+        }
+    }
+}
+server {
+    listen ${options.port};
+    server_name ${options['edit-host']};
+    root ${parts.v['reverse-proxy-docroot']};
+    access_log ${parts.buildout.directory}/var/log/nginx/${options.host}.access.log;
+    error_log  ${parts.buildout.directory}/var/log/nginx/${options.host}.error.log;
+    {% if parts.v.get('http-users', '').strip() %}
+    auth_basic "Restricted website";
+    auth_basic_user_file ${parts.buildout.directory}/www/htusers;
+    {% end %}
+    location /zmiroot/ {
+        proxy_pass  http://${options.uname}/VirtualHostBase/http/${options.host}:${options.port}/VirtualHostRoot/_vh_zmiroot/;
+    }
+    location / {
+        set ${'$maint'} "n";
+        if ( -f ${parts.v['reverse-proxy-docroot']}/maintainance/index.html ){
+            set ${'$maint'} "m";
+        }
+        if ( ${'$uri'} ~ ^/maintainance ) {
+            set ${'$maint'} "o${'$maint'}";
+        }
+        if ( ${'$maint'} = "m" ) {
+            rewrite ^(.*)$ /maintainance/index.html permanent;
+        }
+        if ( ${'$maint'} = "n" ){
+            rewrite ^(/zmiroot/.*)$ /VirtualHostBase/http/${options.host}:${options.port}/_vh_zmiroot/$1 break;
+            rewrite ^(.*)$ /VirtualHostBase/http/${options.host}:${options.port}/${parts.v.plonesite}/VirtualHostRoot/$1 break;
             proxy_pass http://${options.uname};
         }
     }

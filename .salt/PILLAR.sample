@@ -35,6 +35,7 @@ makina-projects.projectname:
     py: "{py_root}/bin/python"
     requirements: "{project_root}/requirements.txt"
     buildout:
+      version: 2
       newest: false
       settings:
         buildout:

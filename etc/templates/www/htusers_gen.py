@@ -24,7 +24,7 @@ if HTUSERS:
             if not user or not password:
                 print("invalid line {0}".format(line))
                 sys.exit(1)
-            cmd = "htpasswd -bm {0} {1} {2}".format(
+            cmd = "htpasswd -bm \"{0}\" \"{1}\" \"{2}\"".format(
                 HTPASSWD, user, password)
             ret = os.system(cmd)
             if ret != 0:

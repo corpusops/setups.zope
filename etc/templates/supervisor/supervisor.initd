@@ -4,7 +4,7 @@
 # description: supervisor init script
 
 ### BEGIN INIT INFO
-# Provides:          ${v:project}
+# Provides:          supervisor.${v:project}
 # Required-Start:    $syslog $network $time
 # Required-Stop:     $syslog $network
 # Should-Start:

@@ -25,6 +25,7 @@
   buildout.installed:
     - name: {{data.zroot}}
     - config: buildout-salt.cfg
+    - buildout_ver: {{data.buildout.version}}
     - python: "{{data.py}}"
     - user: {{cfg.user}}
     - newest: {{{'true': True}.get(cfg.data.buildout.settings.buildout.get('newest', 'false').lower(), False) }}

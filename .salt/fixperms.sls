@@ -25,9 +25,10 @@
             find -H \
               "{{cfg.project_root}}" \
               "{{cfg.data_root}}" \
-              \( -type f -or -type d \) \
-              -and \( -not -user {{cfg.user}} \
-                      -or -not -group {{cfg.group}} \) \
+              \(\
+                \(     -type f -and \( -not -user {{cfg.user}} -or -not -group {{cfg.group}}                     \) \)\
+                -or \( -type d -and \( -not -user {{cfg.user}} -or -not -group {{cfg.group}} -or -not -perm 2000 \) \)\
+              \)\
               |\
               egrep -v 'blob.*backup'|\
               egrep -v 'blob.*snapshot'|\

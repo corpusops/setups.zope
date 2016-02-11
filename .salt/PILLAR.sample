@@ -34,6 +34,9 @@ makina-projects.projectname:
     py_root: "{project_root}/venv"
     py: "{py_root}/bin/python"
     requirements: "{project_root}/requirements.txt"
+    skip_eggs_cache: false
+    {# head |tail (default head #}
+    tail_selector: head
     buildout:
       version: 2
       newest: false

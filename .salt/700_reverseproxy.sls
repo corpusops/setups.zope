@@ -42,7 +42,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 {{cfg.name}}-buildout-apache-vhost:
   file.symlink:
     - target: {{cfg.project_root}}/etc/www/apache.reverseproxy.conf
-    - name: {{apacheSettings.vhostdir}}/100-{{cfg.data.domain}}.conf
+    - name: {{apacheSettings.vhostdir}}/100-corpus-{{cfg.name}}.conf
     - makedirs: true
     - watch:
       - file: {{cfg.name}}-buildout-vhost-directory
@@ -51,8 +51,8 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 
 {{cfg.name}}-buildout-vhost-active:
   file.symlink:
-    - target: {{apacheSettings.vhostdir}}/100-{{cfg.data.domain}}.conf
-    - name: {{apacheSettings.evhostdir}}/100-{{cfg.data.domain}}.conf
+    - target: {{apacheSettings.vhostdir}}/100-corpus-{{cfg.name}}.conf
+    - name: {{apacheSettings.evhostdir}}/100-corpus-{{cfg.name}}.conf
     - makedirs: true
     - watch:
       - file: {{cfg.name}}-buildout-vhost-directory
@@ -61,7 +61,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 {%else %}
 {{cfg.name}}-buildout-apache-vhost:
   file.absent:
-    - name: {{apacheSettings.vhostdir}}/100-{{cfg.data.domain}}.conf
+    - name: {{apacheSettings.vhostdir}}/100-corpus-{{cfg.name}}.conf
     - watch:
       - cmd: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
@@ -69,7 +69,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 
 {{cfg.name}}-buildout-vhost-active:
   file.absent:
-    - name: {{apacheSettings.evhostdir}}/100-{{cfg.data.domain}}.conf
+    - name: {{apacheSettings.evhostdir}}/100-corpus-{{cfg.name}}.conf
     - watch:
       - cmd: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
@@ -81,7 +81,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 {{cfg.name}}-buildout-nginx-vhost:
   file.symlink:
     - target: {{cfg.project_root}}/etc/www/nginx.reverseproxy.conf
-    - name: /etc/nginx/sites-available/100-{{cfg.data.domain}}.conf
+    - name: /etc/nginx/sites-available/100-corpus-{{cfg.name}}.conf
     - makedirs: true
     - watch:
       - file: {{cfg.name}}-buildout-vhost-directory
@@ -90,8 +90,8 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 
 {{cfg.name}}-buildout-nginx-vhost-active:
   file.symlink:
-    - target: /etc/nginx/sites-available/100-{{cfg.data.domain}}.conf
-    - name: /etc/nginx/sites-enabled/100-{{cfg.data.domain}}.conf
+    - target: /etc/nginx/sites-available/100-corpus-{{cfg.name}}.conf
+    - name: /etc/nginx/sites-enabled/100-corpus-{{cfg.name}}.conf
     - makedirs: true
     - watch:
       - file: {{cfg.name}}-buildout-vhost-directory
@@ -101,7 +101,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 
 {{cfg.name}}-buildout-nginx-vhost:
   file.absent:
-    - name: /etc/nginx/sites-available/100-{{cfg.data.domain}}.conf
+    - name: /etc/nginx/sites-available/100-corpus-{{cfg.name}}.conf
     - watch:
       - cmd: {{cfg.name}}-buildout-vhost-directory
     - watch_in:
@@ -109,7 +109,7 @@ ERROR -- PLEASE CHOOSE BETWEEN NGINX & APACHE
 
 {{cfg.name}}-buildout-nginx-vhost-active:
   file.absent:
-    - name: /etc/nginx/sites-enabled/100-{{cfg.data.domain}}.conf
+    - name: /etc/nginx/sites-enabled/100-corpus-{{cfg.name}}.conf
     - watch:
       - cmd: {{cfg.name}}-buildout-vhost-directory
     - watch_in:

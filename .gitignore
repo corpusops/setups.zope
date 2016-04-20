@@ -19,7 +19,6 @@ downloads
 /etc/project/plone-kgs.cfg
 /etc/sys/settings-local.cfg
 /etc/sys/settings-prod.cfg
-/etc/varnish.vcl
 /etc/www/apache.reverseproxy.conf
 /etc/www/nginx.reverseproxy.conf
 /include/

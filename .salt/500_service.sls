@@ -4,9 +4,9 @@
 etc-init.d-supervisor.{{cfg.name}}:
   {# systemd needs a file and not a symlink #}
   file.copy:
-    - source: {{locations.initd_dir}}/supervisor.{{cfg.name}}
+    - source: {{cfg.project_root}}/etc/init.d/supervisor.initd
+    - name: {{locations.initd_dir}}/supervisor.{{cfg.name}}
     - force: true
-    - name: {{cfg.project_root}}/etc/init.d/supervisor.initd
   cmd.run:
     - onlyif: hash -r systemctl && systemctl status|grep -q State
     - name: systemctl daemon-reload && echo changed=false

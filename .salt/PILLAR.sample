@@ -13,6 +13,13 @@
 # with the relevant pillar
 makina-projects.projectname:
   data:
+    htaccess: "/etc/{name}.webaccess"
+    force_ssl: false
+    doc_root: "{data_root}/www"
+    nginx_loglevel: crit
+    nginx_top: salt://makina-projects/{name}/files/nginx.top.conf
+    nginx_vhost: salt://makina-projects/{name}/files/nginx.content.conf
+    taccess: "/etc/{name}.webaccess"
     var-directory: '{data_root}/var'
     cache-directory: '{var-directory}/buildout-cache'
     cron_hour: 1
@@ -21,11 +28,12 @@ makina-projects.projectname:
     apache: false
     autostart: 'true'
     nginx: true
-    reverse-proxy-scheme: http
+    reverse_proxy_scheme: http
+    reverse_proxy_port: 80
+    #reverse_proxy_scheme: https
+    #reverse_proxy_port: 443
     domain: "{fqdn}"
-    server_aliases: |
-                    SEE BELOW:
-                    buildout/settings/v/server_aliases
+    server_aliases: []
     ui: "{data_root}/ui"
     installer_url: "http://launchpad.net/plone/${plone_major}/${plone_ver}/+download/Plone-${plone_ver}-UnifiedInstaller.tgz"
     plone_arc: "{data_root}/ui/unifiedinstaller.tgz"
@@ -36,7 +44,9 @@ makina-projects.projectname:
     requirements: "{project_root}/requirements.txt"
     skip_eggs_cache: false
     {# head |tail (default head #}
-    tail_selector: head
+    link_selector_mode: head
+    front_host: "localhost"
+    front_port: "8083"
     buildout:
       version: 2
       newest: false
@@ -53,14 +63,6 @@ makina-projects.projectname:
           eggs-directory: '{cache-directory}/eggs'
           parts-directory: '{var-directory}/parts'
         v:
-          # activate http auth
-          #http-users: |
-          #
-          #            # comment is for buildout
-          #                foo:test
-          #                root:bar
-          #space separated list of domains
-          server_aliases: ""
           sys-user: "{user}"
           sys-group: "{group}"
           admin-user: admin
@@ -81,20 +83,9 @@ makina-projects.projectname:
           verbose-security: 'off'
           zeo-client-cache-size: '80MB'
           session-timeout-minutes: '90'
-          varnish-debug: '${v:debug}'
           rewrite-max-age: 'false'
           supervisor-user: '${v:admin-user}'
           supervisor-password: '${v:admin-password}'
-          reverse-proxy-listen: '*'
-          reverse-proxy-scheme: '{reverse-proxy-scheme}'
-          reverse-proxy-host: '{domain}'
-          reverse-proxy-edit-host: 'edit.{domain}'
-          reverse-proxy-admin: "postmaster@e{domain}"
-          reverse-proxy-port: '80'
-          package-min-coverage: '80'
-          flake8-ignore: 'C901'
-          flake8-max-complexity: '1000'
-          pre-commit-hook: 'True'
         versions:
           Pillow: 2.4.0
           pillow: 2.4.0
@@ -107,10 +98,6 @@ makina-projects.projectname:
           instance2: '8086'
           instance3: '8087'
           instance4: '8088'
-          varnish: '8094'
-          varnish-telnet: '8095'
-          zope-front: '${ports:balancer}'
-          cache-backend: '${ports:balancer}'
         crons:
           zope-restart: '15 1 * * *'
           zope-pack: '30 1 * * *'
@@ -132,11 +119,6 @@ makina-projects.projectname:
           instance2: '${hosts:ip}'
           instance3: '${hosts:ip}'
           instance4: '${hosts:ip}'
-          varnish: '${hosts:ip}'
-          varnish-telnet: '${hosts:ip}'
-          #zope-front: '${hosts:varnish}'
-          zope-front: '${hosts:balancer}'
-          cache-backend: '${hosts:balancer}'
   env_defaults:
     dev:
       buildout:

@@ -60,7 +60,7 @@
     - require:
       - cmd: {{cfg.name}}-venv
 
-{# install the django app in develop if we have a setup.py #}
+{# install the django app in develop if we have a setup.py has no sence with a buildout
 {{cfg.name}}-develop:
   cmd.run:
     - name: |
@@ -75,6 +75,7 @@
     - user: {{cfg.user}}
     - require:
       - file: {{cfg.name}}-venv
+#}
 
 {% if data.py_ver < 2.5 %}
 {{cfg.name}}-venv-2:

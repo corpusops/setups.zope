@@ -62,6 +62,7 @@ prepreq-{{cfg.name}}:
 var-dirs-{{cfg.name}}:
   file.directory:
     - names:
+      - {{data.doc_root}}
       - {{data.ui}}
       - {{data.buildout.settings.buildout['download-cache']}}
       - {{data.buildout.settings.buildout['download-directory']}}

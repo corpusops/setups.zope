@@ -116,17 +116,11 @@ SYSTEM ADMINISTRATORS RELATED FILES
     etc/init.d/                 -> various init script (eg supervisor)
     etc/logrotate.d/            -> various logrotate configuration files
     etc/sys/
-    |-- cache.cfg        -> Project proxy cache settings (varnish)
     |-- ha.cfg           -> Project loadbalancer settings
     |-- supervisor.cfg   -> Project production settings for supervision
-    |-- system.cfg       -> Project settings for reverse proxies, cron & logrotation
+    |-- system.cfg       -> Project settings forcron & logrotation
 
 We generate two virtualhosts for a cliassical apache or nginxsetup, mostly ready but feel free to copy/adapt.
-
-In settings.cfg you have now some settings for declaring which host is your reverse proxy backend & the vhost mounting:
-    * hosts:zope-front / ports:zope-front                              -> zope front backend
-    * v:reverse-proxy-host / v:reverse-proxy-port / reverseproxy:mount-point -> host / port / mountpoint on the reverse proxy)
-
 
 CONFIGURATION TEMPLATES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -134,10 +128,7 @@ CONFIGURATION TEMPLATES
 
     etc/templates/
     |-- ha/balancer.conf.template   -> haproxy template.
-    |-- varnish                     -> varnish related templates (binaries helpers & vcl)
     |-- logrotate.conf.template     -> logrotate configuration file template for your Zope logs
-    |-- www                         -> templates for www proxies
     `-- supervisor/supervisor.initd -> template for supervisor init script
 
 .. vim:set ft=rst:
-

@@ -86,9 +86,7 @@ makina-projects.projectname:
           rewrite-max-age: 'false'
           supervisor-user: '${v:admin-user}'
           supervisor-password: '${v:admin-password}'
-        versions:
-          Pillow: 2.4.0
-          pillow: 2.4.0
+        versions: {}
         ports:
           supervisor: '8081'
           zeo: '8082'

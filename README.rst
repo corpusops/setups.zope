@@ -4,6 +4,18 @@ Exemple of a generic plone portal deployment with salt/makina-states
 
 .. contents::
 
+Add you own sources
+-------------------
+
+- Generate a Plone add-on with mr.bob
+
+- Replace src/test with your generated addon src/ content
+
+- Replace setup.py with the generated version
+
+- Change the `mainegg` value in ./etc/sys/settings.cfg
+
+
 USE/Install With makina-states
 -------------------------------
 - Iniatilise on the target platform the project if it is not already done::

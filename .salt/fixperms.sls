@@ -44,7 +44,7 @@
                 fi
             done
             "{{locs.resetperms}}" -q --no-acls --no-recursive\
-              --user root --group root --dmode '0551' --fmode '0555' \
+              --user root --group root --dmode '0555' --fmode '0555' \
               --paths "{{cfg.project_dir}}/global-reset-perms.sh" \
               --paths "{{cfg.project_root}}"/.. \
               --paths "{{cfg.project_root}}"/../..;

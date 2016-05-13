@@ -8,7 +8,7 @@
 # attention, for py24 to install collective.recipe.env
 # from github via requirements !
 #
-{% if data.py_ver < 2.5 %}
+{% if data.get('build_py', True) or data.py_ver < 2.5 %}
 {{cfg.name}}-p-build:
   file.managed:
     - name: {{cfg.data_root}}/buildpy.sh
@@ -20,7 +20,6 @@
   cmd.run:
     - name: export PREFIX="{{data.py_inst}}";{{cfg.data_root}}/buildpy.sh
     - user: {{cfg.user}}
-    - unless: test -e "{{data.py_inst}}/bin/python"
     - require:
       - file: {{cfg.name}}-p-build
 {% endif%}
@@ -31,7 +30,10 @@
     - pip_download_cache: {{cfg.data_root}}/cache
     - user: {{cfg.user}}
     {% if data.py_ver >= 2.5 %}
-    - python: /usr/bin/python{{data.py_ver}}
+    - python: {{data.get('orig_py', '/usr/bin/python{0}'.format(data.py_ver))}}
+    {% if data.get('venv_bin', None) %}
+    - venv_bin: {{data.venv_bin}}
+    {% endif %}
     {% else %}
     - venv_bin: {{data.py_inst}}/bin/virtualenv
     - python: {{data.py_inst}}/bin/python

@@ -13,6 +13,9 @@
 # with the relevant pillar
 makina-projects.projectname:
   data:
+    py_inst: '{data_root}/python'
+    orig_py: '{py_inst}/bin/python'
+    venv_bin: '{py_inst}/bin/virtualenv'
     htaccess: "/etc/{name}.webaccess"
     force_ssl: false
     doc_root: "{data_root}/www"

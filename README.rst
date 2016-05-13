@@ -138,9 +138,25 @@ CONFIGURATION TEMPLATES
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ::
 
-    etc/templates/
-    |-- ha/balancer.conf.template   -> haproxy template.
-    |-- logrotate.conf.template     -> logrotate configuration file template for your Zope logs
-    `-- supervisor/supervisor.initd -> template for supervisor init script
+    $ git checkout prod
+    $ git reset --hard origin prod
+    $ git merge master
+    (make sure gulp is running, so theme/front is regenerated)
+    $ git commit -am "update assets"
+    $ git push origin
+    $ git push production prod:master
 
-.. vim:set ft=rst:
+IMPORTANT: never merge prod in master (as master ignore theme/map, but prod does not)
+
+
+Compile a local python (prequisite in prod)
+--------------------------------------------
+For now, we cant use system python on ubuntu 16 04 see:
+- https://community.plone.org/t/ubuntu-16-04-zope-instance-terminated-by-sigsegv-core-dumped/2059/24
+- https://bugs.launchpad.net/ubuntu/+source/python2.7/+bug/1580577
+
+Check .salt/PILLAR.sample:
+
+    - build_py have been set to true to compile
+    - orig_py points to the compiled python
+

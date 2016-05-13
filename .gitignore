@@ -11,7 +11,6 @@ downloads
 /.buildout/
 /buildout-salt.cfg
 /etc/apache/100*.reverseproxy.conf
-/etc/phenology.plone.env
 /etc/init.d/
 /etc/loadbalancing/
 /etc/logrotate.conf
@@ -38,5 +37,4 @@ downloads
 !/src/*phenology.plone*
 !/eggs/*.empty
 !/etc/sys
-node_modules
-www/htusers
+/corpus-generic-zope-plone/

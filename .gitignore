@@ -3,6 +3,8 @@ cron_scripts/
 develop-eggs/
 downloads
 .DS_Store
+*.log
+*.pyc
 *.egg
 *.egg-link
 *.egg-info

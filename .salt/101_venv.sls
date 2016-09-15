@@ -30,7 +30,7 @@
     - pip_download_cache: {{cfg.data_root}}/cache
     - user: {{cfg.user}}
     {% if data.py_ver >= 2.5 %}
-    - python: {{data.get('orig_py', '/usr/bin/python{0}'.format(data.py_ver))}}
+    - python: {{data.get('orig_py', None) or '/usr/bin/python{0}'.format(data.py_ver)}}
     {% if data.get('venv_bin', None) %}
     - venv_bin: {{data.venv_bin}}
     {% endif %}

@@ -15,8 +15,8 @@ makina-projects.projectname:
   data:
     build_py: false
     py_inst: '{data_root}/python'
-    orig_py: '{py_inst}/bin/python'
-    venv_bin: '{py_inst}/bin/virtualenv'
+    orig_py: null
+    venv_bin: null
     htaccess: "/etc/{name}.webaccess"
     force_ssl: false
     doc_root: "{data_root}/www"

@@ -30,6 +30,7 @@ export TMPDIR
 [ -f $supervisorctl ] || exit 1
 
 RETVAL=0
+
 start() {
     echo -n "Starting $name: "
     if [[ `whoami` == root ]];then
@@ -41,7 +42,20 @@ start() {
     echo
     return $RETVAL
 }
+
+status() {
+    ( \
+    export LC_ALL=C LANG=C;\
+    if [[ `whoami` == root ]];then \
+        su $EFFECTIVE_USER -c "$supervisorctl status"; \
+    else \
+        $supervisorctl status; \
+    fi; )
+}
+
 stop() {
+    WAIT_STOP=10
+    STOP_RETRIES=$WAIT_STOP
     echo -n "Stopping $name: "
     if [[ `whoami` == root ]];then
         su $EFFECTIVE_USER -c "$supervisorctl shutdown"
@@ -49,35 +63,59 @@ stop() {
         $supervisorctl shutdown
     fi
     RETVAL=$?
+    if [[ $RETVAL == 0 ]]; then
+        RETVAL=4
+        while [ $STOP_RETRIES -gt 0 ]; do
+            STOP_RETRIES=$(($STOP_RETRIES - 1))
+            if ! ( status 2>&1 | grep -iq refused );then
+                echo "Supervision still running"
+                sleep 1
+            else
+                RETVAL=0
+                break
+            fi
+        done
+    fi
     echo
     return $RETVAL
 }
+
 do_start() {
-    start
-    for i in `seq 60`;do
-       if [ "x$RETVAL" != "x0" ];then
-           stop
-           sleep 2
-           start
-       else
-           break
-       fi
+    WAIT_START=60
+    START_RETRIES=$WAIT_START
+    echo "Trying to start: $name"
+    while [ $START_RETRIES -gt 0 ]; do
+        START_RETRIES=$(($START_RETRIES - 1))
+        # each 10 seconds, also try to stop
+        if [[ $(($START_RETRIES % 10 )) == 0 ]];then
+            stop
+        fi
+        sleep 1
+        if ! start; then
+            echo "Failed to start: $name (may retry)"
+            RETVAL=1
+        else
+            echo "Started: $name"
+            RETVAL=0
+            break
+        fi
     done
+    return $RETVAL
 }
+
 case "$1" in
-         start)
-             do_start
-             ;;
-
-         stop)
-             stop
-             ;;
-
-         restart)
-             stop
-             sleep 2
-             do_start
-             ;;
+    # do not use status as it wont play nice with systemd
+    print_status)
+        status
+        ;;
+    start)
+        do_start;;
+    stop)
+        stop;;
+    restart)
+        stop
+        do_start
+        ;;
 esac
 exit $REVAL
 # vim:set ft=sh:

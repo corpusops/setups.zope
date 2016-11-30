@@ -68,7 +68,7 @@ stop() {
         while [ $STOP_RETRIES -gt 0 ]; do
             STOP_RETRIES=$(($STOP_RETRIES - 1))
             if ! ( status 2>&1 | grep -iq refused );then
-                echo "Supervision still running"
+                echo "Supervisor still running"
                 sleep 1
             else
                 RETVAL=0

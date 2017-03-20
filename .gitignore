@@ -9,7 +9,6 @@ downloads
 *.egg-link
 *.egg-info
 *.EGG-INFO
-!src/*cgwb*
 /.buildout/
 /buildout-salt.cfg
 /etc/apache/100*.reverseproxy.conf
@@ -27,7 +26,6 @@ downloads
 /lib/
 /.mr.developer.cfg
 /parts
-/src/*
 /uuid.txt
 /var
 /var/log/apache/*.log
@@ -36,7 +34,6 @@ downloads
 /www/apache.reverseproxy.conf
 /www/nginx.reverseproxy.conf
 !/src/zopelib
-!/src/*phenology.plone*
 !/eggs/*.empty
 !/etc/sys
 /corpus-generic-zope-plone/

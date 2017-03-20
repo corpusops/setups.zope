@@ -13,6 +13,7 @@
 # with the relevant pillar
 makina-projects.projectname:
   data:
+    buildout_egg_ver: 2.5.0
     build_py: false
     py_inst: '{data_root}/python'
     orig_py: null

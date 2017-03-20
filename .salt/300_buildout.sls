@@ -26,6 +26,12 @@
     - name: {{data.zroot}}
     - config: buildout-salt.cfg
     - buildout_ver: {{data.buildout.version}}
+    {%- if data.get('setuptools_egg_ver', None)  %}
+    - setuptools_egg_ver: {{data.setuptools_egg_ver}}
+    {% endif %}
+    {%- if data.get('buildout_egg_ver', None)  %}
+    - buildout_egg_ver: {{data.buildout_egg_ver}}
+    {% endif %}
     - python: "{{data.py}}"
     - user: {{cfg.user}}
     - newest: {{{'true': True}.get(cfg.data.buildout.settings.buildout.get('newest', 'false').lower(), False) }}

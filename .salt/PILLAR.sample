@@ -109,8 +109,9 @@ makina-projects.projectname:
           nb_fullbackups_to_keep: '5'
         locations:
           locations-tmp: '${buildout:directory}/var/tmp'
-          locations-blob-storage: '${buildout:directory}/var/blobstorage/storage'
-          locations-blob-backup: '${buildout:directory}/var/blobstorage/backup'
+          # attention, must be compatible with mc_project var interpolation !
+          locations-blob-storage: '{var-directory}/blobstorage/storage'
+          locations-blob-backup: '{var-directory}/blobstorage/backup'
         hosts:
           syslog: '${hosts:ip}'
           zeo: '${hosts:ip}'

@@ -11,9 +11,7 @@ def read(*rnames):
     ).read()
 
 long_description = "\n\n".join(
-    [read("README.rst"),
-     read("INSTALL.rst"),
-     read("CHANGES.rst")]
+    [read("README.rst")]
 )
 
 classifiers = [

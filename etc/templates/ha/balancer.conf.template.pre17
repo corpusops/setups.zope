@@ -38,16 +38,10 @@ defaults
   timeout client  300s
   timeout server  300s
 
-listen stats
-    bind ${hosts:ip}:${ports:stats}
-    log global
-    mode http
-    stats enable
-    stats hide-version
-    stats uri /
-    stats refresh 5s
-    stats realm haproxy\ statistics
-    stats auth ${v:haproxy-user}:${v:haproxy-pass}
+  stats enable
+  stats uri /_balancer_status_
+  stats refresh 5s
+  stats realm Haproxy\ statistics
 
 frontend zopecluster
   bind ${hosts:balancer}:${ports:balancer}
@@ -62,12 +56,10 @@ frontend zopecluster
 # Load balancing over the zope instances
 
 backend zope
-  stick-table type string len 32 size 10M expire 1d
-  stick on cookie(__ac)
 
-  cookie serverid insert indirect
-
+  appsession __ac len 32 timeout 1d
   balance roundrobin
+  cookie serverid insert indirect
   option httpchk GET /
 
   server  zope0101 ${hosts:instance1}:${ports:instance1} cookie z0101 check maxconn 2 maxqueue 50

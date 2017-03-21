@@ -1,4 +1,5 @@
 bin
+/bootstrap.py
 cron_scripts/
 develop-eggs/
 downloads
@@ -37,3 +38,44 @@ downloads
 !/eggs/*.empty
 !/etc/sys
 /corpus-generic-zope-plone/
+
+## FRONT
+# compiled output
+frontend/dist
+frontend/tmp
+
+# dependencies
+frontend/node_modules
+
+# IDEs and editors
+frontend/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# misc
+frontend/.sass-cache
+frontend/connect.lock
+frontend/coverage/*
+frontend/libpeerconnection.log
+npm-debug.log
+testem.log
+frontend/typings
+
+# e2e
+frontend/e2e/*.js
+frontend/e2e/*.map
+
+#System Files
+.DS_Store
+Thumbs.db

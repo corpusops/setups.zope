@@ -28,9 +28,17 @@ include:
 {% endfor %}
 {% endif %}
 
+{{cfg.name}}-admin-z"mihtaccess:
+  webutil.user_exists:
+    - name: "{{data.buildout.settings.v['admin-user']}}"
+    - password: "{{data.buildout.settings.v['admin-password']}}"
+    - htpasswd_file: {{data.htaccess}}
+    - options: m
+    - force: true
+
 {{cfg.name}}-htaccess:
   file.managed:
-    - name: {{data.htaccess}}
+    - names: [{{data.htaccess}}]
     - source: ''
     - user: www-data
     - group: www-data

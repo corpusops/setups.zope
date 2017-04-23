@@ -12,6 +12,7 @@ ${buildout:directory}/var/log/instance1*.log {
     notifempty
     size 10M
     sharedscripts
+    missingok
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance1.pid)
     endscript
@@ -25,6 +26,7 @@ ${buildout:directory}/var/log/instance2*.log {
     notifempty
     size 10M
     sharedscripts
+    missingok
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance2.pid)
     endscript
@@ -38,6 +40,7 @@ ${buildout:directory}/var/log/instance3*.log {
     notifempty
     size 10M
     sharedscripts
+    missingok
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance3.pid)
     endscript
@@ -52,6 +55,7 @@ ${buildout:directory}/var/log/instance4*.log {
     notifempty
     size 10M
     sharedscripts
+    missingok
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/instance4.pid)
     endscript
@@ -64,6 +68,7 @@ ${buildout:directory}/var/log/zeoserver.log {
     daily
     notifempty
     size 10M
+    missingok
     postrotate
         /bin/kill -USR2 $(cat ${buildout:directory}/var/zeoserver.pid)
     endscript
@@ -77,6 +82,7 @@ ${buildout:directory}/var/log/main*.log {
     notifempty
     size 10M
     sharedscripts
+    missingok
     postrotate
         /bin/kill -USR1 $(cat ${buildout:directory}/var/main.pid)
     endscript
@@ -90,6 +96,7 @@ ${buildout:directory}/var/log/transform*.log {
     notifempty
     size 10M
     sharedscripts
+    missingok
     postrotate
         /bin/kill -USR1 $(cat ${buildout:directory}/var/transform.pid)
     endscript

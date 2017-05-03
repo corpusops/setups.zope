@@ -108,8 +108,8 @@ makina-projects.projectname:
           zope-pack: '30 1 * * *'
           repozo-daily: '05 1 * * *'
           repozo-weekly: '10 1 * * 6'
-          nb_backups_to_keep: '35'
-          nb_fullbackups_to_keep: '5'
+          nb_backups_to_keep: '1'
+          nb_fullbackups_to_keep: '2'
         locations:
           locations-tmp: '${buildout:directory}/var/tmp'
           # attention, must be compatible with mc_project var interpolation !

@@ -15,6 +15,7 @@ makina-projects.projectname:
   data:
     buildout_egg_ver: 2.5.0
     build_py: false
+    py_ver: 2.7
     py_inst: '{data_root}/python'
     orig_py: null
     venv_bin: null
@@ -42,7 +43,6 @@ makina-projects.projectname:
     installer_url: "http://launchpad.net/plone/${plone_major}/${plone_ver}/+download/Plone-${plone_ver}-UnifiedInstaller.tgz"
     plone_arc: "{data_root}/ui/unifiedinstaller.tgz"
     zroot: "{project_root}"
-    py_ver: 2.7
     py_root: "{project_root}/venv"
     py: "{py_root}/bin/python"
     requirements: "{project_root}/requirements.txt"
@@ -92,8 +92,9 @@ makina-projects.projectname:
           rewrite-max-age: 'false'
           supervisor-user: '${v:admin-user}'
           supervisor-password: '${v:admin-password}'
+        zoperestart:
+          command: "${buildout:directory}/bin/supervisorctl restart instance1"
         versions: {}
-        #  Pillow: 3.2.0
         ports:
           supervisor: '8081'
           zeo: '8082'
@@ -104,7 +105,7 @@ makina-projects.projectname:
           instance3: '8087'
           instance4: '8088'
         crons:
-          zope-restart: '15 1 * * *'
+          zope-restart: '15 1 3 * *'
           zope-pack: '30 1 * * *'
           repozo-daily: '05 1 * * *'
           repozo-weekly: '10 1 * * 6'

@@ -3,12 +3,12 @@
 {% set scfg = salt['mc_utils.json_dump'](cfg) %}
 {% set py_root = data.py_root %}
 {% set p = "{0}".format(data.py_ver).replace('.', '') %}
-
+{% set build_py = data.get('build_py', True) or data.py_ver < 2.5 %}
 #
 # attention, for py24 to install collective.recipe.env
 # from github via requirements !
 #
-{% if data.get('build_py', True) or data.py_ver < 2.5 %}
+{% if build_py %}
 {{cfg.name}}-p-build:
   file.managed:
     - name: {{cfg.data_root}}/buildpy.sh
@@ -18,7 +18,15 @@
     - group: {{cfg.group}}
     - mode: 0755
   cmd.run:
-    - name: export PREFIX="{{data.py_inst}}";{{cfg.data_root}}/buildpy.sh
+    - name: |
+        set -ex
+        export PREFIX="{{data.py_inst}}"
+        {% if "{0}".format(data.py_ver).count('.') > 1 %}
+        export PY_VER="{{data.py_ver}}"
+        {% endif %}
+        {{cfg.data_root}}/buildpy.sh
+        echo changed="false"
+    - stateful: true
     - user: {{cfg.user}}
     - require:
       - file: {{cfg.name}}-p-build
@@ -29,7 +37,7 @@
     - name: {{data.py_root}}
     - pip_download_cache: {{cfg.data_root}}/cache
     - user: {{cfg.user}}
-    {% if data.py_ver >= 2.5 %}
+    {% if build_py%}
     - python: {{data.get('orig_py', None) or '/usr/bin/python{0}'.format(data.py_ver)}}
     {% if data.get('venv_bin', None) %}
     - venv_bin: {{data.venv_bin}}
@@ -102,5 +110,4 @@
       - file: {{cfg.name}}-venv
 {% if data.py_ver < 2.5 %}
       - cmd: {{cfg.name}}-venv-2
-
 {% endif %}

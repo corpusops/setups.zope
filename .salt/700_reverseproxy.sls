@@ -28,7 +28,7 @@ include:
 {% endfor %}
 {% endif %}
 
-{{cfg.name}}-admin-z"mihtaccess:
+{{cfg.name}}-admin-zmihtaccess:
   webutil.user_exists:
     - name: "{{data.buildout.settings.v['admin-user']}}"
     - password: "{{data.buildout.settings.v['admin-password']}}"

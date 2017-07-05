@@ -1,7 +1,7 @@
 {% set cfg = opts.ms_project %}
 {% set data = cfg.data %}
 
-{# workaround the l;ibjpegturbo transitional
+{# workaround the libjpegturbo transitional
  package hell by installing it explicitly #}
 prepreq-pre-{{cfg.name}}:
   pkg.{{salt['mc_pkgs.settings']()['installmode']}}:

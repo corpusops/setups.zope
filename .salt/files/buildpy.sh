@@ -3,7 +3,7 @@ set -e
 # set -x
 BUILDDIR="${BUILDDIR:-"$(dirname $(readlink -f $0))/build"}"
 PREFIX="${PREFIX:-"${w}/python"}"
-PY_VER="${PY_VER:-2.7.11}"
+PY_VER="${PY_VER:-2.7.13}"
 PY_URL="${PY_URL:-"https://www.python.org/ftp/python/${PY_VER}/Python-${PY_VER}.tgz"}"
 TAR="$(basename "${PY_URL}")"
 DIR="$(basename "${PY_URL}" .tgz)"

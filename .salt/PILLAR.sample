@@ -13,18 +13,25 @@
 # with the relevant pillar
 makina-projects.projectname:
   data:
-    buildout_egg_ver: 2.5.0
+    buildout_egg_ver: 2.9.5
+    setuptools_egg_ver: 33.1.1
     build_py: false
+    use_vt: false
     py_ver: 2.7
     py_inst: '{data_root}/python'
     orig_py: null
     venv_bin: null
     htaccess: "/etc/{name}.webaccess"
     force_ssl: false
+    ssl_common_name: "{fqdn}"
     doc_root: "{data_root}/www"
+    front_doc_root: "{doc_root}"
     nginx_loglevel: crit
+    nginx_front_loglevel: crit
     nginx_top: salt://makina-projects/{name}/files/nginx.top.conf
     nginx_vhost: salt://makina-projects/{name}/files/nginx.content.conf
+    nginx_front_top: salt://makina-projects/{name}/files/front.nginx.top.conf
+    nginx_front_vhost: salt://makina-projects/{name}/files/front.nginx.content.conf
     var-directory: '{data_root}/var'
     cache-directory: '{var-directory}/buildout-cache'
     cron_hour: 1
@@ -39,6 +46,8 @@ makina-projects.projectname:
     #reverse_proxy_port: 443
     domain: "{fqdn}"
     server_aliases: []
+    front_domain: null
+    front_server_aliases: []
     ui: "{data_root}/ui"
     installer_url: "http://launchpad.net/plone/${plone_major}/${plone_ver}/+download/Plone-${plone_ver}-UnifiedInstaller.tgz"
     plone_arc: "{data_root}/ui/unifiedinstaller.tgz"

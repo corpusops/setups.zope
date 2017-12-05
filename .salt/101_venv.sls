@@ -3,12 +3,14 @@
 {% set scfg = salt['mc_utils.json_dump'](cfg) %}
 {% set py_root = data.py_root %}
 {% set p = "{0}".format(data.py_ver).replace('.', '') %}
-{% set build_py = data.get('build_py', True) or data.py_ver < 2.5 %}
+
+{% import  "makina-projects/{0}/includes/python.sls".format(
+      cfg.name) as py with context %}
 #
 # attention, for py24 to install collective.recipe.env
 # from github via requirements !
 #
-{% if build_py %}
+{% if data._build_py %}
 {{cfg.name}}-p-build:
   file.managed:
     - name: {{cfg.data_root}}/buildpy.sh
@@ -37,18 +39,17 @@
     - name: {{data.py_root}}
     - pip_download_cache: {{cfg.data_root}}/cache
     - user: {{cfg.user}}
-    {% if build_py%}
-    - python: {{data.get('orig_py', None) or '/usr/bin/python{0}'.format(data.py_ver)}}
-    {% if data.get('venv_bin', None) %}
-    - venv_bin: {{data.venv_bin}}
+    {% if data.get('_venv_bin', None) %}
+    - venv_bin: {{data._venv_bin}}
     {% endif %}
-    {% else %}
-    - venv_bin: {{data.py_inst}}/bin/virtualenv
-    - python: {{data.py_inst}}/bin/python
+    {% if data.get('_python', None) %}
+    - python: {{data._python}}
+    {% endif %}
+    {% if data._build_py %}
     - require:
       - cmd: {{cfg.name}}-p-build
     {% endif %}
-    - use_vt: true
+    - use_vt: {{data.use_vt}}
   cmd.run:
     - name: |
             . {{data.py_root}}/bin/activate;
@@ -57,7 +58,7 @@
     - env:
        - CFLAGS: "-I/usr/include/gdal"
     - cwd: {{data.zroot}}
-    - use_vt: true
+    - use_vt: {{data.use_vt}}
     - download_cache: {{cfg.data_root}}/cache
     - user: {{cfg.user}}
     - require:
@@ -95,7 +96,7 @@
             pip install --upgrade setuptools==0.6c11 zc.buildout==1.7.0 "https://github.com/collective/collective.recipe.environment/archive/0.2.0.zip"
     - onlyif: test -e "{{data.requirements}}" && test "x$("{{data.py}}" -c "import collective.recipe.environment";echo $?)" = "x1"
     - cwd: {{data.zroot}}
-    - use_vt: true
+    - use_vt: {{data.use_vt}}
     - download_cache: {{cfg.data_root}}/cache
     - user: {{cfg.user}}
     - require:

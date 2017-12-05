@@ -5,10 +5,23 @@
 include:
   - makina-states.services.http.nginx
 
+
+{% if data.get('front_domain', None) %}
+{{ nginx.virtualhost(domain=data.front_domain,
+                     doc_root=data.front_doc_root,
+                     server_aliases=data.front_server_aliases,
+                     vhost_basename='corpus-front-'+cfg.name,
+                     ssl_common_name=data.ssl_common_name,
+                     loglevel=data.nginx_front_loglevel,
+                     vh_top_source=data.nginx_front_top,
+                     vh_content_source=data.nginx_front_vhost,
+                     project=cfg.name)}}
+{% endif %}
 {{ nginx.virtualhost(domain=data.domain,
                      doc_root=data.doc_root,
                      server_aliases=data.server_aliases,
                      vhost_basename='corpus-'+cfg.name,
+                     ssl_common_name=data.ssl_common_name,
                      loglevel=data.nginx_loglevel,
                      vh_top_source=data.nginx_top,
                      vh_content_source=data.nginx_vhost,

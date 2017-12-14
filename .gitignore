@@ -46,6 +46,7 @@ frontend/tmp
 
 # dependencies
 frontend/node_modules
+node_modules
 
 # IDEs and editors
 frontend/.idea
@@ -82,3 +83,4 @@ Thumbs.db
 
 /.idea
 /local
+/.vagrant

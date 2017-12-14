@@ -1,0 +1,1 @@
+../../local/setups.zope/.ansible/scripts/gitlab_setup.sh

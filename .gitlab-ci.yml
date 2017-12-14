@@ -1,0 +1,173 @@
+image: corpusops/ubuntu:16.04
+
+variables:
+  # https://gitlab.com/gitlab-org/gitlab-runner/issues/2148:
+  # This workaround support both gitlab itself & remote repos ssl certs & tokens
+  CORP_DOMAIN: "makina-corpus.net"
+  GIT_SSL_CAPATH: /etc/ssl/certs/
+  GIT_SUBMODULE_STRATEGY: recursive
+  # skippable steps: (set to 1 to activate)
+  SKIP_CORPUSOPS_UPDATE: ""
+  SKIP_VAULT_PASSWORD_FILES_SETUP: ""
+  SKIP_CORPUSOPS_SETUP: ""
+  # we redefine each variable before
+  # gitlab variables are totally flawed.
+  # See: https://gitlab.com/gitlab-org/gitlab-runner/issues/2495
+  #
+  # Scheme of the filename to initiate the vaultpasswordfile
+  # (from a env variable (ci secret))
+  SECRET_VAULT_PREFIX: "/root/.ansiblevault-$CI_PROJECT_NAMESPACE.$CI_PROJECT_NAME"
+  # this variable is complementary from the previous one,
+  # List of vaults to add to ansible command
+  SECRET_VAULTS: "/root/.ansiblevault-$CI_PROJECT_NAMESPACE.$CI_PROJECT_NAME.$A_VAULT_NAME"
+  # Select the desired vault for the environment
+  A_VAULT_NAME: "$CI_JOB_STAGE"
+  # Select the inventory to act on
+  A_INVENTORY: "-i $CI_PROJECT_DIR/.ansible/inventory_$A_VAULT_NAME/"
+  # Custom ansible playbook global switches
+  PLAYBOOK_PRE_ARGS: >-
+    -v
+    -e@.ansible/vaults/default.yml
+    -e@.ansible/vaults/app.yml
+    -e@local/gitlabci.yml
+  ADEBUG: ""
+
+stages: [test, deploy, jobs]
+
+.cache: &cache
+  cache:
+    paths:
+      - "local/corpusops.bootstrap"
+      - "local/flags*"
+
+.orchestrator: &orchestrator
+  tags: [docker-orchestrator]
+
+.skip: &job_skip
+  <<: *orchestrator
+  when: always
+  script: [echo Bypassing $CI_JOB_STAGE stage on other envs]
+
+.template: &autojob_template
+  <<: [*cache, *orchestrator]
+
+.template: &job_template
+  <<: [*cache, *orchestrator]
+  when: manual
+
+.deploy_branchs: &deploy_branchs
+  only:   [staging]
+
+.not_deploy_branchs: &not_deploy_branchs
+  except: [staging]
+
+.jobs_branchs: &jobs_branchs
+  only:   [jobs]
+
+.not_jobs_branchs: &not_jobs_branchs
+  except: [jobs]
+
+.test_branchs: &test_branchs
+  except: [staging, jobs]
+
+.not_test_branchs: &not_test_branchs
+  only: [staging, jobs]
+
+.test_skip: &test_skip
+  <<: *job_skip
+  stage: test
+
+.test_template: &test
+  <<: *autojob_template
+  stage: test
+
+.deploy_skip: &deploy_skip
+  <<: *job_skip
+  stage: deploy
+
+.deploy_template: &deploy
+  <<: *job_template
+  stage: deploy
+
+.deploy_env_template: &deploy_env
+  environment:
+     name: $CI_COMMIT_REF_NAME
+     url: "https://$CI_COMMIT_REF_NAME-$CI_PROJECT_NAME.$CORP_DOMAIN"
+
+.jobs_skip: &jobs_skip
+  <<: *job_skip
+  stage: jobs
+
+.jobs_template: &jobs
+  <<: *job_template
+  stage: jobs
+
+.setup_templates: &setup
+  before_script:
+  - &setup_before_script1 >
+      .ansible/scripts/gitlab_setup.sh
+
+.setup_ansible_template: &setup_ansible
+  before_script: &setup_ansible_before_script
+    - *setup_before_script1
+    - &setup_ansible_before_script1 >
+        PLAYBOOK=".ansible/playbooks/deploy_key_setup.yml"
+        .ansible/scripts/call_ansible.sh
+
+.teardown_ansible_template: &teardown_ansible
+  after_script: &teardown_ansible_after_script
+    - >-
+      PLAYBOOK=".ansible/playbooks/deploy_key_teardown.yml"
+      .ansible/scripts/call_ansible.sh
+
+.ansible_template: &ansible
+  script: &ansible_script
+  - .ansible/scripts/call_ansible.sh
+
+.env_vault_template: &env_vault
+  variables: &env_vault_variables
+    PLAYBOOK_PRE_CUSTOM_ARGS: >-
+      -e@.ansible/vaults/$A_VAULT_NAME.clear.yml
+      -e@.ansible/vaults/$A_VAULT_NAME.yml
+
+.staging_vault_template: &staging_vault
+  <<: [ *env_vault  ]
+  variables: &staging_vault_variables
+    <<: [ *env_vault_variables ]
+    A_VAULT_NAME: staging
+
+test_skip_on_not_tests_branchs:
+  <<: [*not_test_branchs, *test_skip]
+
+deploy_skip_on_not_deploy_branchs:
+  <<: [*not_deploy_branchs, *deploy_skip]
+
+jobs_skip_on_not_jobs_branchs:
+  <<: [*not_jobs_branchs, *jobs_skip]
+
+# Test on non deploy branchs
+test:
+  <<: [*setup, *test_branchs, *test]
+  script: [.ansible/scripts/test.sh]
+
+# Deploy envs
+staging_deploy:
+  <<: [ *ansible, *teardown_ansible, *setup_ansible, *deploy_env, *deploy ]
+  only: [staging]
+  variables:
+    <<: [ *staging_vault_variables ]
+    PLAYBOOK: ".ansible/playbooks/app.yml"
+
+# Manual jobs
+setup_staging_db:
+  <<: [ *ansible, *teardown_ansible, *setup_ansible, *jobs_branchs, *jobs ]
+  variables:
+    <<: [ *staging_vault_variables ]
+    PLAYBOOK: ".ansible/playbooks/db.yml"
+
+setup_staging_db_backup:
+  <<: [ *ansible, *teardown_ansible, *setup_ansible, *jobs_branchs, *jobs ]
+  variables:
+    <<: [ *staging_vault_variables ]
+    PLAYBOOK: ".ansible/playbooks/db_backup.yml"
+

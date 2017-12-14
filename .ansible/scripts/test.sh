@@ -1,0 +1,1 @@
+../../local/setups.zope/.ansible/scripts/test.sh

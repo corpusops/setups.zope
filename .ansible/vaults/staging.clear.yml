@@ -1,0 +1,13 @@
+---
+cops_drupal_domain: "staging-myapp.makina-corpus.net"
+cops_drupal_db_host: "mydbserver.makina-corpus.net"
+cops_postgresql_conf:
+- default_statistics_target = 50
+- maintenance_work_mem = 960MB
+- constraint_exclusion = on
+- checkpoint_completion_target = 0.9
+- effective_cache_size = 11GB
+- work_mem = 96MB
+- wal_buffers = 8MB
+- shared_buffers = 3840MB
+- max_connections = 80

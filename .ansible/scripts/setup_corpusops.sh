@@ -1,0 +1,1 @@
+../../local/setups.zope/.ansible/scripts/setup_corpusops.sh

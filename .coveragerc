@@ -1,6 +1,0 @@
-[report]
-include =
-    src/makina/*
-omit =
-    */test*
-    */upgrades/*

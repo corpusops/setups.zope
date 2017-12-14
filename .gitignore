@@ -4,6 +4,7 @@ cron_scripts/
 develop-eggs/
 downloads
 .DS_Store
+*.retry
 *.log
 *.pyc
 *.egg

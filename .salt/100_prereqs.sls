@@ -125,3 +125,14 @@ var-dir-{{cfg.name}}:
     - require:
       - cmd: {{cfg.name}}-unpackplone
 {% endif %}
+
+{{cfg.name}}-front-doc-root:
+  cmd.run:
+    - name: |
+            if [ -e "{{cfg.project_root}}/dist/" ]; then
+                rsync -Aa --delete "{{cfg.project_root}}/dist/" "{{data.front_doc_root}}/"
+                if [ -e "{{cfg.project_root}}/angular/robots.txt" ];then
+                  cp "{{cfg.project_root}}/angular/robots.txt" "{{data.front_doc_root}}/"
+                fi
+            fi
+    - user: root

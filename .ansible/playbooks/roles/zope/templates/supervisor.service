@@ -1,0 +1,21 @@
+# {{ ansible_managed }}
+# {% set d = cops_zope_vars %}
+[Unit]
+Description=Supervisor process control system for {{d.name}}
+Documentation=http://supervisord.org
+After=network.target
+
+[Service]
+ExecStart={{d.zroot}}/bin/supervisord
+ExecStop={{d.zroot}}/bin/supervisorctl   shutdown
+ExecReload={{d.zroot}}/bin/supervisorctl reload
+KillMode=process
+KillSignal=SIGTERM
+TimeoutStopSec={{d.supervision_unit_stopsec}}
+Restart={{d.supervision_unit_restart}}
+RestartSec={{d.supervision_unit_restartsec}}
+
+[Install]
+WantedBy=multi-user.target
+
+# vim:set filetype=systemd:

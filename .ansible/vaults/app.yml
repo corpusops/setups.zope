@@ -1,0 +1,5 @@
+---
+# copy this file instead of symlinking
+cops_app_name: myzope
+cops_zope_yarn_extra_steps: []
+#  - "add --force file:{project_root}/develop/plone.restapi-angular"

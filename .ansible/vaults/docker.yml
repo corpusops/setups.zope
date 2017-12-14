@@ -1,0 +1,7 @@
+---
+cops_zope_ep_folder:   "{{ansible_env['ANSIBLE_FOLDER']}}"
+cops_zope_ep_playbook: "{{ansible_env['ANSIBLE_PLAY']}}"
+cops_zope_reconfigure_services: ["post-start-{service}"]
+cops_zope_lifecycle_app_push_code: false
+cops_zope_reconfigure_service_stderr: "journal+console"
+cops_zope_reconfigure_service_stdout: "journal+console"

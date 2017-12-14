@@ -1,0 +1,45 @@
+---
+- listen: restart_cops_zope_systemd
+  become: true
+  shell: systemctl daemon-reload
+  when: "(cops_zope_vars.activated and
+          corpusops_vars.has_services_manager and
+          (ansible_service_mgr == 'systemd'))"
+- listen: restart_cops_zope
+  become: true
+  systemd:
+    daemon_reload: yes
+    state: restarted
+    name: "{{item}}"
+  with_items: "{{cops_zope_vars.services}}"
+  when: "(cops_zope_vars.activated and
+          corpusops_vars.has_services_manager and
+          (ansible_service_mgr == 'systemd'))"
+- listen: restart_cops_zope
+  become: true
+  service:
+    state: restarted
+    name: "{{item}}"
+  with_items: "{{cops_zope_vars.services}}"
+  when: "(cops_zope_vars.activated and
+          corpusops_vars.has_services_manager and
+          (ansible_service_mgr != 'systemd'))"
+- listen: reload_cops_zope
+  become: true
+  systemd:
+    daemon_reload: yes
+    state: reloaded
+    name: "{{item}}"
+  with_items: "{{cops_zope_vars.services}}"
+  when: "(cops_zope_vars.activated and
+          corpusops_vars.has_services_manager and
+          (ansible_service_mgr == 'systemd'))"
+- listen: reload_cops_zope
+  become: true
+  service:
+    state: reloaded
+    name: "{{item}}"
+  with_items: "{{cops_zope_vars.services}}"
+  when: "(cops_zope_vars.activated and
+          corpusops_vars.has_services_manager and
+          (ansible_service_mgr != 'systemd'))"

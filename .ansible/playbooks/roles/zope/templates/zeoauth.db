@@ -1,0 +1,6 @@
+{%- set d = cops_zope_vars %}
+realm {{d.authentication_realm}}
+{{d.authentication_user}}:{{ "{0}:{1}:{2}".format(
+  d.authentication_user,
+  d.authentication_realm,
+  d.authentication_password)|hash('sha') }}

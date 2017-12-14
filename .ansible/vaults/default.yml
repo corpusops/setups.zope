@@ -1,0 +1,9 @@
+---
+cops_app_name: zope
+cops_zope_zope_profile: "{{cops_app_name}}"
+#
+zope_servers: zope_servers
+app_servers: "{{zope_servers}}"
+cops_installer_mode: lazy
+cops_zope_name: "{{cops_app_name}}"
+# vim:set ft=sls:

@@ -25,7 +25,9 @@ etc-init.d-supervisor.{{cfg.name}}:
       - service: {{cfg.name}}-service
 {{cfg.name}}-reboot:
   file.managed:
-    - name: {{cfg.data_root}}/restart.sh
+    - names: 
+      - {{cfg.data_root}}/restart.sh
+      - {{cfg.data['var-directory']}}/sbin/restart.sh
     - user: root
     - group: root
     - mode: 755

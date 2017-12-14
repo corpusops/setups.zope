@@ -1,0 +1,51 @@
+---
+- service:
+    state: "{{cops_zope_vars.activated | ternary('started', 'stopped')}}"
+    enabled: "{{cops_zope_vars.activated | ternary(True, False)}}"
+    name: "{{item}}"
+  with_items: "{{cops_zope_vars.services}}"
+  when: "cops_zope_s_workers_service and corpusops_vars.has_services_manager"
+  tags: [cops_zope_s_workers_service]
+- systemd:
+    enabled: "{{cops_zope_vars.activated | ternary(True, False)}}"
+    daemon_reload: yes
+    name: "{{item}}"
+  with_items: "{{cops_zope_vars.reconfigure_services}}"
+  when: "cops_zope_s_workers_service and corpusops_vars.has_services_manager"
+  tags: [cops_zope_s_workers_service]
+
+- meta: flush_handlers
+
+# Check reverse proxy is listening
+- uri:
+    url: "http://{{cops_zope_vars.query_host}}:{{cops_zope_vars.nginx.port}}/"
+    return_content: true
+    headers:
+      Host: "{{cops_zope_vars.domain}}"
+  when: "cops_zope_s_workers_checks and (
+          corpusops_vars.has_services_manager and
+          cops_zope_vars.activated)"
+  register: cops_zope_check1
+  # TODO: @kiorky check we only have an HTTP response (any status)
+  failed_when: "not 'html' in cops_zope_check1.content"
+  until: "('{0}'.format(cops_zope_check1.status)[0]
+            in ['1','2','3','4','5','6','7','8','9'])"
+  retries: 10
+  delay: 1
+  tags: [cops_zope_s_workers_checks]
+
+# Check zope stack to be up
+- uri:
+    url: "http://{{cops_zope_vars.cluster_front_host}}:{{cops_zope_vars.cluster_front_port}}"
+    headers:
+      Host: "{{cops_zope_vars.domain}}"
+    return_content: true
+  when: "cops_zope_s_workers_checks and (
+          corpusops_vars.has_services_manager and
+          cops_zope_vars.activated)"
+  register: cops_zope_check2
+  until: "'zope' in '{0}'.format(cops_zope_check2.server).lower()"
+  failed_when: "'zope' not in '{0}'.format(cops_zope_check2.server).lower()"
+  retries: 10
+  delay: 1
+  tags: [cops_zope_s_workers_checks]

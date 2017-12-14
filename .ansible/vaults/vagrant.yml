@@ -1,0 +1,10 @@
+---
+zope_servers: all
+cops_zope_domain: "{{cops_app_name}}.vbox.local"
+cops_installer_mode: vagrant
+cops_zope_ep_playbook: "site_vagrant.yml"
+corpusops_services_http_nginx_port: 180
+corpusops_services_http_nginx_ssl_port: 1443
+cops_zope_http_port: "{{corpusops_services_http_nginx_port}}"
+cops_zope_https_port: "{{corpusops_services_http_nginx_ssl_port}}"
+# cops_zope_buildout_extends: buildout-prod-foobar.cfg

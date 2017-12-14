@@ -1,0 +1,44 @@
+---
+# APP
+- hosts: "{{zope_servers|default('all')}}"
+  roles:
+    - role: corpusops.roles/ansible_plugins
+  tasks:
+    - include_tasks: tasks/load_vars.yml
+      tags: [cops_zope_lifecycle_app]
+      when: "cops_zope_lifecycle_app|default(true)"
+    - when: "cops_zope_lifecycle_app"
+      tags: [cops_zope_lifecycle_app]
+      block:
+      - shell: /bin/false
+        failed_when: false
+        changed_when: false
+        register: cops_zope_test1
+        no_log: true
+      - shell: /bin/false
+        register: cops_zope_test2
+        changed_when: false
+        failed_when: false
+        no_log: true
+      - set_fact:
+          cacheable: false
+          cops_zope_lifecycle_app: |-
+           (((not vars.get('SKIP_INSTALL_ZOPE', False)) and
+             (cops_zope_test1 !=0) or
+             (cops_zope_test2 !=0))) or
+              cops_zope_lifecycle_app|default(false) or
+            (vars.get('FORCE_INSTALL_ZOPE', False)))
+
+- hosts: "{{zope_servers|default('all')}}"
+  tasks:
+    - tags: [cops_zope_lifecycle_app_push_code,cops_zope_lifecycle_app]
+      when: "cops_zope_lifecycle_app_push_code|default(cops_zope_lifecycle_app)"
+      block:
+      - include_tasks: tasks/lc_push_code.yml
+
+- hosts: "{{zope_servers|default('all')}}"
+  tasks:
+    - tags: [cops_zope_lifecycle_app_setup,cops_zope_lifecycle_app]
+      when: "cops_zope_lifecycle_app_setup|default(cops_zope_lifecycle_app)"
+      block:
+      - include_tasks: tasks/lc_app.yml

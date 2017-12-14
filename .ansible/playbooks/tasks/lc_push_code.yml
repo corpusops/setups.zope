@@ -1,0 +1,13 @@
+---
+- become: "{{cops_zope_vars.become}}"
+  block:
+  - include_tasks: roles/zope/tasks/P1000_users.yml
+  - assert:
+      that:
+        - "vars.get(varitem, none) is not none"
+      msg: "{{varitem}} must be set"
+    loop_control: {loop_var: varitem}
+    with_items:
+      - cops_cwd
+  - include_tasks: _push_code.yml
+    with_items: "{{cops_zope_vars.push_codes}}"

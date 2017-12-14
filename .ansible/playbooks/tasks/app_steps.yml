@@ -1,0 +1,104 @@
+---
+- block:
+  - set_fact:
+      cacheable: false
+      only_steps: "{{only_steps|default(False)}}"
+  - set_fact:
+      only_steps: "{{only_steps|default(False)}}"
+      cacheable: false
+      cops_zope_s_setup_buildout_up:        "{{cops_zope_s_setup_buildout_up       |default(cops_zope_s_setup_buildout|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_buildout_buildout:  "{{cops_zope_s_setup_buildout_buildout |default(cops_zope_s_setup_buildout|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_buildout_bootstrap: "{{cops_zope_s_setup_buildout_bootstrap|default(cops_zope_s_setup_buildout|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_venv_venv:         "{{cops_zope_s_setup_venv_venv        |default(cops_zope_s_setup_venv|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_venv_buildpy:      "{{cops_zope_s_setup_venv_buildpy     |default(cops_zope_s_setup_venv|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_venv_requirements: "{{cops_zope_s_setup_venv_requirements|default(cops_zope_s_setup_venv|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_front_build_yarn_install:     "{{cops_zope_s_setup_front_build_yarn_install    |default(cops_zope_s_setup_front_build|default(cops_zope_s_setup_front|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))))}}"
+      cops_zope_s_setup_front_build_yarn_extra_steps: "{{cops_zope_s_setup_front_build_yarn_extra_steps|default(cops_zope_s_setup_front_build|default(cops_zope_s_setup_front|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))))}}"
+      cops_zope_s_setup_front_build_yarn_build:       "{{cops_zope_s_setup_front_build_yarn_build      |default(cops_zope_s_setup_front_build|default(cops_zope_s_setup_front|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))))}}"
+  - set_fact:
+      cops_zope_s_setup_buildout: "{{(
+        cops_zope_s_setup_buildout_bootstrap or
+        cops_zope_s_setup_buildout_buildout or
+        cops_zope_s_setup_buildout_up)}}"
+      cops_zope_s_setup_venv: "{{(
+        cops_zope_s_setup_venv_venv or
+        cops_zope_s_setup_venv_buildpy or
+        cops_zope_s_setup_venv_requirements)}}"
+      cops_zope_s_setup_front_build:  "{{(cops_zope_s_setup_front_build_yarn_install or
+                                          cops_zope_s_setup_front_build_yarn_extra_steps or
+                                          cops_zope_s_setup_front_build_yarn_build)}}"
+      cops_zope_s_prerequisites_ui:   "{{cops_zope_s_prerequisites_ui              |default(cops_zope_s_prerequisites|default(cops_zope_lifecycle_app_prerequisites|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_prerequisites_pkgs: "{{cops_zope_s_prerequisites_pkgs            |default(cops_zope_s_prerequisites|default(cops_zope_lifecycle_app_prerequisites|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_front_sync: "{{cops_zope_s_setup_front_sync|default(cops_zope_s_setup_front                                      |default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_configs:    "{{cops_zope_s_setup_configs                                                                         |default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))}}"
+      cops_zope_s_setup_hosts:      "{{cops_zope_s_setup_hosts                                                                           |default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))}}"
+      cops_zope_s_setup_app:        "{{cops_zope_s_setup_app                                                                             |default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))}}"
+      cops_zope_s_layout_layout:  "{{cops_zope_s_layout_layout|default(cops_zope_s_layout         |default(cops_zope_lifecycle_app_layout|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))))}}"
+      cops_zope_s_setup_reverse_proxy_dvhost:      "{{cops_zope_s_setup_reverse_proxy_dvhost     |default(cops_zope_s_setup_reverse_proxy|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_reverse_proxy_vhost:       "{{cops_zope_s_setup_reverse_proxy_vhost      |default(cops_zope_s_setup_reverse_proxy|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_reverse_proxy_front_vhost: "{{cops_zope_s_setup_reverse_proxy_front_vhost|default(cops_zope_s_setup_reverse_proxy|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_setup_reverse_proxy_users:       "{{cops_zope_s_setup_reverse_proxy_users      |default(cops_zope_s_setup_reverse_proxy|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}}"
+      cops_zope_s_reverse_proxy_install:       "{{cops_zope_s_reverse_proxy_install                                              |default(cops_zope_s_reverse_proxy|default(cops_zope_lifecycle_app_setup|default(not only_steps)))}}"
+      cops_zope_s_reverse_proxy_reload:        "{{cops_zope_s_reverse_proxy_reload                                               |default(cops_zope_s_reverse_proxy|default(cops_zope_lifecycle_app_setup|default(not only_steps)))}}"
+      cacheable: false
+  - set_fact:
+      cacheable: false
+      cops_zope_s_users:          "{{cops_zope_s_users         |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+      cops_zope_s_layout:         "{{cops_zope_s_layout_layout}}"
+      cops_zope_s_first_fixperms: "{{cops_zope_s_first_fixperms|default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+      cops_zope_s_prerequisites:  "{{(
+        cops_zope_s_prerequisites_ui or
+        cops_zope_s_prerequisites_pkgs)}}"
+      cops_zope_s_workers:        "{{cops_zope_s_workers       |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+      cops_zope_s_entry_point:    "{{cops_zope_s_entry_point   |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+      cops_zope_s_manage_content: "{{cops_zope_s_manage_content|default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+      cops_zope_s_end_fixperms:   "{{cops_zope_s_end_fixperms  |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+      cops_zope_s_setup_front:  "{{(
+        cops_zope_s_setup_front_build or
+        cops_zope_s_setup_front_sync)}}"
+      cops_zope_s_setup_reverse_proxy:  "{{(
+        cops_zope_s_setup_reverse_proxy_dvhost or
+        cops_zope_s_setup_reverse_proxy_vhost or
+        cops_zope_s_setup_reverse_proxy_users)}}"
+      cops_zope_s_reverse_proxy:  "{{(cops_zope_s_reverse_proxy_reload or cops_zope_s_reverse_proxy_install)}}"
+  - set_fact:
+      cacheable: false
+      cops_zope_s_setup: "{{(
+          cops_zope_s_setup_configs or
+          cops_zope_s_setup_venv or
+          cops_zope_s_setup_buildout or
+          cops_zope_s_setup_front or
+          cops_zope_s_setup_hosts or
+          cops_zope_s_setup_app or
+          cops_zope_s_setup_reverse_proxy)}}"
+  - set_fact:
+      cacheable: false
+      cops_zope_lifecycle_app_level_1_steps: "{{(
+          cops_zope_s_users or
+          cops_zope_s_layout or
+          cops_zope_s_first_fixperms or
+          cops_zope_s_prerequisites or
+          cops_zope_s_setup or
+          cops_zope_s_reverse_proxy or
+          cops_zope_s_workers or
+          cops_zope_s_entry_point or
+          cops_zope_s_manage_content or
+          cops_zope_s_end_fixperms)}}"
+  - set_fact:
+      cacheable: false
+      cops_zope_lifecycle_app_setup: "{{cops_zope_lifecycle_app_setup|default(
+                                            (cops_zope_lifecycle_app|default(False)) or (
+                                              cops_zope_lifecycle_app_level_1_steps))}}"
+      cops_zope_lifecycle_app_push_code: "{{cops_zope_lifecycle_app|default(cops_zope_lifecycle_app_push_code|default(not only_steps))}}"
+  - set_fact:
+      cacheable: false
+      cops_zope_lifecycle_app: "{{cops_zope_lifecycle_app|default(
+          cops_zope_lifecycle_app_push_code or
+          cops_zope_lifecycle_app_setup)}}"
+  - set_fact:
+      cacheable: false
+      cops_zope_lifecycle_lc_1_steps: "{{(
+        cops_zope_lifecycle_app)}}"
+  - set_fact:
+      cacheable: false
+      cops_zope_s_vars: "{{cops_zope_s_vars|default(cops_zope_lifecycle_lc_1_steps)}}"

@@ -1,0 +1,31 @@
+---
+- include_tasks: P1000_users.yml
+  tags: [zope, users, zope_users, cops_zope_s_users]
+  when: "cops_zope_s_users"
+- include_tasks: P2000_layout.yml
+  tags: [zope, layout, zope_layout, cops_zope_s_layout]
+  when: "cops_zope_s_layout"
+- include_tasks: G9000_fixperms.yml
+  tags: [zope, first_fixperms, zope_first_fixperms, cops_zope_s_first_fixperms]
+  when: "cops_zope_s_first_fixperms"
+- include_tasks: P4000_prerequisites.yml
+  tags: [zope, prerequisites, zope_prerequisites, cops_zope_s_prerequisites]
+  when: "cops_zope_s_prerequisites"
+- include_tasks: P4500_setup.yml
+  tags: [zope, setup, zope_setup, cops_zope_s_setup]
+  when: "cops_zope_s_setup"
+- include_tasks: P6000_reverse_proxy.yml
+  tags: [zope, reverse_proxy, zope_reverse_proxy, cops_zope_s_reverse_proxy]
+  when: "cops_zope_s_reverse_proxy"
+- include_tasks: P7000_workers.yml
+  tags: [zope, workers, zope_workers, cops_zope_s_workers]
+  when: "cops_zope_s_workers"
+- include_tasks: P8000_entry_point.yml
+  tags: [zope, entry_point, zope_entry_point, cops_zope_s_entry_point]
+  when: "cops_zope_s_entry_point"
+- include_tasks: P8500_manage_content.yml
+  tags: [zope, manage_content, zope_manage_content, cops_zope_s_manage_content]
+  when: "cops_zope_s_manage_content"
+- include_tasks: G9000_fixperms.yml
+  tags: [zope, end_fixperms, zope_end_fixperms, cops_zope_s_end_fixperms]
+  when: "cops_zope_s_end_fixperms"

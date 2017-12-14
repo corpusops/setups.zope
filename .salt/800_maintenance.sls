@@ -13,21 +13,14 @@
     - group: root
     - mode: 750
     - contents: |
-                {% for nb in range(1, cfg.data.nbinstances+1) %}
-                {%- set iid='instance{0}'.format(nb) %}
-                {%- set id='autostart_{0}'.format(iid) %}
-                {%- if cfg.data['buildout']['settings']['v'].get(id, 'false') == 'true' %}
-                # daily restart
-                {{cron_minute+30}} {{cron_hour}} * * * {{cfg.user}} {{ cfg.project_root}}/bin/supervisorctl restart {{iid}}
-                {%- endif %}
-                {%- endfor %}
-                # daily incremental save
-                {{ cron_minute + 15 }} {{cron_hour}} * * * {{cfg.user}} {{cfg.project_root}}/bin/backup
-                #  weekly full save
-                {{ cron_minute + 45 }} * * * 6 {{cfg.user}} {{cfg.project_root}}/bin/snapshotbackup
-
-                # daily pack
-                {{ cron_minute + 0 }} {{cron_hour}} * * * {{cfg.user}} {{cfg.project_root}}/bin/zeoserver-zeopack
+        # daily restart
+        {{ cron_minute + 30 }} {{cron_hour}} * * * {{cfg.user}} {{ cfg.data['var-directory'] }}/restart.sh
+        # daily incremental save
+        {{ cron_minute + 15 }} {{cron_hour}} * * * {{cfg.user}} {{ cfg.project_root }}/bin/backup
+        #  weekly full save
+        {{ cron_minute + 45 }} * * * 6             {{cfg.user}} {{ cfg.project_root }}/bin/snapshotbackup
+        # daily pack
+        {{ cron_minute + 0  }} {{cron_hour}} * * * {{cfg.user}} {{ cfg.project_root }}/bin/zeoserver-zeopack
 
 {#- Logrotate #}
 etc-logrotate.d-{{cfg.name}}.conf:

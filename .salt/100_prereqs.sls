@@ -62,6 +62,7 @@ prepreq-{{cfg.name}}:
 var-dirs-{{cfg.name}}:
   file.directory:
     - names:
+      - {{data.front_doc_root}}
       - {{data.doc_root}}
       - {{data.ui}}
       - {{data.buildout.settings.locations['locations-blob-storage']}}

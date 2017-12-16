@@ -1,6 +1,3 @@
 [submodule "local/setups.zope"]
 	path = local/setups.zope
 	url = https://github.com/corpusops/setups.zope.git
-[submodule "develop/plone.restapi-angular"]
-	path = develop/plone.restapi-angular
-	url = https://github.com/plone/plone.restapi-angular.git

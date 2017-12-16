@@ -1,70 +1,62 @@
-import os
-from setuptools import setup
+# -*- coding: utf-8 -*-
+"""Installer for the test.cgwb package."""
+
 from setuptools import find_packages
-
-name = "test.cgwb"
-version = "1.0dev"
-
-def read(*rnames):
-    return open(
-        os.path.join(".", *rnames)
-    ).read()
-
-long_description = "\n\n".join(
-    [read("README.rst")]
-)
-
-classifiers = [
-    "Framework :: Plone",
-    "Framework :: Plone :: 4.0",
-    "Framework :: Plone :: 4.1",
-    "Framework :: Plone :: 4.2",
-    "Framework :: Plone :: 4.3",
-    "Framework :: Plone :: 5.0",
-    "Programming Language :: Python",
-    "Topic :: Software Development"]
+from setuptools import setup
 
 setup(
-    name=name,
-    namespace_packages=[name.split(".")[0]],
-    version=version,
-    description="Project {0}".format(name),
-    long_description=long_description,
-    classifiers=classifiers,
-    keywords="",
-    author="",
-    author_email="",
-    url="",
-    license="GPL",
-    packages=find_packages("src"),
-    package_dir={"": "src"},
+    name='test.cgwb',
+    version='1.0a1',
+    description="App project",
+    long_description="",
+    # Get more from https://pypi.python.org/pypi?%3Aaction=list_classifiers
+    classifiers=[
+        "Environment :: Web Environment",
+        "Framework :: Plone",
+        "Framework :: Plone :: 5.1",
+        "Programming Language :: Python",
+        "Programming Language :: Python :: 2.7",
+        "Operating System :: OS Independent",
+        "License :: OSI Approved :: GNU General Public License v2 (GPLv2)",
+    ],
+    keywords='Python Plone',
+    author='Makina Corpus',
+    author_email='contact@makina-corpus.com',
+    url='https://pypi.python.org/pypi/irstea.dinamis',
+    license='GPL version 2',
+    packages=find_packages('src', exclude=['ez_setup']),
+    namespace_packages=['irstea'],
+    package_dir={'': 'src'},
     include_package_data=True,
+    zip_safe=False,
     install_requires=[
-        "setuptools",
-        "chardet",
-        "z3c.autoinclude",
-        "Plone",
-        "plone.app.upgrade",
-        "collective.dexteritytextindexer",
-        "plone.app.dexterity [relations]",
-        "plone.app.referenceablebehavior",
-        "plone.directives.dexterity",
-        "plone.directives.form",
-        "plone.app.theming",
-        "plone.app.themingplugins",
-        "python-dateutil",
-        "plone.app.caching",
+        # -*- Extra requirements: -*-
+        'plone.api',
+        'Products.GenericSetup>=1.8.2',
+        'Products.DCWorkflowGraph',
+        'setuptools',
+        # App requirements
+        # 'collective.contact.core',
+        # 'collective.instancebehavior',
+        # 'collective.z3cform.datagridfield',
+        # 'ecreall.helpers.upgrade',
+        # 'ecreall.helpers.testing',
+        'five.grok',
+        'plone.restapi',
     ],
     extras_require={
-        "test": [
+        'test': [
             'plone.app.testing',
+            # Plone KGS does not use this version, because it would break
+            # Remove if your package shall be part of coredev.
+            # plone_coredev tests as of 2016-04-01.
+            # 'plone.testing>=5.0.0',
             'plone.app.contenttypes',
             'plone.app.robotframework[debug]',
-            "ipython"
-        ]
+        ],
     },
-    entry_points={
-        "z3c.autoinclude.plugin": ["target = plone"],
-    },
+    entry_points="""
+    [z3c.autoinclude.plugin]
+    target = plone
+    """,
 )
-# vim:set ft=python:

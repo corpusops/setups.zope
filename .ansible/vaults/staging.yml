@@ -1,13 +1,12 @@
 ---
 # THIS SHOULD RESIDE IN AN ENCRYPTED VAULT
-cops_postgresql__roles:
-- name: "{{cops_app_name}}"
-  password: "supersecret"
+cops_zope_admin_password: foobar
+cops_zope_authentication_password: supersecret
 cops_deploy_ssh_key_paths:
   staging:
     path: "{{'local/.ssh/deploy_staging'|copsf_abspath}}"
     pub: |-
-      ssh-rsa AAAAxxx== myapp@staging 
+      ssh-rsa AAAAxxx== myapp@staging
     private: |-
       -----BEGIN RSA PRIVATE KEY-----
       yyy==

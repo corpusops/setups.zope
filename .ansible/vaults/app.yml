@@ -1,3 +1,5 @@
 ---
 # copy this file instead of symlinking
 cops_app_name: myapp
+cops_zope_yarn_extra_steps: []
+# cops_zope_nginx_content_template: "{nginx_content_headless_template}"

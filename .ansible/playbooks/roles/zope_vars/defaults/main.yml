@@ -157,7 +157,6 @@ cops_zope_s_users_user: true
 cops_zope_s_users_group: true
 cops_zope_s_layout: true
 cops_zope_s_layout_layout: true
-env_bin: true
 cops_zope_s_first_fixperms: true
 cops_zope_s_fixperms_configs: true
 cops_zope_s_fixperms_run: true
@@ -169,7 +168,7 @@ cops_zope_s_setup_front: true
 cops_zope_s_setup_front_build: true
 cops_zope_s_setup_front_build_yarn_install: true
 cops_zope_s_setup_front_build_yarn_extra_steps: true
-cops_zope_s_setup_front_build_yarn_build: false
+cops_zope_s_setup_front_build_yarn_build: true
 # TODO REACTIVATE !!!
 cops_zope_s_setup_front_sync: true
 cops_zope_s_setup_buildout: true
@@ -201,7 +200,6 @@ cops_zope_ep_main_ep: "/entry_point"
 # service
 cops_zope_service: "supervisor.{name}"
 cops_zope_services: ["{service}", "nginx"]
-cops_zope_rhandlers: []
 # cops_zope_rhandlers: [restart_cops_zope]
 cops_zope_rhandlers: [restart_cops_zope_systemd]
 # use in docker (via a vault):
@@ -408,7 +406,7 @@ cops_zope_nginx_ssl_cert: ""
 cops_zope_nginx_ssl_key: ""
 cops_zope_nginx_loglevel: crit
 cops_zope_nginx_upstream_name: "{name}"
-cops_zope_nginx_doc_root: "{project_root}/www"
+cops_zope_nginx_doc_root: "{doc_root}"
 cops_zope_front_dist_folder: "{project_root}/dist"
 cops_zope_front_nginx: {}
 cops_zope_front_nginx_domain: null
@@ -430,7 +428,7 @@ cops_zope_front_nginx_ssl_cert: "{nginx_ssl_cert}"
 cops_zope_front_nginx_ssl_key: "{nginx_ssl_key}"
 cops_zope_front_nginx_loglevel: "{nginx_loglevel}"
 cops_zope_front_nginx_upstream_name: "{nginx_upstream_name}"
-cops_zope_front_nginx_doc_root: "{nginx_doc_root}"
+cops_zope_front_nginx_doc_root: "{front_doc_root}"
 cops_zope_build_py: false
 cops_zope_py_full_ver: "{py_ver}.13"
 cops_zope_py_ver: "2.7"
@@ -491,7 +489,6 @@ cops_zope_restarted: instance1
 cops_zope_eggver_setuptools: 33.1.1
 cops_zope_eggver_buildout: 2.9.5
 cops_zope_venv_site_packages: false
-cops_zope_venv_bin: virtualenv
 cops_zope_venv_eggs:
   - "pip"
   - "zc.buildout=={eggver_buildout}"

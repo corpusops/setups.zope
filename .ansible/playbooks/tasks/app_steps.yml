@@ -6,12 +6,12 @@
 
   - set_fact:
       cacheable: false
-      cops_zope_lifecycle_haproxy_reload: "{{cops_zope_lifecycle_haproxy_reload              |default(cops_zope_lifecycle_haproxy|default(not only_steps))}}"
-      cops_zope_lifecycle_haproxy_config: "{{cops_zope_lifecycle_haproxy_config              |default(cops_zope_lifecycle_haproxy|default(not only_steps))}}"
-      cops_zope_lifecycle_haproxy_registrations: "{{cops_zope_lifecycle_haproxy_registrations|default(cops_zope_lifecycle_haproxy|default(not only_steps))}}"
+      cops_zope_lifecycle_haproxy_reload: "{{cops_zope_lifecycle_haproxy_reload              |default(not only_steps)}}"
+      cops_zope_lifecycle_haproxy_config: "{{cops_zope_lifecycle_haproxy_config              |default(not only_steps)}}"
+      cops_zope_lifecycle_haproxy_registrations: "{{cops_zope_lifecycle_haproxy_registrations|default(not only_steps)}}"
   - set_fact:
      cacheable: false
-     cops_zope_lifecycle_haproxy: "{{(
+     cops_zope_lifecycle_haproxy: "{{(cops_zope_lifecycle_haproxy|default(not only_steps)) or (
          cops_zope_lifecycle_haproxy_reload or
          cops_zope_lifecycle_haproxy_config or
          cops_zope_lifecycle_haproxy_registrations)}}"

@@ -9,6 +9,8 @@ cops_zope_name: "{{cops_app_name}}"
 cops_zope_servers_ips: [127.0.0.1]
 cops_zope_nginx_port: 180
 cops_zope_nginx_ssl_port: 1443
+corpusops_nginx_default_vhost_port: "{{cops_zope_nginx_port}}"
+corpusops_nginx_default_vhost_ssl_port: "{{cops_zope_nginx_ssl_port}}"
 corpusops_haproxy_registrations_registrations_zope:
   - hosts: ["{{cops_zope_domain}}"]
     ip: "{{cops_zope_servers_ips}}"

@@ -31,14 +31,14 @@
 
 - hosts: "{{zope_servers|default('all')}}"
   tasks:
-    - tags: [cops_zope_lifecycle_app_push_code,cops_zope_lifecycle_app]
-      when: "cops_zope_lifecycle_app_push_code|default(cops_zope_lifecycle_app)"
+    - tags: [cops_zope_lifecycle_app_push_code]
+      when: [cops_zope_lifecycle_app_push_code]
       block:
       - include_tasks: tasks/lc_push_code.yml
 
 - hosts: "{{zope_servers|default('all')}}"
   tasks:
-    - tags: [cops_zope_lifecycle_app_setup,cops_zope_lifecycle_app]
-      when: "cops_zope_lifecycle_app_setup|default(cops_zope_lifecycle_app)"
+    - tags: [cops_zope_lifecycle_app_setup]
+      when: [cops_zope_lifecycle_app_setup]
       block:
       - include_tasks: tasks/lc_app.yml

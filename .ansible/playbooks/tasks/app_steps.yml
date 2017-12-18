@@ -101,7 +101,7 @@
       cops_zope_lifecycle_app_setup: "{{cops_zope_lifecycle_app_setup|default(
                                             (cops_zope_lifecycle_app|default(False)) or (
                                               cops_zope_lifecycle_app_level_1_steps))}}"
-      cops_zope_lifecycle_app_push_code: "{{cops_zope_lifecycle_app|default(cops_zope_lifecycle_app_push_code|default(not only_steps))}}"
+      cops_zope_lifecycle_app_push_code: "{{cops_zope_lifecycle_app_push_code|default(cops_zope_lifecycle_app|default(not only_steps))}}"
   - set_fact:
       cacheable: false
       cops_zope_lifecycle_app: "{{cops_zope_lifecycle_app|default(

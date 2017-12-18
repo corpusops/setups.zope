@@ -5,3 +5,4 @@ cops_zope_reconfigure_services: ["post-start-{service}"]
 cops_zope_lifecycle_app_push_code: false
 cops_zope_reconfigure_service_stderr: "journal+console"
 cops_zope_reconfigure_service_stdout: "journal+console"
+cops_zope_servers_ips: [127.0.0.1]

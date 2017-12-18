@@ -1,0 +1,36 @@
+---
+# HAPROXY
+- hosts: "{{haproxy_servers|default('all')}}"
+  roles: [{role: corpusops.roles/ansible_plugins}]
+  tasks:
+    - include_tasks: tasks/load_vars.yml
+      tags: [cops_zope_lifecycle_haproxy]
+      when: "cops_zope_lifecycle_haproxy|default(false)"
+    - when: "cops_zope_lifecycle_haproxy"
+      tags: [cops_zope_lifecycle_haproxy]
+      block:
+      - set_fact:
+          cacheable: false
+          cops_zope_lifecycle_haproxy: |-
+           (((not vars.get('SKIP_INSTALL_HAPROXY', False))) or
+              cops_zope_lifecycle_haproxy|default(false) or
+            (vars.get('FORCE_INSTALL_HAPROXY', False)))
+
+- hosts: "{{haproxy_servers|default('all')}}"
+  tasks:
+    - when: "cops_zope_lifecycle_haproxy"
+      tags: [cops_zope_lifecycle_haproxy]
+      become: true
+      block:
+      - include_role: {name: corpusops.roles/haproxy_registrations}
+        vars: {_corpusops_haproxy_registrations: {check_config: false}}
+        when: "cops_zope_lifecycle_haproxy_registrations"
+        tags: [cops_zope_lifecycle_haproxy_registrations]
+      - include_role: {name: corpusops.roles/services_proxy_haproxy}
+        when: "cops_zope_lifecycle_haproxy_config"
+        tags: [cops_zope_lifecycle_haproxy_config]
+      - cops_service:
+          name: haproxy
+          state: "{{cops_zope_vars.haproxy_restart_action}}"
+        when: "cops_zope_lifecycle_haproxy_reload"
+        tags: [cops_zope_lifecycle_haproxy_reload]

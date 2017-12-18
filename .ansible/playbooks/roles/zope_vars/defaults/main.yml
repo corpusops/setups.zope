@@ -88,6 +88,7 @@ cops_zope_secret_variables:
   - admin_password
 cops_zope_cops_format_resolve_topdb: false
 cops_zope_cops_do_format_resolve: true
+cops_zope_haproxy_restart_action: restarted
 cops_zope_cops_sub_namespaces:
   buildout: {}
   eggver: {}
@@ -144,6 +145,11 @@ cops_zope_yarn_extra_steps: []
 cops_zope_lifecycle_app: true
 cops_zope_lifecycle_app_push_code: true
 cops_zope_lifecycle_app_setup: true
+# way to install a thirdparty front haproxy
+cops_zope_lifecycle_haproxy: false
+cops_zope_lifecycle_haproxy_reload: "{{cops_zope_lifecycle_haproxy}}"
+cops_zope_lifecycle_haproxy_config: "{{cops_zope_lifecycle_haproxy}}"
+cops_zope_lifecycle_haproxy_registrations: "{{cops_zope_lifecycle_haproxy}}"
 # zope & project deployment steps
 cops_zope_s_vars: true
 cops_zope_s_users: true

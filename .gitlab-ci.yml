@@ -14,23 +14,21 @@ variables:
   # gitlab variables are totally flawed.
   # See: https://gitlab.com/gitlab-org/gitlab-runner/issues/2495
   #
-  # Scheme of the filename to initiate the vaultpasswordfile
-  # (from a env variable (ci secret))
-  SECRET_VAULT_PREFIX: "/root/.ansiblevault-$CI_PROJECT_NAMESPACE.$CI_PROJECT_NAME"
-  # this variable is complementary from the previous one,
-  # List of vaults to add to ansible command
-  SECRET_VAULTS: "/root/.ansiblevault-$CI_PROJECT_NAMESPACE.$CI_PROJECT_NAME.$A_VAULT_NAME"
   # Select the desired vault for the environment
   A_VAULT_NAME: "$CI_JOB_STAGE"
   # Select the inventory to act on
   A_INVENTORY: "-i $CI_PROJECT_DIR/.ansible/inventory_$A_VAULT_NAME/"
+  # non interactive mode
+  NONINTERACTIVE: "1"
+  REUSE_ENV: "1"
   # Custom ansible playbook global switches
-  PLAYBOOK_PRE_ARGS: >-
-    -v
-    -e@.ansible/vaults/default.yml
-    -e@.ansible/vaults/app.yml
-    -e@local/gitlabci.yml
   ADEBUG: ""
+  # set 1 for intense output
+  NO_SILENT: ""
+  # origin
+  A_GIT_NAMESPACE: "$CI_PROJECT_NAMESPACE"
+  A_GIT_PROJECT: "$CI_PROJECT_NAME"
+  A_GIT_URL: "$CI_PROJECT_URL"
 
 stages: [test, deploy, jobs]
 
@@ -105,20 +103,22 @@ stages: [test, deploy, jobs]
 .setup_templates: &setup
   before_script:
   - &setup_before_script1 >
-      .ansible/scripts/gitlab_setup.sh
+      set -ex;
+      .ansible/scripts/download_corpusops.sh;
+      .ansible/scripts/setup_ansible.sh;
 
 .setup_ansible_template: &setup_ansible
   before_script: &setup_ansible_before_script
     - *setup_before_script1
     - &setup_ansible_before_script1 >
-        PLAYBOOK=".ansible/playbooks/deploy_key_setup.yml"
         .ansible/scripts/call_ansible.sh
+        .ansible/playbooks/deploy_key_setup.yml
 
 .teardown_ansible_template: &teardown_ansible
   after_script: &teardown_ansible_after_script
     - >-
-      PLAYBOOK=".ansible/playbooks/deploy_key_teardown.yml"
       .ansible/scripts/call_ansible.sh
+      .ansible/playbooks/deploy_key_teardown.yml
 
 .ansible_template: &ansible
   script: &ansible_script
@@ -129,6 +129,7 @@ stages: [test, deploy, jobs]
     PLAYBOOK_PRE_CUSTOM_ARGS: >-
       -e@.ansible/vaults/$A_VAULT_NAME.clear.yml
       -e@.ansible/vaults/$A_VAULT_NAME.yml
+    A_CUSTOM_var: "1"
 
 .staging_vault_template: &staging_vault
   <<: [ *env_vault  ]
@@ -159,15 +160,20 @@ staging_deploy:
     PLAYBOOK: ".ansible/playbooks/app.yml"
 
 # Manual jobs
-setup_staging_db:
+setup_haproxy:
   <<: [ *ansible, *teardown_ansible, *setup_ansible, *jobs_branchs, *jobs ]
   variables:
     <<: [ *staging_vault_variables ]
-    PLAYBOOK: ".ansible/playbooks/db.yml"
+    PLAYBOOK: ".ansible/playbooks/haproxy.yml"
 
-setup_staging_db_backup:
-  <<: [ *ansible, *teardown_ansible, *setup_ansible, *jobs_branchs, *jobs ]
-  variables:
-    <<: [ *staging_vault_variables ]
-    PLAYBOOK: ".ansible/playbooks/db_backup.yml"
-
+# setup_staging_db:
+#    <<: [ *ansible, *teardown_ansible, *setup_ansible, *jobs_branchs, *jobs ]
+#    variables:
+#      <<: [ *staging_vault_variables ]
+#      PLAYBOOK: ".ansible/playbooks/db.yml"
+#
+# setup_staging_db_backup:
+#   <<: [ *ansible, *teardown_ansible, *setup_ansible, *jobs_branchs, *jobs ]
+#   variables:
+#     <<: [ *staging_vault_variables ]
+#     PLAYBOOK: ".ansible/playbooks/db_backup.yml"

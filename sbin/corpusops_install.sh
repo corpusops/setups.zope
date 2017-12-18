@@ -1,1 +1,0 @@
-../local/setups.zope/sbin/corpusops_install.sh

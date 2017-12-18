@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+export A_GIT_SERVER=${A_GIT_SERVER:-https://gitlab.makina-corpus.net}
+export A_GIT_NAMESPACE=${A_GIT_NAMESPACE:-irstea}
+export A_GIT_PROJECT=${A_GIT_PROJECT:-dinamis}
+export A_GIT_URL=${A_GIT_SERVER}/$A_GIT_NAMESPACE/$A_GIT_PROJECT
+

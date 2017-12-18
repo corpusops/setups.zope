@@ -1,0 +1,1 @@
+../local/setups.zope/docs/deploy_from_localhost.md

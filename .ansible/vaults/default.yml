@@ -12,13 +12,12 @@ cops_zope_nginx_ssl_port: 1443
 corpusops_nginx_default_vhost_port: "{{cops_zope_nginx_port}}"
 corpusops_nginx_default_vhost_ssl_port: "{{cops_zope_nginx_ssl_port}}"
 corpusops_haproxy_registrations_registrations_zope:
-  - hosts: ["{{cops_zope_domain}}"]
+  - regexes: [".*"]
     ip: "{{cops_zope_servers_ips}}"
     frontends:
       80:
-        to_port: "{{cops_zope_http_port}}"
+        to_port: "{{cops_zope_nginx_port}}"
       443:
-        to_port: "{{cops_zope_http_port}}"
+        to_port: "{{cops_zope_nginx_port}}"
         ssl_terminated: true
-        http_fallback: false
 # vim:set ft=sls:

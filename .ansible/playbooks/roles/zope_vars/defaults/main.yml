@@ -46,6 +46,8 @@ cops_zope_deb_packages:
   - libxml2-dev
   - libxslt1-dev
   - libopenjpeg-dev
+  - python-passlib
+  - python3-passlib
   - "{% if ansible_distribution_version|copsf_looseversion <= '14.04'|copsf_looseversion
     %}libopenjpeg2{% else
     %}libopenjpeg5{% endif %}"
@@ -383,9 +385,9 @@ cops_zope_logrotate_conf: "/etc/logrotate.d/{name}.conf"
 cops_zope_logrotate_rotate: 365
 cops_zope_logrotate_size: 10M
 cops_zope_htpasswd: "/etc/nginx/{name}-htpasswd"
-#cops_zope_http_users: []
-cops_zope_http_users: []
-#  - {user: name, password: foobar}
+cops_zope_http_auth_restricted: false
+cops_zope_http_users:
+- {user: "{admin_user}", password: "{admin_password}"}
 cops_zope_http_port: "80"
 cops_zope_https_port: "443"
 cops_zope_nginx: {}
@@ -484,6 +486,7 @@ cops_zope_requirements: "{project_root}/requirements.txt"
 cops_zope_skip_eggs_cache: false
 # head |tail (default head)
 cops_zope_link_selector_mode: head
+cops_zope_admin_user: "admin"
 cops_zope_admin_password: null
 cops_zope_restarted: instance1
 cops_zope_eggver_setuptools: 33.1.1
@@ -517,7 +520,7 @@ cops_zope_buildout_settings:
     v:
       sys-user: "{user}"
       sys-group: "{group}"
-      admin-user: admin
+      admin-user: "{admin_user}"
       admin-password: "{admin_password}"
       project: '{name}'
       proxycache_size: '256M'

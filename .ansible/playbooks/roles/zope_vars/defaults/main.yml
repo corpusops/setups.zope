@@ -1,4 +1,5 @@
 ---
+cops_zope_dynamic_haproxy: false
 corpusops_core_projects_path: /srv/projects
 # users than have full right to edit file in the container
 # When this is enabled, the project user/group is also granted full perms

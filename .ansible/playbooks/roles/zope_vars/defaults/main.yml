@@ -389,6 +389,7 @@ cops_zope_htpasswd: "/etc/nginx/{name}-htpasswd"
 cops_zope_http_auth_restricted: false
 cops_zope_http_users:
 - {user: "{admin_user}", password: "{admin_password}"}
+#- {user: "myadmin", password: "mypassword"}
 cops_zope_http_port: "80"
 cops_zope_https_port: "443"
 cops_zope_nginx: {}
@@ -438,7 +439,6 @@ cops_zope_py_ver: "2.7"
 cops_zope_py_inst: '{data_root}/python'
 cops_zope_orig_py: null
 cops_zope_venv_bin: null
-cops_zope_htaccess: "/etc/{name}.webaccess"
 cops_zope_force_ssl: false
 cops_zope_doc_root: "{data_root}/www"
 cops_zope_front_doc_root: "{doc_root}"

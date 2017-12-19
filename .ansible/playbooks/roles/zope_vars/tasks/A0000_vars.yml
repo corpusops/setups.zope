@@ -4,22 +4,20 @@
     cacheable: false
     # Set absolute path to app role (for templates path)
     cops_zope_vrole_path: "{{role_path.replace('_vars', '')}}"
+
+# Generate passwords on remote box if not found in registry
+- name: "zope secrets -- {{zopesecret}}}"
+  loop_control: {loop_var: secretvariable}
+  with_items: "{{cops_zope_secret_variables}}"
+  no_log: "{{not (cops_vars_debug|default(false))}}"
+  include_tasks: _set_secret_variable.yml
+
 # Set the cops_zope_vars var from defaults/main.yml
 - name: "zope registry init"
   include_role: {name: corpusops.roles/vars_registry}
   vars:
     cops_vars_registry_target: cops_zope
-  tags: [zope, vars, zope_vars]
   no_log: "{{not (cops_vars_debug|default(false))}}"
-
-# Generate passwords on remote box if not found in registry
-- name: "zope secrets -- {{zopesecret}}}"
-  include_tasks: _set_secret_variable.yml
-  loop_control: {loop_var: zopesecret}
-  with_items: "{{cops_zope_vars.secret_variables}}"
-  tags: [zope, vars, zope_vars]
-  no_log: "{{not (cops_vars_debug|default(false))}}"
-
 # Post process some variables
 - name: "zope registry - postprocess"
   include_jinja_vars:

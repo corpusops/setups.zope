@@ -115,13 +115,13 @@ stages: [test, deploy, jobs]
     - *setup_before_script_download
     - *setup_before_script_setup_ansible
     - &setup_ansible_before_script1 >
-        .ansible/scripts/call_ansible.sh
+        PLAYBOOK="" .ansible/scripts/call_ansible.sh
         -l localhost .ansible/playbooks/deploy_key_setup.yml
 
 .teardown_ansible_template: &teardown_ansible
   after_script: &teardown_ansible_after_script
     - >-
-      .ansible/scripts/call_ansible.sh
+      PLAYBOOK="" .ansible/scripts/call_ansible.sh
       -l localhost .ansible/playbooks/deploy_key_teardown.yml
 
 .ansible_template: &ansible

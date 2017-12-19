@@ -105,23 +105,24 @@ stages: [test, deploy, jobs]
 
 .setup_templates: &setup
   before_script:
-  - &setup_before_script1 >
-      set -ex;
-      .ansible/scripts/download_corpusops.sh;
-      .ansible/scripts/setup_ansible.sh;
+  - &setup_before_script_download
+      .ansible/scripts/download_corpusops.sh
+  - &setup_before_script_setup_ansible
+      .ansible/scripts/setup_ansible.sh
 
 .setup_ansible_template: &setup_ansible
   before_script: &setup_ansible_before_script
-    - *setup_before_script1
+    - *setup_before_script_download
+    - *setup_before_script_setup_ansible
     - &setup_ansible_before_script1 >
         .ansible/scripts/call_ansible.sh
-        .ansible/playbooks/deploy_key_setup.yml
+        -l localhost .ansible/playbooks/deploy_key_setup.yml
 
 .teardown_ansible_template: &teardown_ansible
   after_script: &teardown_ansible_after_script
     - >-
       .ansible/scripts/call_ansible.sh
-      .ansible/playbooks/deploy_key_teardown.yml
+      -l localhost .ansible/playbooks/deploy_key_teardown.yml
 
 .ansible_template: &ansible
   script: &ansible_script

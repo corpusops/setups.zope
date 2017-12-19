@@ -1,3 +1,0 @@
-- topics
-    - [project](./generic/deploy.md)
-    - [vagrant](./generic/vagrant.md)

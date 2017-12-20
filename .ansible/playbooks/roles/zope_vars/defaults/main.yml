@@ -461,7 +461,7 @@ cops_zope_crons:
   - "# weekly pack"
   - "{cron_periodicity_pack}        {user} {project_root}/bin/zeoserver-zeopack 2>&1 >/dev/null"
   - "# daily restart"
-  - "{cron_periodicity_restart}     {user} {var_directory}/restart.sh           2>&1 >/dev/null"
+  - "{cron_periodicity_restart}     {user} {data_root}/restart.sh           2>&1 >/dev/null"
   - "# daily incremental save"
   - "{cron_periodicity_backup_inc}  {user} {project_root}/bin/backup            2>&1 >/dev/null"
   - "#  weekly full save"

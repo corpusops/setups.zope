@@ -24,7 +24,6 @@
               (hostvars[i]).ansible_default_ipv4.address) %}
             {% endfor %}
             corpusops_services_http_nginx_reverse_proxy_addresses: {{ret | to_json}}
-    - shell: /bin/false
     - include_tasks: tasks/load_vars.yml
       tags: [cops_zope_lifecycle_app]
       when: "cops_zope_lifecycle_app|default(true)"

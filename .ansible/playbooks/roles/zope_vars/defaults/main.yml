@@ -438,7 +438,7 @@ cops_zope_py_full_ver: "{py_ver}.13"
 cops_zope_py_ver: "2.7"
 cops_zope_py_inst: '{data_root}/python'
 cops_zope_orig_py: null
-cops_zope_venv_bin: null
+cops_zope_venv_bin: virtualenv
 cops_zope_force_ssl: false
 cops_zope_doc_root: "{data_root}/www"
 cops_zope_front_doc_root: "{doc_root}"

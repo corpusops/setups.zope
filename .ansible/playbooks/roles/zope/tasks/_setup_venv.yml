@@ -37,5 +37,5 @@
           virtualenv_command: "{{(
             cops_zope_vars.build_py and
             '{0}/bin/virtualenv'.format(cops_zope_vars.py_inst) or
-            cops_zope_vars.get('venv_bin', None))}}"
+            cops_zope_vars.get('venv_bin', 'virtualenv'))}}"
           virtualenv_site_packages: "{{cops_zope_vars.venv_site_packages}}"

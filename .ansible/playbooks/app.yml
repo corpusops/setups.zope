@@ -1,9 +1,30 @@
 ---
+# HAPROXY
+- hosts: "{{haproxy_servers|default('all')}}"
+  gather_facts: no
+  tasks:
+    - when: >
+         (cops_zope_lifecycle_haproxy|default(false)) and
+         (cops_zope_dynamic_haproxy|default(false))
+      block: [{setup: {}}]
 # APP
 - hosts: "{{zope_servers|default('all')}}"
   roles:
     - role: corpusops.roles/ansible_plugins
   tasks:
+    - when: cops_zope_dynamic_haproxy
+      block:
+      - name: compute haproxy backends
+        include_jinja_vars:
+          content: |
+            ---
+            {% set ret = ['127.0.0.1'] %}
+            {% for i in vars.groups.haproxy_servers %}
+            {% set _ = ret.append(
+              (hostvars[i]).ansible_default_ipv4.address) %}
+            {% endfor %}
+            corpusops_services_http_nginx_reverse_proxy_addresses: {{ret | to_json}}
+    - shell: /bin/false
     - include_tasks: tasks/load_vars.yml
       tags: [cops_zope_lifecycle_app]
       when: "cops_zope_lifecycle_app|default(true)"

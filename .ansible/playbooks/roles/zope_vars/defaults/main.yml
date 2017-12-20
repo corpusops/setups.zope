@@ -75,6 +75,7 @@ cops_zope_domain: "{{ansible_fqdn}}"
 # for internal monitoring
 cops_zope_query_host: "127.0.0.1"
 # for internal service access
+cops_zope_restart_check_retries: 60
 cops_zope_internal_host: "127.0.0.1"
 cops_zope_name: 'zope'
 cops_zope_user: "{name}-user"
@@ -203,8 +204,10 @@ cops_zope_ep_main_ep: "/entry_point"
 # service
 cops_zope_service: "supervisor.{name}"
 cops_zope_services: ["{service}", "nginx"]
+cops_zope_services_nginx_reload_state: "reloaded"
 # cops_zope_rhandlers: [restart_cops_zope]
-cops_zope_rhandlers: [restart_cops_zope_systemd]
+cops_zope_rhandlers: [restart_cops_zope_systemd,
+                      restart_cops_zope]
 # use in docker (via a vault):
 cops_zope_reconfigure_services: []
 # cops_zope_reconfigure_services: ["post-start-{service}"]
@@ -405,7 +408,6 @@ cops_zope_nginx_basename: "corpus-{name}"
 cops_zope_nginx_is_default_server: true
 cops_zope_nginx_ssl_protected: false
 cops_zope_nginx_htpasswd: "{htpasswd}"
-cops_zope_nginx_force_reload: true
 cops_zope_nginx_ssl_cert: ""
 cops_zope_nginx_ssl_key: ""
 cops_zope_nginx_loglevel: crit
@@ -427,7 +429,6 @@ cops_zope_front_nginx_basename: "corpus-front-{name}"
 cops_zope_front_nginx_is_default_server: false
 cops_zope_front_nginx_ssl_protected: false
 cops_zope_front_nginx_htpasswd: "{nginx_htpasswd}"
-cops_zope_front_nginx_force_reload: true
 cops_zope_front_nginx_ssl_cert: "{nginx_ssl_cert}"
 cops_zope_front_nginx_ssl_key: "{nginx_ssl_key}"
 cops_zope_front_nginx_loglevel: "{nginx_loglevel}"

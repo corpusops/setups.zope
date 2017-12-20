@@ -14,7 +14,11 @@
   when: "cops_zope_s_workers_service and corpusops_vars.has_services_manager"
   tags: [cops_zope_s_workers_service]
 
+- shell: echo "force service reload/restart"
+  notify: "{{cops_zope_vars.rhandlers}}"
+  tags: [cops_zope_s_workers_service]
 - meta: flush_handlers
+  tags: [cops_zope_s_workers_service]
 
 # Check reverse proxy is listening
 - uri:
@@ -35,17 +39,17 @@
   tags: [cops_zope_s_workers_checks]
 
 # Check zope stack to be up
-- uri:
-    url: "http://{{cops_zope_vars.cluster_front_host}}:{{cops_zope_vars.cluster_front_port}}"
-    headers:
-      Host: "{{cops_zope_vars.domain}}"
-    return_content: true
+- tags: [cops_zope_s_workers_checks]
   when: "cops_zope_s_workers_checks and (
           corpusops_vars.has_services_manager and
           cops_zope_vars.activated)"
   register: cops_zope_check2
-  until: "'zope' in '{0}'.format(cops_zope_check2.server).lower()"
-  failed_when: "'zope' not in '{0}'.format(cops_zope_check2.server).lower()"
-  retries: 10
+  until: "      'zope'     in '{0}'.format(cops_zope_check2.get('server', '')).lower()"
+  failed_when: "'zope' not in '{0}'.format(cops_zope_check2.get('server', '')).lower()"
+  retries: "{{cops_zope_vars.restart_check_retries}}"
   delay: 1
-  tags: [cops_zope_s_workers_checks]
+  no_log: "{{not (cops_vars_debug|default(false))}}"
+  uri:
+    url: "http://{{cops_zope_vars.cluster_front_host}}:{{cops_zope_vars.cluster_front_port}}"
+    headers: {Host: "{{cops_zope_vars.domain}}"}
+    return_content: true

@@ -5,6 +5,7 @@
   when: "(cops_zope_vars.activated and
           corpusops_vars.has_services_manager and
           (ansible_service_mgr == 'systemd'))"
+
 - listen: restart_cops_zope
   become: true
   systemd:
@@ -24,6 +25,7 @@
   when: "(cops_zope_vars.activated and
           corpusops_vars.has_services_manager and
           (ansible_service_mgr != 'systemd'))"
+
 - listen: reload_cops_zope
   become: true
   systemd:

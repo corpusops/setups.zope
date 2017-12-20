@@ -2,3 +2,5 @@
 cops_zope_domain: "staging-myapp.makina-corpus.net"
 # corpusops_haproxy_registrations_registrations_zope: []
 # cops_zope_dynamic_haproxy: true
+# realip
+# corpusops_services_http_nginx_reverse_proxy_addresses: ["127.0.0.1", "x.x.x.x""]

@@ -12,7 +12,7 @@
   roles:
     - role: corpusops.roles/ansible_plugins
   tasks:
-    - when: cops_zope_dynamic_haproxy
+    - when: "cops_zope_dynamic_haproxy|default(false)"
       block:
       - name: compute haproxy backends
         include_jinja_vars:

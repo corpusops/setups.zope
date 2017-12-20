@@ -243,7 +243,7 @@ cops_zope_files:
   - {path: "{buildout_cache}",
      owner: "{user}", group: "{group}",
      state: directory, mode: "{stickymode}750"}
-  - {path: "{buildout[settings]locations][locations-blob-storage]}",
+  - {path: "{buildout[settings][locations][locations-blob-storage]}",
      owner: "{user}", group: "{group}",
      state: directory, mode: "{stickymode}750"}
   - {path: "{buildout[settings][locations][locations-blob-backup]}",

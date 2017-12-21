@@ -11,20 +11,23 @@ export FTP_URL=<tri>@ftp.makina-corpus.net:/srv/projects/makina_commun/data/comm
 ```
 ### Clone the project
 - Note the **--recursive** switch; if you follow the next commands, you can then skip this step on the next docs.
-```sh
-git clone --recursive $A_GIT_URL $COPS_CWD
-cd $COPS_CWD
-mkdir $COPS_ROOT local
-ln -s $COPS_ROOT local/corpusops.bootstrap
-.ansible/scripts/download_corpusops.sh
-.ansible/scripts/setup_ansible.sh
-```
+
+    ```sh
+    git clone --recursive $A_GIT_URL $COPS_CWD
+    git submodule init
+    git submodule update
+    cd $COPS_CWD
+    mkdir $COPS_ROOT local
+    ln -s $COPS_ROOT local/corpusops.bootstrap
+    .ansible/scripts/download_corpusops.sh
+    .ansible/scripts/setup_ansible.sh
+    ```
 
 ### Deploy the dev VM
 - [corpusops vagrant doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/vagrant.md)<br/>
   or ``local/corpusops.bootstrap/doc/projects/vagrant.md`` after corpusops.bootstrap download.
 
-### Deploy on enviroments
+### Deploy on enviromnents
 - Setup needed when you dont have Ci setup for doing it for you
 - [corpusops deploy doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/deploy.md)<br/>
   or ``local/corpusops.bootstrap/doc/projects/deploy.md`` after corpusops.bootstrap download.

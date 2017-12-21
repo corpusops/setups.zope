@@ -134,17 +134,3 @@ salt mc_project.init_project name=<foo>
     git push github master:prod
     ```
 
-## ALT: INSTALLING THIS PROJECT  by hand
-```sh
-cd cgwb
-mkdir workdir
-git clone <url> cgwb
-sudo apt-get install -y build-essential m4 libtool pkg-config autoconf gettext bzip2 groff man-db automake libsigc++-2.0-dev tcl8.5 git libssl-dev libxml2-dev libxslt1-dev libbz2-dev zlib1g-dev python-setuptools python-dev libjpeg62-dev libreadline-dev python-imaging wv poppler-utils libsqlite0-dev libgdbm-dev libdb-dev tcl8.5-dev tcl8.5-dev tcl8.4 tcl8.4-dev tk8.5-dev libsqlite3-dev libcurl4-openssl-dev
-```
-
-Run buildout::
-```sh
-touch etc/sys/settings-local.cfg # or cp etc/sys/settings.cfg etc/sys/settings-local.cfg
-python bootstrap.py -dc <buildout>
-bin/buildout -Nc <buildout>
-```

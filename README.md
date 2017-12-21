@@ -7,6 +7,12 @@ export COPS_CWD="$HOME/makina/<your project>"
 # VM NOT DONE
 export FTP_URL=<tri>@ftp.makina-corpus.net:/srv/projects/makina_commun/data/commun/nobackup/vm_bar/*-*box
 ```
+### Clone the project
+- Note the **--recursive** switch
+```sh
+git clone --recursive $A_GIT_URL $COPS_CWD
+```
+
 ### Deploy the dev VM
 - [corpusops vagrant doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/vagrant.md)
 

@@ -14,11 +14,13 @@ git clone --recursive $A_GIT_URL $COPS_CWD
 ```
 
 ### Deploy the dev VM
-- [corpusops vagrant doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/vagrant.md)
+- [corpusops vagrant doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/vagrant.md)<br/>
+  or ``local/corpusops.bootstrap/doc/projects/vagrant.md`` after corpusops.bootstrap download.
 
 ### Deploy on enviroments
 - Setup needed when you dont have Ci setup for doing it for you
-- [corpusops deploy doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/deploy.md)
+- [corpusops deploy doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/deploy.md)<br/>
+  or ``local/corpusops.bootstrap/doc/projects/deploy.md`` after corpusops.bootstrap download.
 
 
 ## Exemple of a generic plone portal deployment

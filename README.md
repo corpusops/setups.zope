@@ -4,13 +4,20 @@
 ```sh
 export A_GIT_URL="git@gitlab.makina-corpus.net:foo/bar.git"
 export COPS_CWD="$HOME/makina/<your project>"
+export COPS_ROOT=$HOME/corpusops.bootstrap
+export NONINTERACTIVE=1
 # VM NOT DONE
 export FTP_URL=<tri>@ftp.makina-corpus.net:/srv/projects/makina_commun/data/commun/nobackup/vm_bar/*-*box
 ```
 ### Clone the project
-- Note the **--recursive** switch
+- Note the **--recursive** switch; if you follow the next commands, you can then skip this step on the next docs.
 ```sh
 git clone --recursive $A_GIT_URL $COPS_CWD
+ cd $COPS_CWD
+ mkdir $COPS_ROOT local
+ ln -s $COPS_ROOT local/corpusops.bootstrap
+ .ansible/scripts/download_corpusops.sh
+ .ansible/scripts/setup_ansible.sh
 ```
 
 ### Deploy the dev VM

@@ -1,1 +1,1 @@
-../../local/setups.zope/.ansible/scripts/test.sh
+cops_wrapper.sh

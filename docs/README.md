@@ -1,5 +1,6 @@
 # README
 - topics:
-    - [generic is a link to corpusops docs](https://github.com/corpusops/corpusops.bootstrap/tree/master/doc/projects) <br/>
-      cloned (after install) in ``local/corpusops.bootstrap/docs/projects``
-
+    - [generic zope doc](https://github.com/corpusops/setups.zope/tree/master/docs)
+      cloned (after install) in ``local/setup.zope/docs/``
+    - [generic corpusops docs](https://github.com/corpusops/corpusops.bootstrap/tree/master/doc/) <br/>
+      cloned (after install) in ``local/corpusops.bootstrap/docs/``

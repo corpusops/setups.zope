@@ -85,3 +85,4 @@ Thumbs.db
 /.idea
 /local
 /.vagrant
+/.ansible/scripts/ansible_deploy_env

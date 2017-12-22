@@ -1,1 +1,1 @@
-../../local/setups.zope/.ansible/scripts/setup_vaults.sh
+cops_wrapper.sh

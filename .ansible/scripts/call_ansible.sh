@@ -1,1 +1,1 @@
-../../../corpusops.bootstrap/hacking/deploy/call_ansible.sh
+cops_wrapper.sh

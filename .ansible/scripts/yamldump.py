@@ -1,1 +1,1 @@
-../../../corpusops.bootstrap/hacking/deploy/yamldump.py
+cops_wrapper.sh

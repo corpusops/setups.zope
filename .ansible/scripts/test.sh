@@ -1,1 +1,1 @@
-../../../corpusops.bootstrap/hacking/deploy/test.sh
+cops_wrapper.sh

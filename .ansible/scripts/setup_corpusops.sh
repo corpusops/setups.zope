@@ -1,1 +1,1 @@
-../../../corpusops.bootstrap/hacking/deploy/setup_corpusops.sh
+cops_wrapper.sh

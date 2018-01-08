@@ -3,7 +3,7 @@
     name: "{{cops_zope_vars.group}}"
     state: present
   tags: [cops_zope_s_users_group]
-  when: cops_zope_s_users_group
+  when: [cops_zope_s_users_group]
 - user:
     group: "{{cops_zope_vars.group}}"
     name: "{{cops_zope_vars.user}}"
@@ -11,4 +11,4 @@
     append: true
     generate_ssh_key: true
   tags: [cops_zope_s_users_user]
-  when: cops_zope_s_users_user
+  when: [cops_zope_s_users_user]

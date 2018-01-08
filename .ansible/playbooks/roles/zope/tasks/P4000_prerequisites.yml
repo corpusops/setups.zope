@@ -1,5 +1,5 @@
 ---
-- when: "cops_zope_s_prerequisites_pkgs"
+- when: [cops_zope_s_prerequisites_pkgs]
   tags: [cops_zope_s_prerequisites_pkgs]
   block:
   # workaround the libjpegturbo transitional
@@ -54,7 +54,7 @@
     with_items: "{{cops_zope_vars.rh_packages}}"
 
 # Download unified installer related to buildout for having egg cache
-- when: "cops_zope_s_prerequisites_ui"
+- when: [cops_zope_s_prerequisites_ui]
   tags: [cops_zope_s_prerequisites_ui]
   become: true
   become_user: "{{cops_zope_vars.user}}"

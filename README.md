@@ -21,13 +21,13 @@ export FTP_URL=<tri>@ftp.makina-corpus.net:/srv/projects/makina_commun/data/comm
     ```
 
 ### Deploy the dev VM
-- [corpusops vagrant doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/vagrant.md)<br/>
-  or ``local/corpusops.bootstrap/doc/projects/vagrant.md`` after corpusops.bootstrap download.
+- [corpusops vagrant doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/docs/projects/vagrant.md)<br/>
+  or ``local/corpusops.bootstrap/docs/projects/vagrant.md`` after corpusops.bootstrap download.
 
 ### Deploy on enviromnents
 - Setup needed when you dont have Ci setup for doing it for you
-- [corpusops deploy doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/doc/projects/deploy.md)<br/>
-  or ``local/corpusops.bootstrap/doc/projects/deploy.md`` after corpusops.bootstrap download.
+- [corpusops deploy doc](https://github.com/corpusops/corpusops.bootstrap/blob/master/docs/projects/deploy.md)<br/>
+  or ``local/corpusops.bootstrap/docs/projects/deploy.md`` after corpusops.bootstrap download.
 
 
 ## Exemple of a generic plone portal deployment

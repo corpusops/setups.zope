@@ -467,6 +467,8 @@ cops_zope_crons:
   - "{cron_periodicity_backup_inc}  {user} {project_root}/bin/backup            2>&1 >/dev/null"
   - "#  weekly full save"
   - "{cron_periodicity_backup_snap} {user} {project_root}/bin/snapshotbackup    2>&1 >/dev/null"
+# does the front and the instances autoconfigure themselves
+cops_zope_dynamic_haproxy: true
 cops_zope_nbinstances: 4
 cops_zope_autostart: 'true'
 cops_zope_autostart1: '{autostart}'

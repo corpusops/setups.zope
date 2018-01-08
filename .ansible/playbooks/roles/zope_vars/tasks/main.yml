@@ -1,4 +1,6 @@
 ---
-- include_tasks: A0000_vars.yml
-  tags: [zope, vars, zope_vars, cops_zope_s_vars]
-  when: "cops_zope_s_vars"
+- tags: [cops_zope, zope]
+  block:
+  - include_tasks: A0000_vars.yml
+    tags: ["cops_zope_s_vars"]
+    when: ["cops_zope_s_vars|default(true)"]

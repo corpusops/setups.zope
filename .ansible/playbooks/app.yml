@@ -19,7 +19,7 @@
           content: |
             ---
             {% set ret = ['127.0.0.1'] %}
-            {% for i in vars.groups.haproxy_servers %}
+            {% for i in vars.groups.get('haproxy_servers', vars.groups.all) %}
             {% set _ = ret.append(
               (hostvars[i]).ansible_default_ipv4.address) %}
             {% endfor %}

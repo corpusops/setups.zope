@@ -21,4 +21,4 @@
 
 - include_tasks: _setup_reverse_proxy.yml
   tags: [cops_zope_s_setup_reverse_proxy]
-  when: [cops_zope_s_setup_reverse_proxy]}
+  when: [cops_zope_s_setup_reverse_proxy]

@@ -12,6 +12,9 @@ cops_zope_nginx_port: 180
 cops_zope_nginx_ssl_port: 1443
 corpusops_nginx_default_vhost_port: "{{cops_zope_nginx_port}}"
 corpusops_nginx_default_vhost_ssl_port: "{{cops_zope_nginx_ssl_port}}"
+# set this to false to explicitly configure haproxy !
+cops_zope_dynamic_haproxy: true
+# manual conf (ignored when dynamic proxy)
 corpusops_haproxy_registrations_registrations_zope:
   - regexes: [".*"]
     ip: "{{cops_zope_servers_ips}}"

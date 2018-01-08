@@ -18,7 +18,7 @@
           content: |
             ---
             {% set ret = [] %}
-            {% for i in vars.groups.zope_servers %}
+            {% for i in vars.groups.get('zope_servers', vars.groups.all) %}
             {% set _ = ret.append(
               (hostvars[i]).ansible_default_ipv4.address) %}
             {% endfor %}

@@ -1,5 +1,4 @@
 ---
-- shell: whoami && false
 - group:
     name: "{{cops_zope_vars.group}}"
     state: present

@@ -27,8 +27,8 @@ corpusops_haproxy_registrations_registrations_zope:
 cops_zope_buildout_settings: "{%
  set res = {} %}{%
  set _ = res.update(cops_zope_buildout_settings___default)
- %}{% set _ = res|copsf_dictupdate(cops_zope_buildout_overrides)
+ %}{% set _ = res|copsf_dictupdate(cops_zope_overrides_buildout)
  %}{% set _ = res|copsf_dictupdate(
-       cops_zope_buildout_overrides_secret) %}{{
+       cops_zope_overrides_buildout_secret) %}{{
  res | to_json }}"
 # vim:set ft=sls:

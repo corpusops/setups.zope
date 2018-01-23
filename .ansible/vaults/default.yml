@@ -24,4 +24,11 @@ corpusops_haproxy_registrations_registrations_zope:
       443:
         to_port: "{{cops_zope_nginx_port}}"
         ssl_terminated: true
+cops_zope_buildout_settings: "{%
+ set res = {} %}{%
+ set _ = res.update(cops_zope_buildout_settings___default)
+ %}{% set _ = res|copsf_dictupdate(cops_zope_buildout_overrides)
+ %}{% set _ = res|copsf_dictupdate(
+       cops_zope_buildout_overrides_secret) %}{{
+ res | to_json }}"
 # vim:set ft=sls:

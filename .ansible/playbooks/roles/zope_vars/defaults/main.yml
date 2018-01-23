@@ -503,7 +503,7 @@ cops_zope_venv_eggs:
   - "pip"
   - "zc.buildout=={eggver_buildout}"
   - "setuptools=={eggver_setuptools}"
-cops_zope_buildout_extends: "buildout-prod.cfg"
+cops_zope_buildout_extends: "buildout-prod.cfg etc/sys/mailinglogger.cfg"
 cops_zope_buildout_bootstrap: "bootstrap-buildout.py"
 cops_zope_buildout_bootstrap_args: "--setuptools-version={eggver_setuptools} -v {eggver_buildout}"
 cops_zope_buildout_cwd: "{zroot}"
@@ -514,7 +514,11 @@ cops_zope_buildout_version: 2
 cops_zope_buildout_newest: false
 cops_zope_buildout_cfg: "{project_root}/buildout-ansible.cfg"
 cops_zope_buildout_develop_up: "bin/develop up -f"
-cops_zope_buildout_settings:
+cops_zope_smtp_user: root
+cops_zope_smtp_password: null
+cops_zope_buildout_overrides_secret: {}
+cops_zope_buildout_overrides: {}
+cops_zope_buildout_settings___default:
     buildout:
       extends: "{buildout_extends}"
       newest: "false"
@@ -525,6 +529,12 @@ cops_zope_buildout_settings:
       eggs-directory: '{eggs_directory}'
       parts-directory: '{project_root}/parts'
     v:
+      mailinglogger-smtp-server: "localhost:25"
+      mailinglogger-smtp-use-tls: "no"
+      mailinglogger-smtp-user: "{smtp_user}"
+      mailinglogger-smtp-password: "{smtp_password}"
+      mailinglogger-to: "${v:mailinglogger-smtp-user}"
+      mailinglogger-from: "${v:mailinglogger-smtp-user}"
       sys-user: "{user}"
       sys-group: "{group}"
       admin-user: "{admin_user}"

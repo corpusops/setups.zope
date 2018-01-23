@@ -18,7 +18,10 @@ cops_zope_supereditors: "{_supereditors}"
 # on old ubuntu "virtualenv" does not exists, we isolate venv install
 cops_zope_venv_deb_packages: [virtualenv, python-virtualenv]
 cops_zope_venv_rh_packages: [virtualenv]
-cops_zope_deb_packages:
+# cops_zope_deb_packages is initialised on behalf of cops_registry voodoo
+# and let users override the list easily
+# cops_zope_packages: "{{cops_zope_deb_packages___default+['vim']}}"
+cops_zope_deb_packages___default:
   - apache2-utils
   - liblcms2-2
   - liblcms2-dev

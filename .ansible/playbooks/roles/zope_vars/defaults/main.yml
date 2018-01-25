@@ -531,8 +531,8 @@ cops_zope_buildout_settings___default:
     v:
       mailinglogger-smtp-server: "localhost:25"
       mailinglogger-smtp-use-tls: "no"
-      mailinglogger-smtp-user: "{smtp_user}"
-      mailinglogger-smtp-password: "{smtp_password}"
+      mailinglogger-smtp-user: "{{cops_zope_smtp_user}}"
+      mailinglogger-smtp-password: "{{cops_zope_smtp_password}}"
       mailinglogger-to: "${v:mailinglogger-smtp-user}"
       mailinglogger-from: "${v:mailinglogger-smtp-user}"
       sys-user: "{user}"

@@ -15,8 +15,7 @@ cops_gis_packages:
 # __default come from the cops_registry voodoo (duplicated_defaults in main.yml)
 # cops_zope_deb_packages: "{{cops_zope_deb_packages___default+cops_gis_packages}}"
 # user/password in secret vault !
-cops_zope_buildout_overrides_secret: {}
-cops_zope_buildout_overrides:
+cops_zope_overrides_buildout_secret: {}
+cops_zope_overrides_buildout:
   v:
-    mailinglogger-to: "root"
-    # mailinglogger-to: "mylist@lists.company.com"
+    mailinglogger-to: "irstea-makina@lists.makina-corpus.com"

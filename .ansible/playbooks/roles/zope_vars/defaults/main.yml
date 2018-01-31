@@ -357,7 +357,7 @@ cops_zope_push_codes_cwd: "{cops_cwd}"
 cops_zope_push_codes_sync_mode: "{{ cops_installer_mode in ['vagrant'] and 'rsync' or 'git' }}"
 cops_zope_push_codes_file_tests:
   git: []
-  rsync: ["composer.json", "composer.lock", ".git"]
+  rsync: ["buildout.cfg", "setup.py", ".git"]
 cops_zope_push_codes_rsync_opts:
   git:   ["-azv",                           "--exclude", "local/*", "--exclude", ".vagrant", "--exclude", "*.retry"]
   rsync: ["-azv", "--include", ".git/**/*", "--exclude", "local/*", "--exclude", ".vagrant", "--exclude", "*.retry"]

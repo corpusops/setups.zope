@@ -21,6 +21,7 @@ cops_zope_venv_rh_packages: [virtualenv]
 # cops_zope_deb_packages is initialised on behalf of cops_registry voodoo
 # and let users override the list easily
 # cops_zope_packages: "{{cops_zope_deb_packages___default+['vim']}}"
+cops_zope_deb_packages: "{{cops_zope_deb_packages___default}}"
 cops_zope_deb_packages___default:
   - apache2-utils
   - liblcms2-2
@@ -71,7 +72,8 @@ cops_zope_deb_packages___default:
   - zlib1g-dev
   - wget
   - rsync
-cops_zope_rh_packages: []
+cops_zope_rh_packages: "{{cops_zope_rh_packages___default}}"
+cops_zope_rh_packages___default: []
 # extra conf to add to pgconf (directly added to a tuning conf file (string))
 cops_zope_sysctls: []
 cops_zope_domain: "{{ansible_fqdn}}"
@@ -217,7 +219,8 @@ cops_zope_reconfigure_services: []
 cops_zope_activated: true
 # Layout, files & configs
 cops_zope_stickymode: "2"
-cops_zope_files:
+cops_zope_files: "{{cops_zope_files___default}}"
+cops_zope_files___default:
   - {path: "{projects_dir}",
      owner: root, group: root, state: directory}
   - {path: "{project_dir}",
@@ -284,7 +287,8 @@ cops_zope_files:
      state: link, mode: "{stickymode}750"}
 cops_zope_buildout_cache: "{zroot}/buildout_download_cache"
 # Config files
-cops_zope_configs:
+cops_zope_config: "{{cops_zope_config___default}}"
+cops_zope_config___default:
   - {src: "../templates/crons",
      dest: "/etc/cron.d/zope-{name}",
      mode: "0644",
@@ -325,11 +329,13 @@ cops_zope_configs:
      mode: "0644",
      owner: "root",
      group: "root"}
-cops_zope_fixperms_configs:
+cops_zope_fixperms_configs: "{{cops_zope_fixperms_configs___default}}"
+cops_zope_fixperms_configs___default:
   - {src: "../templates/fixperms.sh",
      dest: "{fixperms}", mode: "0755",
      owner: root, group: root}
-cops_zope_ep_configs:
+cops_zope_ep_configs: "{{cops_zope_ep_configs___default}}"
+cops_zope_ep_configs___default:
   # script to reconfigure image before and after systemd is launched
   - {src: "../templates/reconfigure.sh",
      dest: "{reconfigure}",
@@ -355,16 +361,20 @@ cops_zope_reconfigure_verbosity: "-v"
 # Code synchronnisation settings (FORCE_COPS_PROVISION_PUSH_CODE to force)
 cops_zope_push_codes_cwd: "{cops_cwd}"
 cops_zope_push_codes_sync_mode: "{{ cops_installer_mode in ['vagrant'] and 'rsync' or 'git' }}"
-cops_zope_push_codes_file_tests:
+cops_zope_push_codes_file_tests: "{{cops_zope_push_codes_file_tests___default}}"
+cops_zope_push_codes_file_tests___default:
   git: []
   rsync: ["buildout.cfg", "setup.py", ".git"]
-cops_zope_push_codes_rsync_opts:
+cops_zope_push_codes_rsync_opts: "{{cops_zope_push_codes_rsync_opts___default}}"
+cops_zope_push_codes_rsync_opts___default:
   git:   ["-azv",                           "--exclude", "local/*", "--exclude", ".vagrant", "--exclude", "*.retry"]
   rsync: ["-azv", "--include", ".git/**/*", "--exclude", "local/*", "--exclude", ".vagrant", "--exclude", "*.retry"]
-cops_zope_push_codes_rsync_submodule_opts:
+cops_zope_push_codes_rsync_submodule_opts: "{{cops_zope_push_codes_rsync_submodule_opts___default}}"
+cops_zope_push_codes_rsync_submodule_opts___default:
   git:   ["-azv", "--exclude", "*.retry"]
   rsync: ["-azv", "--exclude", "*.retry"]
-cops_zope_push_codes:
+cops_zope_push_codes: "{{cops_zope_push_codes___default}}"
+cops_zope_push_codes___default:
 - path: "{project_root}"
   origin_path: "{push_codes_cwd}"
   sync_mode: "{{cops_zope_push_codes_sync_mode}}"
@@ -377,7 +387,8 @@ cops_zope_push_codes:
     rsync_opts: "{{cops_zope_push_codes_rsync_submodule_opts[cops_zope_push_codes_sync_mode]}}"
     is_submodule: true
 # SSH deploy settings -> env vault
-cops_deploy_ssh_key_paths:
+cops_deploy_ssh_key_paths: "{{cops_deploy_ssh_key_paths___default}}"
+cops_deploy_ssh_key_paths___default:
   deploy:
     path: "{{'local/.ssh/deploy_key'|copsf_abspath}}"
     pub: "{{cops_deploy_ssh_pub_key|default('')}}"
@@ -393,13 +404,15 @@ cops_zope_logrotate_rotate: 365
 cops_zope_logrotate_size: 10M
 cops_zope_htpasswd: "/etc/nginx/{name}-htpasswd"
 cops_zope_http_auth_restricted: false
-cops_zope_http_users:
+cops_zope_http_users: "{{cops_zope_http_users___default}}"
+cops_zope_http_users___default:
 - {user: "{admin_user}", password: "{admin_password}"}
 #- {user: "myadmin", password: "mypassword"}
 cops_zope_http_port: "80"
 cops_zope_https_port: "443"
 cops_zope_nginx: {}
 cops_zope_nginx_domain: "{domain}"
+cops_zope_nginx_server_aliases: "{{cops_zope_nginx_server_aliases___default}}"
 cops_zope_nginx_server_aliases: ["www.{domain}"]
 cops_zope_nginx_redirect_aliases: true
 cops_zope_nginx_port: "{http_port}"
@@ -460,7 +473,8 @@ cops_zope_authentication_user: admin
 cops_zope_authentication_password: secret
 cops_zope_authentication_realm: ZEO
 cops_zope_authentication_db: "{zroot}/etc/sys/zeoauth.db"
-cops_zope_crons:
+cops_zope_crons: "{{cops_zope_crons___default}}"
+cops_zope_crons___default:
   - "# MAILTO=foobar"
   - "# weekly pack"
   - "{cron_periodicity_pack}        {user} {project_root}/bin/zeoserver-zeopack 2>&1 >/dev/null"
@@ -499,7 +513,8 @@ cops_zope_restarted: instance1
 cops_zope_eggver_setuptools: 33.1.1
 cops_zope_eggver_buildout: 2.9.5
 cops_zope_venv_site_packages: false
-cops_zope_venv_eggs:
+cops_zope_venv_eggs: "{{cops_zope_venv_eggs___default}}"
+cops_zope_venv_eggs___default:
   - "pip"
   - "zc.buildout=={eggver_buildout}"
   - "setuptools=={eggver_setuptools}"

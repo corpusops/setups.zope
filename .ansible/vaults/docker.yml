@@ -1,4 +1,5 @@
 ---
+cops_zope_domain: "{{cops_app_name}}.docker.local"
 cops_zope_ep_folder:   "{{ansible_env['ANSIBLE_FOLDER']}}"
 cops_zope_ep_playbook: "{{ansible_env['ANSIBLE_PLAY']}}"
 cops_zope_reconfigure_services: ["post-start-{service}"]

@@ -57,14 +57,14 @@
       cacheable: false
       cops_zope_s_users:          "{{cops_zope_s_users         |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
       cops_zope_s_layout:         "{{cops_zope_s_layout_layout}}"
-      cops_zope_s_first_fixperms: "{{cops_zope_s_first_fixperms|default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+      cops_zope_s_first_fixperms: "{{cops_zope_s_first_fixperms|default(not only_steps)}}"
+      cops_zope_s_end_fixperms:   "{{cops_zope_s_end_fixperms  |default(not only_steps)}}"
       cops_zope_s_prerequisites:  "{{(
         cops_zope_s_prerequisites_ui or
         cops_zope_s_prerequisites_pkgs)}}"
       cops_zope_s_workers:        "{{cops_zope_s_workers       |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
       cops_zope_s_entry_point:    "{{cops_zope_s_entry_point   |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
       cops_zope_s_manage_content: "{{cops_zope_s_manage_content|default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
-      cops_zope_s_end_fixperms:   "{{cops_zope_s_end_fixperms  |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
       cops_zope_s_setup_front:  "{{(
         cops_zope_s_setup_front_build or
         cops_zope_s_setup_front_sync)}}"

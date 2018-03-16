@@ -1,0 +1,7 @@
+---
+- when: ["(corpusops_vars.has_services_manager and cops_zope_vars.activated)"]
+  block:
+  # Check reverse proxy is listening
+  - include_tasks: _nginx_check.yml
+  # Check zope stack to be up
+  - include_tasks: _app_check.yml

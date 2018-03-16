@@ -1,0 +1,18 @@
+---
+- name: compute haproxy backends
+  when: "cops_zope_dynamic_haproxy|default(false)"
+  include_jinja_vars:
+    content: |-
+      ---
+      {% set ret = ['127.0.0.1'] %}
+      {% for i in vars.groups.get('haproxy_servers', vars.groups.all) %}
+      {%  set _ = ret.append((hostvars[i]).ansible_default_ipv4.address) %}
+      {% endfor %}
+      {{- {'corpusops_services_http_nginx_reverse_proxy_addresses': ret}|to_json  -}}
+- set_fact:
+    cacheable: false
+    cops_zope_lifecycle_app: "{{
+     ((not vars.get('SKIP_INSTALL_ZOPE', False)) or
+      cops_zope_lifecycle_app|default(false) or
+      (vars.get('FORCE_INSTALL_ZOPE', False)))}}"
+- include_role: {name: zope_vars,  allow_duplicates: false}

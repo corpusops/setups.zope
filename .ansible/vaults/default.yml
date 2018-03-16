@@ -2,6 +2,7 @@
 cops_app_name: zope
 cops_zope_zope_profile: "{{cops_app_name}}"
 #
+controller: localhost
 zope_servers: zope_servers
 haproxy_servers: haproxy_servers
 app_servers: "{{zope_servers}}"

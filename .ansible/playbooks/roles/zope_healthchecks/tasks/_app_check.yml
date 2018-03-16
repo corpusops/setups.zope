@@ -1,0 +1,17 @@
+---
+- register: cops_zope_check2
+  until: "      'zope'     in '{0}'.format(cops_zope_check2.get('server', '')).lower()"
+  failed_when: "'zope' not in '{0}'.format(cops_zope_check2.get('server', '')).lower()"
+  retries: "{{cops_zope_vars.restart_check_retries}}"
+  delay: 1
+  no_log: "{{not (cops_vars_debug|default(false))}}"
+  uri:
+    url: "http://{{cops_zope_vars.cluster_front_host}}:{{cops_zope_vars.cluster_front_port}}"
+    headers: {Host: "{{cops_zope_vars.domain}}"}
+    return_content: true
+    user: "{{((not cops_zope_vars.http_users)
+            and omit
+            or cops_zope_vars.http_users[0].user)}}"
+    password: "{{((not cops_zope_vars.http_users)
+                and omit
+                or cops_zope_vars.http_users[0].password)}}"

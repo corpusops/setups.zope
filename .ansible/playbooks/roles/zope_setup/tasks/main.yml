@@ -1,0 +1,24 @@
+---
+- include_role: {name: zope_setup_configs, allow_duplicates: false}
+  tags: [cops_zope_s_setup_configs]
+  when: [cops_zope_s_setup_configs]
+
+- include_role: {name: zope_setup_venv, allow_duplicates: false}
+  tags: [cops_zope_s_setup_venv]
+  when: [cops_zope_s_setup_venv]
+
+- include_role: {name: zope_setup_front, allow_duplicates: false}
+  tags: [cops_zope_s_setup_front]
+  when: [cops_zope_s_setup_front]
+
+- include_role: {name: zope_setup_buildout, allow_duplicates: false}
+  tags: [cops_zope_s_setup_buildout]
+  when: [cops_zope_s_setup_buildout]
+
+- include_role: {name: zope_setup_hosts, allow_duplicates: false}
+  tags: [cops_zope_s_setup_hosts]
+  when: [cops_zope_s_setup_hosts]
+
+- include_role: {name: zope_setup_reverse_proxy, allow_duplicates: false}
+  tags: [cops_zope_s_setup_reverse_proxy]
+  when: [cops_zope_s_setup_reverse_proxy]

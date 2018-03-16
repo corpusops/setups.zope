@@ -1,5 +1,5 @@
 ---
-cops_zope_dynamic_haproxy: false
+cops_zope_dynamic_haproxy: true
 corpusops_core_projects_path: /srv/projects
 # users than have full right to edit file in the container
 # When this is enabled, the project user/group is also granted full perms
@@ -20,63 +20,184 @@ cops_zope_venv_deb_packages: [virtualenv, python-virtualenv]
 cops_zope_venv_rh_packages: [virtualenv]
 # cops_zope_deb_packages is initialised on behalf of cops_registry voodoo
 # and let users override the list easily
-# cops_zope_packages: "{{cops_zope_deb_packages___default+['vim']}}"
-cops_zope_deb_packages: "{{vars['cops_zope_deb_packages___default']}}"
-cops_zope_deb_packages___default:
+# cops_zope_packages: "{{vars['cops_zope_deb_packages___default']+['vim']}}"
+cops_zope_deb_gis_packages:
+  - gdal-bin
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '14.04'|copsf_looseversion) -%}
+    libgdal1h
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '16.04'|copsf_looseversion) -%}
+    libgdal1i
+    {%- else -%}
+    libgdal20
+    {%- endif -%}"
+  - geoip-bin
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '14.04'|copsf_looseversion) -%}
+    libgeos-c1
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '16.04'|copsf_looseversion) -%}
+    libgeos-c1v5
+    {%- else -%}
+    libgeos-c1v5
+    {%- endif -%}"
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '14.04'|copsf_looseversion) -%}
+    libgeos-3.4.2
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '16.04'|copsf_looseversion) -%}
+    libgeos-3.5.0
+    {%- else -%}
+    libgeos-3.6.2
+    {%- endif -%}"
+  - libgeoip1
+cops_zope_deb_runtime_packages:
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '14.04'|copsf_looseversion) -%}
+    libcairomm-1.0-1
+    {%- else -%}
+    libcairomm-1.0-1v5
+    {%- endif -%}"
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <=
+          '14.04'|copsf_looseversion) -%}
+    libsigc++-2.0-0c2a
+    {%- else -%}
+    libsigc++-2.0-0v5
+    {%- endif -%}"
   - apache2-utils
-  - liblcms2-2
-  - liblcms2-dev
-  - autoconf
-  - automake
-  - build-essential
   - bzip2
   - gettext
   - git
   - groff
-  - libbz2-dev
-  - libcurl4-openssl-dev
-  - libdb-dev
-  - libgdbm-dev
-  - libreadline-dev
-  - libfreetype6-dev
-  - libsigc++-2.0-dev
-  - libsqlite0-dev
-  - libsqlite3-dev
+  - libcurl3
+  - libfreetype6
+  - liblcms2-2
+  - libsqlite0
+  - libsqlite3-0
   - libtiff5
-  - libtiff5-dev
-  - libwebp5
-  - libwebp-dev
-  - libssl-dev
   - libtool
-  - libxml2-dev
-  - libxslt1-dev
-  - libopenjpeg-dev
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >=
+          '18.04'|copsf_looseversion)
+     %}libwebp6{%else
+     %}libwebp5{%endif%}"
+  - libxml2
+  - libxslt1.1
+  - "python{{cops_zope_pkg_python_slug}}"
   - python-passlib
   - python3-passlib
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >=
+          '18.04'|copsf_looseversion)
+    %}python-pil{% else
+    %}python-imaging{%endif%}"
+  - python-setuptools
+  - python-numpy
+  - cython
   - "{% if ansible_distribution_version|copsf_looseversion <= '14.04'|copsf_looseversion
-    %}libopenjpeg2{% else
-    %}libopenjpeg5{% endif %}"
+
+    %}libopenjpeg2{% elif
+        ansible_distribution_version|copsf_looseversion < '18.04'|copsf_looseversion
+    %}libopenjpeg5{% else
+    %}libopenjp2-7{% endif %}"
   - m4
   - man-db
   - pkg-config
   - poppler-utils
-  - python-dev
-  - python-imaging
-  - python-setuptools
   - tcl8.4
-  - tcl8.4-dev
   - tcl8.5
-  - tcl8.5-dev
-  - tk8.5-dev
   - wv
-  - zlib1g-dev
+  - zlib1g
   - wget
   - rsync
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >=
+          '18.04'|copsf_looseversion)
+    %}libgdbm5{%else%}libgdbm3{%endif%}"
+  - "{{cops_zope_pkg_ssl}}"
+  - libcairo2
+  - libcairo-gobject2
+  - libcairo-script-interpreter2
+  - "{{cops_zope_pkg_db}}"
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >=
+          '18.04'|copsf_looseversion)
+    %}libreadline7{%else%}libreadline6{%endif%}"
+cops_zope_deb_packages___default: "{{
+  (cops_zope_deb_runtime_packages + cops_zope_deb_gis_packages)
+  | to_json
+  }}"
+# either null string or "3"
+cops_zope_pkg_python_slug: ""
+cops_zope_pkg_mysql: "libmysqlclient20"
+cops_zope_pkg_ssl: "libssl1.0.0"
+cops_zope_pkg_db: "libdb5.3"
+cops_zope_rh_packages: []
+# cops_zope_packages: "{{cops_zope_deb_packages___default+['vim']}}"
+cops_zope_deb_build_packages___default:
+  - "libpython{{cops_zope_pkg_python_slug}}-dev"
+  - "python{{cops_zope_pkg_python_slug}}-dev"
+  - libgdal-dev
+  - libreadline-dev
+  - libpq-dev
+  - libdb-dev
+  - libcairo2-dev
+  - libssl-dev
+  - libcairomm-1.0-dev
+  - libgdbm-dev
+  - libxml2-dev
+  - libgeos-dev
+  - libgeoip-dev
+  - libxslt1-dev
+  - libsqlite0-dev
+  - libsqlite3-dev
+  - libcurl4-openssl-dev
+  - libsigc++-2.0-dev
+  - autoconf
+  - libfreetype6-dev
+  - automake
+  - libbz2-dev
+  - build-essential
+  - liblcms2-dev
+  - libtiff5-dev
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >=
+          '18.04'|copsf_looseversion)
+     %}libopenjp2-7-dev{%else%}libopenjpeg-dev{%endif%}"
+  - zlib1g-dev
+  - libwebp-dev
+  - tcl8.5-dev
+  - tcl8.4-dev
+  - tk8.5-dev
+cops_zope_rh_build_packages: []
 cops_zope_rh_packages: "{{vars['cops_zope_rh_packages___default']}}"
 cops_zope_rh_packages___default: []
 # extra conf to add to pgconf (directly added to a tuning conf file (string))
 cops_zope_sysctls: []
 cops_zope_domain: "{{ansible_fqdn}}"
+cops_zope_front_domain: null
 # for internal monitoring
 cops_zope_query_host: "127.0.0.1"
 # for internal service access
@@ -125,13 +246,15 @@ cops_zope_ep_vaults:
 cops_zope_ep_template: "../templates/app_entry_point"
 # Docker entrypoint settings, tags for cli and vars for playbook reuse via
 # conditionals
-cops_zope_ep_folder: ".ansible"
-cops_zope_ep_playbook: "site.yml"
+cops_zope_ep_folder: ".ansible/playbooks"
+cops_zope_ep_playbook: "app.yml"
 cops_zope_ep_skip_tags: "{{(
   'cops_zope_lifecycle_app_push_code,'
   'cops_zope_s_users,'
   'cops_zope_s_first_fixperms,'
   'cops_zope_s_prerequisites,'
+  'cops_zope_s_setup_venv,'
+  'cops_zope_s_setup_front,'
   'cops_zope_s_workers,'
   'cops_zope_s_entry_point,'
   'cops_zope_s_manage_content,'
@@ -139,9 +262,12 @@ cops_zope_ep_skip_tags: "{{(
   )}}"
 cops_zope_ep_post_start_skip_tags: "{{(
   'cops_zope_s_users,'
+  'cops_zope_s_layout,'
   'cops_zope_s_first_fixperms,'
   'cops_zope_s_prerequisites,'
   'cops_zope_s_setup,'
+  'cops_zope_s_reverse_proxy,'
+  'cops_zope_s_workers,'
   'cops_zope_s_entry_point,'
   )}}"
 # global orchestration steps (db, code sync, web & workers prereqs, zope config)
@@ -150,76 +276,25 @@ cops_zope_yarn_cmd: "yarn"
 cops_zope_yarn_install_args: ""
 cops_zope_yarn_build_args: ""
 cops_zope_yarn_extra_steps: []
+jango_yarn_extra_steps: []
 #  - "add --force file:{project_root}/develop/plone.restapi-angular"
-cops_zope_lifecycle_app: true
-cops_zope_lifecycle_app_push_code: true
-cops_zope_lifecycle_app_setup: true
-# way to install a thirdparty front haproxy
-cops_zope_lifecycle_haproxy: false
-cops_zope_lifecycle_haproxy_reload: "{{cops_zope_lifecycle_haproxy}}"
-cops_zope_lifecycle_haproxy_config: "{{cops_zope_lifecycle_haproxy}}"
-cops_zope_lifecycle_haproxy_registrations: "{{cops_zope_lifecycle_haproxy}}"
-# zope & project deployment steps
-cops_zope_s_vars: true
-cops_zope_s_users: true
-cops_zope_s_users_user: true
-cops_zope_s_users_group: true
-cops_zope_s_layout: true
-cops_zope_s_layout_layout: true
-cops_zope_s_first_fixperms: true
-cops_zope_s_fixperms_configs: true
-cops_zope_s_fixperms_run: true
-cops_zope_s_prerequisites: true
-cops_zope_s_prerequisites_pkgs: true
-cops_zope_s_prerequisites_ui: true
-cops_zope_s_setup: true
-cops_zope_s_setup_front: true
-cops_zope_s_setup_front_build: true
-cops_zope_s_setup_front_build_yarn_install: true
-cops_zope_s_setup_front_build_yarn_extra_steps: true
-cops_zope_s_setup_front_build_yarn_build: true
-# TODO REACTIVATE !!!
-cops_zope_s_setup_front_sync: true
-cops_zope_s_setup_buildout: true
-cops_zope_s_setup_buildout_bootstrap: true
-cops_zope_s_setup_buildout_buildout: true
-cops_zope_s_setup_buildout_up: true
-cops_zope_s_setup_configs: true
-cops_zope_s_setup_venv: true
-cops_zope_s_setup_venv_buildpy: true
-cops_zope_s_setup_venv_venv: true
-cops_zope_s_setup_hosts: true
-cops_zope_s_setup_app: true
-cops_zope_s_setup_reverse_proxy: true
-cops_zope_s_setup_reverse_proxy_dvhost: true
-cops_zope_s_setup_reverse_proxy_vhost: true
-cops_zope_s_setup_reverse_proxy_front_vhost: true
-cops_zope_s_setup_reverse_proxy_users: true
-cops_zope_s_reverse_proxy: true
-cops_zope_s_reverse_proxy_install: true
-cops_zope_s_reverse_proxy_reload: true
-cops_zope_s_workers: true
-cops_zope_s_workers_service: true
-cops_zope_s_workers_checks: true
-cops_zope_s_entry_point: true
-cops_zope_s_manage_content: true
-cops_zope_s_end_fixperms: true
-#
 cops_zope_ep_main_ep: "/entry_point"
 # service
 cops_zope_service: "supervisor.{name}"
 cops_zope_services: ["{service}", "nginx"]
 cops_zope_services_nginx_reload_state: "reloaded"
 # cops_zope_rhandlers: [restart_cops_zope]
-cops_zope_rhandlers: [restart_cops_zope_systemd,
-                      restart_cops_zope]
-# use in docker (via a vault):
-cops_zope_reconfigure_services: []
-# cops_zope_reconfigure_services: ["post-start-{service}"]
+cops_zope_rhandlers: [restart_cops_zope_systemd, restart_cops_zope]
+# Reconfigure upon image reboots
+cops_zope_reconfigure_services: |-
+  {% set ret = [] %}
+  {% if ansible_virtualization_type in ['docker'] %}
+  {% set _ = ret.append("post-start-{service}") %}
+  {% endif %}
+  {{ ret | to_json }}
 cops_zope_activated: true
 # Layout, files & configs
 cops_zope_stickymode: "2"
-cops_zope_files: "{{vars['cops_zope_files___default']}}"
 cops_zope_files___default:
   - {path: "{projects_dir}",
      owner: root, group: root, state: directory}
@@ -230,7 +305,7 @@ cops_zope_files___default:
      state: directory, mode: "{stickymode}750"}
   - {path: "{data_root}",
      owner: "{user}", group: "{group}",
-     state: directory, mode: "{stickymode}750"}
+     state: directory, mode: "{stickymode}751"}
   - {path: "{project_root}/bin",
      owner: "{user}", group: "{group}",
      state: directory, mode: "{stickymode}750"}
@@ -285,9 +360,9 @@ cops_zope_files___default:
      path: "{zroot}/var",
      owner: "{user}", group: "{group}",
      state: link, mode: "{stickymode}750"}
+cops_zope_files: "{{vars['cops_zope_files___default']}}"
 cops_zope_buildout_cache: "{zroot}/buildout_download_cache"
 # Config files
-cops_zope_configs: "{{vars['cops_zope_configs___default']}}"
 cops_zope_configs___default:
   - {src: "../templates/crons",
      dest: "/etc/cron.d/zope-{name}",
@@ -297,16 +372,6 @@ cops_zope_configs___default:
   - {src: "../templates/restart.sh",
      dest: "{data_root}/restart.sh",
      mode: "0755",
-     owner: "{user}",
-     group: "{group}"}
-  - {src: "../templates/buildpy.sh",
-     dest: "{zroot}/bin/buildpy.sh",
-     mode: "0755",
-     owner: "{user}",
-     group: "{group}"}
-  - {src: "../templates/buildout.cfg",
-     dest: "{buildout_cfg}",
-     mode: "0640",
      owner: "{user}",
      group: "{group}"}
   - {src: "../templates/logrotate.conf",
@@ -319,22 +384,29 @@ cops_zope_configs___default:
      mode: "0640",
      owner: "{user}",
      group: "{group}"}
-  - {src: "../templates/buildout-local.cfg",
-     dest: "{project_root}/etc/sys/settings-local.cfg",
-     mode: "0640",
-     owner: "{user}",
-     group: "{group}"}
   - {src: "../templates/supervisor.service",
      dest: "/etc/systemd/system/supervisor.{name}.service",
      mode: "0644",
      owner: "root",
      group: "root"}
-cops_zope_fixperms_configs: "{{vars['cops_zope_fixperms_configs___default']}}"
+cops_zope_venv_files: "{{vars['cops_zope_venv_files___default']}}"
+cops_zope_venv_files___default:
+  - {path: "{data_root}/bin",
+     owner: "{user}", group: "{group}",
+     state: directory, mode: "{stickymode}750"}
+cops_zope_venv_configs: "{{vars['cops_zope_venv_configs___default']}}"
+cops_zope_venv_configs___default:
+  - {src: "../templates/buildpy.sh",
+     dest: "{data_root}/bin/buildpy.sh",
+     mode: "0755",
+     owner: "{user}",
+     group: "{group}"}
+cops_zope_configs: "{{vars['cops_zope_configs___default']}}"
 cops_zope_fixperms_configs___default:
   - {src: "../templates/fixperms.sh",
      dest: "{fixperms}", mode: "0755",
      owner: root, group: root}
-cops_zope_ep_configs: "{{vars['cops_zope_ep_configs___default']}}"
+cops_zope_fixperms_configs: "{{vars['cops_zope_fixperms_configs___default']}}"
 cops_zope_ep_configs___default:
   # script to reconfigure image before and after systemd is launched
   - {src: "../templates/reconfigure.sh",
@@ -350,6 +422,19 @@ cops_zope_ep_configs___default:
   - {src: "{ep_template}",
      dest: "/app_entry_point", mode: "0755",
      owner: root, group: root}
+cops_zope_ep_configs: "{{vars['cops_zope_ep_configs___default']}}"
+cops_zope_buildoutconfigs___default:
+- {src: "../templates/buildout.cfg",
+   dest: "{buildout_cfg}",
+   mode: "0640",
+   owner: "{user}",
+   group: "{group}"}
+- {src: "../templates/buildout-local.cfg",
+   dest: "{project_root}/etc/sys/settings-local.cfg",
+   mode: "0640",
+   owner: "{user}",
+   group: "{group}"}
+cops_zope_buildoutconfigs: "{{vars['cops_zope_buildoutconfigs___default']}}"
 # SystemD based reconfigure unit settings
 cops_zope_reconfigure_service_stderr: ""
 cops_zope_reconfigure_service_stdout: ""
@@ -360,21 +445,20 @@ cops_zope_reconfigure_passenv: "ANSIBLE_PLAY ANSIBLE_FOLDER COPS_ROOT"
 cops_zope_reconfigure_verbosity: "-v"
 # Code synchronnisation settings (FORCE_COPS_PROVISION_PUSH_CODE to force)
 cops_zope_push_codes_cwd: "{cops_cwd}"
-cops_zope_push_codes_sync_mode: "{{cops_installer_mode in ['vagrant'] and 'rsync' or 'git' }}"
-cops_zope_push_codes_file_tests: "{{vars['cops_zope_push_codes_file_tests___default']}}"
-cops_zope_push_codes_file_tests___default:
+cops_zope_push_codes_sync_mode: "{{ (
+  cops_installer_mode in ['vagrant'] or
+  ansible_virtualization_type in ['docker']
+  ) and 'rsync' or 'git' }}"
+cops_zope_push_codes_file_tests:
   git: []
   rsync: ["buildout.cfg", "setup.py", ".git"]
-cops_zope_push_codes_rsync_opts: "{{vars['cops_zope_push_codes_rsync_opts___default']}}"
-cops_zope_push_codes_rsync_opts___default:
+cops_zope_push_codes_rsync_opts:
   git:   ["-azv",                           "--exclude", "local/*", "--exclude", ".vagrant", "--exclude", "*.retry"]
   rsync: ["-azv", "--include", ".git/**/*", "--exclude", "local/*", "--exclude", ".vagrant", "--exclude", "*.retry"]
-cops_zope_push_codes_rsync_submodule_opts: "{{vars['cops_zope_push_codes_rsync_submodule_opts___default']}}"
-cops_zope_push_codes_rsync_submodule_opts___default:
+cops_zope_push_codes_rsync_submodule_opts:
   git:   ["-azv", "--exclude", "*.retry"]
   rsync: ["-azv", "--exclude", "*.retry"]
-cops_zope_push_codes: "{{vars['cops_zope_push_codes___default']}}"
-cops_zope_push_codes___default:
+cops_zope_push_codes:
 - path: "{project_root}"
   origin_path: "{push_codes_cwd}"
   sync_mode: "{{cops_zope_push_codes_sync_mode}}"
@@ -387,8 +471,7 @@ cops_zope_push_codes___default:
     rsync_opts: "{{cops_zope_push_codes_rsync_submodule_opts[cops_zope_push_codes_sync_mode]}}"
     is_submodule: true
 # SSH deploy settings -> env vault
-cops_deploy_ssh_key_paths: "{{vars['cops_deploy_ssh_key_paths___default']}}"
-cops_deploy_ssh_key_paths___default:
+cops_deploy_ssh_key_paths:
   deploy:
     path: "{{'local/.ssh/deploy_key'|copsf_abspath}}"
     pub: "{{cops_deploy_ssh_pub_key|default('')}}"
@@ -399,31 +482,30 @@ cops_deploy_ssh_key_paths___default:
     # -----END RSA PRIVATE KEY-----
 # Reverse proxy Nginx
 cops_zope_default_vhost_is_default_server: false
-cops_zope_logrotate_conf: "/etc/logrotate.d/{name}.conf"
+cops_zope_logrotate_conf: "/etc/logrotate.d/cops_{name}.conf"
 cops_zope_logrotate_rotate: 365
 cops_zope_logrotate_size: 10M
 cops_zope_htpasswd: "/etc/nginx/{name}-htpasswd"
 cops_zope_http_auth_restricted: false
-cops_zope_http_users: "{{vars['cops_zope_http_users___default']}}"
-cops_zope_http_users___default:
+cops_zope_http_users:
 - {user: "{admin_user}", password: "{admin_password}"}
 #- {user: "myadmin", password: "mypassword"}
+cops_zope_rp_max_body_size: "100M"
 cops_zope_http_port: "80"
 cops_zope_https_port: "443"
 cops_zope_nginx: {}
 cops_zope_nginx_domain: "{domain}"
-cops_zope_nginx_server_aliases: "{{vars['cops_zope_nginx_server_aliases___default']}}"
 cops_zope_nginx_server_aliases: ["www.{domain}"]
 cops_zope_nginx_redirect_aliases: true
 cops_zope_nginx_port: "{http_port}"
 cops_zope_nginx_ssl_port: "{https_port}"
-cops_zope_nginx_content_headless_template: "{vrole_path}/templates/nginx.headless.conf"
-cops_zope_nginx_content_template: "{vrole_path}/templates/nginx.conf"
-cops_zope_nginx_top_template: "{vrole_path}/templates/nginx.top.conf"
+cops_zope_nginx_content_headless_template: "../templates/zope.headless.nginx.conf"
+cops_zope_nginx_content_template: "../templates/zope.nginx.conf"
+cops_zope_nginx_top_template: "../templates/zope.nginx.top.conf"
 cops_zope_nginx_basename: "corpus-{name}"
 cops_zope_nginx_is_default_server: true
-cops_zope_nginx_ssl_protected: false
 cops_zope_nginx_htpasswd: "{htpasswd}"
+cops_zope_nginx_ssl_protected: false
 cops_zope_nginx_ssl_cert: ""
 cops_zope_nginx_ssl_key: ""
 cops_zope_nginx_loglevel: crit
@@ -439,8 +521,8 @@ cops_zope_front_nginx_install: "{{cops_zope_front_nginx_domain|copsf_asbool}}"
 cops_zope_front_nginx_redirect_aliases: true
 cops_zope_front_nginx_port: "{http_port}"
 cops_zope_front_nginx_ssl_port: "{https_port}"
-cops_zope_front_nginx_content_template: "{vrole_path}/templates/front.nginx.conf"
-cops_zope_front_nginx_top_template: "{vrole_path}/templates/front.nginx.top.conf"
+cops_zope_front_nginx_content_template: "../templates/front.nginx.conf"
+cops_zope_front_nginx_top_template: "../templates/front.nginx.top.conf"
 cops_zope_front_nginx_basename: "corpus-front-{name}"
 cops_zope_front_nginx_is_default_server: false
 cops_zope_front_nginx_ssl_protected: false
@@ -450,6 +532,27 @@ cops_zope_front_nginx_ssl_key: "{nginx_ssl_key}"
 cops_zope_front_nginx_loglevel: "{nginx_loglevel}"
 cops_zope_front_nginx_upstream_name: "{nginx_upstream_name}"
 cops_zope_front_nginx_doc_root: "{front_doc_root}"
+cops_zope_other_vhosts: []
+#- domain: "{domain}"
+#  server_aliases: ["www.{domain}"]
+#  redirect_aliases: true
+#  port: "{http_port}"
+#  ssl_port: "{https_port}"
+#  content_template: "../templates/plone.conf"
+#  top_template: "../templates/plone.top.conf"
+#  basename: "foovhost"
+#  is_default_server: true
+#  htpasswd: "{htpasswd}"
+#  ssl_protected: false
+#  ssl_cert: ""
+#  ssl_key: ""
+#  loglevel: crit
+#  upstream_name: "{basename}"
+#  doc_root: "{doc_root}"
+#  plonesite: Plone
+#  http_auth_restricted: false
+cops_zope_pip_root: "{project_root}"
+# only needed when wanting to build Python from source
 cops_zope_build_py: false
 cops_zope_py_full_ver: "{py_ver}.13"
 cops_zope_py_ver: "2.7"
@@ -485,7 +588,6 @@ cops_zope_crons___default:
   - "#  weekly full save"
   - "{cron_periodicity_backup_snap} {user} {project_root}/bin/snapshotbackup    2>&1 >/dev/null"
 # does the front and the instances autoconfigure themselves
-cops_zope_dynamic_haproxy: true
 cops_zope_nbinstances: 4
 cops_zope_autostart: 'true'
 cops_zope_autostart1: '{autostart}'
@@ -503,7 +605,8 @@ cops_zope_plone_arc: "{ui}/unifiedinstaller.tgz"
 cops_zope_zroot: "{project_root}"
 cops_zope_py_root: "{project_root}/venv"
 cops_zope_py: "{py_root}/bin/python"
-cops_zope_requirements: "{project_root}/requirements.txt"
+cops_zope_requirements:
+- "{project_root}/requirements.txt"
 cops_zope_skip_eggs_cache: false
 # head |tail (default head)
 cops_zope_link_selector_mode: head
@@ -513,6 +616,7 @@ cops_zope_restarted: instance1
 cops_zope_eggver_setuptools: 33.1.1
 cops_zope_eggver_buildout: 2.9.5
 cops_zope_venv_site_packages: false
+cops_zope_venv_egg_develoo_args: "--no-deps"
 cops_zope_venv_eggs: "{{vars['cops_zope_venv_eggs___default']}}"
 cops_zope_venv_eggs___default:
   - "pip"
@@ -533,6 +637,15 @@ cops_zope_smtp_user: root
 cops_zope_smtp_password: null
 cops_zope_overrides_buildout_secret: {}
 cops_zope_overrides_buildout: {}
+cops_zope_ht_restarttime: "12"
+cops_zope_ht_string: "zope"
+cops_zope_disabled_urls: []
+cops_zope_ldap_url: ""
+#cops_zope_ldap_url: "ldap://ldap.net/dc=m,dc=com?uid?sub?(objectClass=person)"
+cops_zope_ldap_binddn: ""
+#cops_zope_ldap_binddn: "uid=f,dc=e,dc=e"
+cops_zope_ldap_binddn_passwd: "foo"
+# XXX
 cops_zope_buildout_settings___default:
     buildout:
       extends: "{buildout_extends}"

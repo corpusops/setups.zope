@@ -1,4 +1,0 @@
----
-# compute app settings
-- include_role: {name: ./roles/zope}
-  become: "{{cops_zope_vars.become}}"

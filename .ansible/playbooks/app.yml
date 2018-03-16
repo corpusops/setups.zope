@@ -1,5 +1,6 @@
 ---
-# HAPROXY
+# HAPROXY: get the ip of load balancers to configure nginx
+# realip module
 - hosts: "{{haproxy_servers|default('all')}}"
   gather_facts: no
   tasks:
@@ -9,56 +10,13 @@
       block: [{setup: {}}]
 # APP
 - hosts: "{{zope_servers|default('all')}}"
-  roles:
-    - role: corpusops.roles/ansible_plugins
+  roles: [corpusops.roles/ansible_plugins]
   tasks:
-    - when: "cops_zope_dynamic_haproxy|default(false)"
-      block:
-      - name: compute haproxy backends
-        include_jinja_vars:
-          content: |
-            ---
-            {% set ret = ['127.0.0.1'] %}
-            {% for i in vars.groups.get('haproxy_servers', vars.groups.all) %}
-            {% set _ = ret.append(
-              (hostvars[i]).ansible_default_ipv4.address) %}
-            {% endfor %}
-            corpusops_services_http_nginx_reverse_proxy_addresses: {{ret | to_json}}
-    - include_tasks: tasks/load_vars.yml
-      tags: [cops_zope_lifecycle_app]
-      when: "cops_zope_lifecycle_app|default(true)"
-    - when: "cops_zope_lifecycle_app"
-      tags: [cops_zope_lifecycle_app]
-      block:
-      - shell: /bin/false
-        failed_when: false
-        changed_when: false
-        register: cops_zope_test1
-        no_log: true
-      - shell: /bin/false
-        register: cops_zope_test2
-        changed_when: false
-        failed_when: false
-        no_log: true
-      - set_fact:
-          cacheable: false
-          cops_zope_lifecycle_app: |-
-           (((not vars.get('SKIP_INSTALL_ZOPE', False)) and
-             (cops_zope_test1 !=0) or
-             (cops_zope_test2 !=0))) or
-              cops_zope_lifecycle_app|default(false) or
-            (vars.get('FORCE_INSTALL_ZOPE', False)))
-
-- hosts: "{{zope_servers|default('all')}}"
-  tasks:
-    - tags: [cops_zope_lifecycle_app_push_code]
-      when: [cops_zope_lifecycle_app_push_code]
-      block:
-      - include_tasks: tasks/lc_push_code.yml
-
-- hosts: "{{zope_servers|default('all')}}"
-  tasks:
-    - tags: [cops_zope_lifecycle_app_setup]
-      when: [cops_zope_lifecycle_app_setup]
-      block:
-      - include_tasks: tasks/lc_app.yml
+  - when: ["cops_zope_lifecycle_app|default(true)"]
+    tags: ["cops_zope_lifecycle_app"]
+    include_role: {name: zope_app_vars,  allow_duplicates: false}
+  - when: ["cops_zope_lifecycle_app"]
+    tags: ["cops_zope_lifecycle_app"]
+    block:
+    - include_role: {name: zope_push_code, allow_duplicates: false}
+    - include_role: {name: zope, allow_duplicates: false}

@@ -1,6 +1,0 @@
----
-- include_role: {name: corpusops.roles/configs, private: true}
-  vars:
-    cops_configs_templates: "{{cops_zope_ep_configs}}"
-  tags: [cops_zope_s_entry_point]
-  when: [cops_zope_s_entry_point]

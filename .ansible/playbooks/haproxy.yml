@@ -1,53 +1,28 @@
 ---
 # HAPROXY
-- hosts: "{{zope_servers|default('all')}}"
+- hosts: "{{zope_servers}}"
   gather_facts: no
   tasks:
-    - when: >
-         (cops_zope_lifecycle_haproxy|default(false)) and
-         (cops_zope_dynamic_haproxy|default(false))
-      block: [{setup: {}}]
-
-- hosts: "{{haproxy_servers|default('all')}}"
+    - when:
+      - "haproxy_servers|copsf_bool"
+      - >
+        (cops_zope_lifecycle_haproxy|default(false)) and
+        (cops_zope_dynamic_haproxy|default(false))
+      setup: {}
+- hosts: "{{haproxy_servers}}"
   roles: [{role: corpusops.roles/ansible_plugins}]
+  gather_facts: no
   tasks:
-    - when: cops_zope_dynamic_haproxy
+    - when: ["haproxy_servers|copsf_bool",
+             cops_zope_dynamic_haproxy]
       block:
-      - name: compute haproxy backends
-        include_jinja_vars:
-          content: |
-            ---
-            {% set ret = [] %}
-            {% for i in vars.groups.get('zope_servers', vars.groups.all) %}
-            {% set _ = ret.append(
-              (hostvars[i]).ansible_default_ipv4.address) %}
-            {% endfor %}
-            cops_zope_servers_ips: {{ ret | to_json }}
-            corpusops_haproxy_registrations_registrations_dzope:
-            - regexes: [".*"]
-              ip: {{ret | to_json}}
-              frontends:
-                80:
-                  to_port: "{{cops_zope_nginx_port}}"
-                443:
-                  to_port: "{{cops_zope_nginx_port}}"
-                  ssl_terminated: true
-    - include_tasks: tasks/load_vars.yml
-      tags: [cops_zope_lifecycle_haproxy]
-      when: "cops_zope_lifecycle_haproxy|default(false)"
-    - when: "cops_zope_lifecycle_haproxy"
-      tags: [cops_zope_lifecycle_haproxy]
-      block:
-      - set_fact:
-          cacheable: false
-          cops_zope_lifecycle_haproxy: |-
-           (((not vars.get('SKIP_INSTALL_HAPROXY', False))) or
-              cops_zope_lifecycle_haproxy|default(false) or
-            (vars.get('FORCE_INSTALL_HAPROXY', False)))
-
-- hosts: "{{haproxy_servers|default('all')}}"
+      - setup: {}
+      - include_role: {name: zope_haproxy_vars}
+- hosts: "{{haproxy_servers}}"
+  gather_facts: no
   tasks:
-    - when: "cops_zope_lifecycle_haproxy"
+    - when: ["haproxy_servers|copsf_bool",
+             "cops_zope_lifecycle_haproxy"]
       tags: [cops_zope_lifecycle_haproxy]
       become: true
       block:

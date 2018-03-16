@@ -1,0 +1,7 @@
+---
+- debug: {msg: "{{other_vhost}}"}
+  register: other_vhostl
+  no_log: "{{not (cops_vars_debug|default(false))}}"
+- name: "Generate APP other virtualhost for {{other_vhostl.msg.basename}}"
+  include_role: {name: "corpusops.roles/nginx_vhost"}
+  vars: {_corpusops_nginx_vhost: "{{other_vhostl.msg}}"}

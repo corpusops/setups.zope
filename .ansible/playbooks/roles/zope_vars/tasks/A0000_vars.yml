@@ -1,4 +1,6 @@
 ---
+- include_role: {name: corpusops.roles/vars, allow_duplicates: false}
+- include_role: {name: zope_steps, allow_duplicates: false}
 # compute some defaults
 - set_fact:
     cacheable: false
@@ -15,9 +17,9 @@
 # Set the cops_zope_vars var from defaults/main.yml
 - name: "zope registry init"
   include_role: {name: corpusops.roles/vars_registry}
-  vars:
-    cops_vars_registry_target: cops_zope
+  vars: {cops_vars_registry_target: cops_zope}
   no_log: "{{not (cops_vars_debug|default(false))}}"
+
 # Post process some variables
 - name: "zope registry - postprocess"
   include_jinja_vars:

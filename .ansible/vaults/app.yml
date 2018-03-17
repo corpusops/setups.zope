@@ -18,4 +18,4 @@ cops_gis_packages:
 cops_zope_overrides_buildout_secret: {}
 cops_zope_overrides_buildout:
   v:
-    mailinglogger-to: "irstea-makina@lists.makina-corpus.com"
+    mailinglogger-to: "myapp-list@lists.foo.com"

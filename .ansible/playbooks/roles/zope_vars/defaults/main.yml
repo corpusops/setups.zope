@@ -551,6 +551,26 @@ cops_zope_other_vhosts: []
 #  doc_root: "{doc_root}"
 #  plonesite: Plone
 #  http_auth_restricted: false
+#- domain: "www.foo.net"
+#  http_auth_restricted: false
+#  server_aliases: ["foo.bet"]
+#  redirect_aliases: true
+#  port: "{http_port}"
+#  ssl_port: "{https_port}"
+#  content_template: "../templates/redirect.conf"
+#  top_template: "../templates/redirect.top.conf"
+#  basename: "epersyloisirs"
+#  is_default_server: false
+#  htpasswd: "{htpasswd}"
+#  ssl_protected: false
+#  ssl_cert: ""
+#  ssl_key: ""
+#  loglevel: crit
+#  upstream_name: "{basename}"
+#  doc_root: "{doc_root}"
+#  redirects:
+#  - "http://www.otherfoo.net"
+#
 cops_zope_pip_root: "{project_root}"
 # only needed when wanting to build Python from source
 cops_zope_build_py: false

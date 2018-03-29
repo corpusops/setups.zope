@@ -13,7 +13,7 @@ cops_gis_packages:
 - geoip-bin
 - libgeoip-dev
 # __default come from the cops_registry voodoo (duplicated_defaults in main.yml)
-# cops_zope_deb_packages: "{{cops_zope_deb_packages___default+cops_gis_packages}}"
+# cops_zope_deb_packages: "{{vars['cops_zope_deb_runtime_packages']+vars['cops_zope_deb_gis_packages']}}"
 # user/password in secret vault !
 cops_zope_overrides_buildout_secret: {}
 cops_zope_overrides_buildout:

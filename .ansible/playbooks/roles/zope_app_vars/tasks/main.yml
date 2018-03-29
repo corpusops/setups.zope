@@ -9,10 +9,10 @@
       {%  set _ = ret.append((hostvars[i]).ansible_default_ipv4.address) %}
       {% endfor %}
       {{- {'corpusops_services_http_nginx_reverse_proxy_addresses': ret}|to_json  -}}
+- include_role: {name: zope_vars,  allow_duplicates: false}
 - set_fact:
     cacheable: false
     cops_zope_lifecycle_app: "{{
      ((not vars.get('SKIP_INSTALL_ZOPE', False)) or
       cops_zope_lifecycle_app|default(false) or
       (vars.get('FORCE_INSTALL_ZOPE', False)))}}"
-- include_role: {name: zope_vars,  allow_duplicates: false}

@@ -1,10 +1,10 @@
 ---
-- when: cops_zope_dynamic_haproxy
+- include_role: {name: zope_vars,  allow_duplicates: false}
+- when:
+  - (cops_zope_lifecycle_haproxy|default(false))
+  - (cops_zope_dynamic_haproxy|default(false))
   block:
   - setup: {}
-    when: >
-         (cops_zope_lifecycle_haproxy|default(false)) and
-         (cops_zope_dynamic_haproxy|default(false))
   - name: compute haproxy backends
     include_jinja_vars:
       content: |

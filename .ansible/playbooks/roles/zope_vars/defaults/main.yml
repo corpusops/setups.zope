@@ -153,7 +153,6 @@ cops_zope_pkg_python_slug: ""
 cops_zope_pkg_mysql: "libmysqlclient20"
 cops_zope_pkg_ssl: "libssl1.0.0"
 cops_zope_pkg_db: "libdb5.3"
-cops_zope_rh_packages: []
 # cops_zope_packages: "{{cops_zope_deb_packages___default+['vim']}}"
 cops_zope_deb_build_packages___default:
   - "libpython{{cops_zope_pkg_python_slug}}-dev"

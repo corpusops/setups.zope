@@ -1,41 +1,21 @@
-<?xml version="1.0"?>
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="test.cgwb">
 
-  <!-- ' test.cgwb' Zope 3 browser layer -->
-  <interface name="test.cgwb-theme"
-      interface="test.cgwb.interfaces.IThemeSpecific"
-      type="zope.publisher.interfaces.browser.IBrowserSkinType"
-    />
-  <interface  name="test.cgwb" interface="test.cgwb.interfaces.ILayer" />
-
-  <!-- Viewlets registration -->
-
-  <!-- Zope 3 browser views -->
-  <!--
-  <include package="plone.app.contentmenu"/>
-    <browser:page
-        layer="test.cgwb.interfaces.ILayer"
-        for="test.cgwb.interface.mycontent"
-        menu="plone_displayviews"
-        name="MyView"
-        class=".view.MyView"
-        allowed_interface=".view.IMyView"
-        permission="zope2.View"
+  <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
+  <include package="z3c.jbot" file="meta.zcml" />
+  <browser:jbot
+      directory="overrides"
+      layer="test.cgwb.interfaces.ITestCgwbLayer"
       />
-  -->
 
-  <!-- Zope 3 browser resources -->
-
-  <!-- Resource directory -->
-  <browser:resourceDirectory
+  <!-- Publish static files -->
+  <plone:static
       name="test.cgwb"
-      directory="resources"
-      layer="test.cgwb.interfaces.ILayer"
-    />
+      type="plone"
+      directory="static"
+      />
 
-
-  <!-- vim:set ft=xml: -->
 </configure>

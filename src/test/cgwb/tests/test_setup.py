@@ -1,42 +1,59 @@
-"""
-Checking specifics portal settings.
-"""
+# -*- coding: utf-8 -*-
+"""Setup tests for this package."""
+from plone import api
+from plone.app.testing import setRoles
+from plone.app.testing import TEST_USER_ID
+from test.cgwb.testing import TEST_CGWB_INTEGRATION_TESTING  # noqa
 
-import unittest2 as unittest
-
-from test.cgwb.tests import (
-    base
-)
-from test.cgwb.testing import (
-    Browser,
-)
+import unittest
 
 
-class TestSetup(base.IntegrationTestCase):
-    """Check Policy."""
+class TestSetup(unittest.TestCase):
+    """Test that test.cgwb is properly installed."""
 
-    def test_Noop(self):
-        self.assertEquals(True, True)
+    layer = TEST_CGWB_INTEGRATION_TESTING
+
+    def setUp(self):
+        """Custom shared utility setup for tests."""
+        self.portal = self.layer['portal']
+        self.installer = api.portal.get_tool('portal_quickinstaller')
+
+    def test_product_installed(self):
+        """Test if test.cgwb is installed."""
+        self.assertTrue(self.installer.isProductInstalled(
+            'test.cgwb'))
+
+    def test_browserlayer(self):
+        """Test that ITestCgwbLayer is registered."""
+        from test.cgwb.interfaces import (
+            ITestCgwbLayer)
+        from plone.browserlayer import utils
+        self.assertIn(ITestCgwbLayer, utils.registered_layers())
 
 
-class TestFunctionnalSetup(base.FunctionalTestCase):
-    """Check Policy."""
+class TestUninstall(unittest.TestCase):
 
-    def test_FNoop(self):
-        self.assertTrue(
-            'Plone'
-            in Browser.new(self.portal.absolute_url()).contents
+    layer = TEST_CGWB_INTEGRATION_TESTING
+
+    def setUp(self):
+        self.portal = self.layer['portal']
+        self.installer = api.portal.get_tool('portal_quickinstaller')
+        roles_before = api.user.get_roles(username=TEST_USER_ID)
+        setRoles(self.portal, TEST_USER_ID, ['Manager'])
+        self.installer.uninstallProducts(['test.cgwb'])
+        setRoles(self.portal, TEST_USER_ID, roles_before)
+
+    def test_product_uninstalled(self):
+        """Test if test.cgwb is cleanly uninstalled."""
+        self.assertFalse(self.installer.isProductInstalled(
+            'test.cgwb'))
+
+    def test_browserlayer_removed(self):
+        """Test that ITestCgwbLayer is removed."""
+        from test.cgwb.interfaces import \
+            ITestCgwbLayer
+        from plone.browserlayer import utils
+        self.assertNotIn(
+            ITestCgwbLayer,
+            utils.registered_layers(),
         )
-        self.assertTrue(
-            'Plone'
-            in Browser.new('/plone').contents
-        )
-
-
-def test_suite():
-    """."""
-    suite = unittest.TestSuite()
-    suite.addTests(
-        unittest.defaultTestLoader.loadTestsFromName(
-            __name__))
-    return suite

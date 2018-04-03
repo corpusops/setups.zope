@@ -1,16 +1,8 @@
-from zope import interface
-#from zope import schema
-from plone.theme.interfaces import IDefaultPloneLayer
+# -*- coding: utf-8 -*-
+"""Module where all interfaces, events and exceptions live."""
 
-#from test.cgwb import MessageFactory as _
-
-
-class IThemeSpecific(IDefaultPloneLayer):
-    """Marker interface that defines a Zope 3
-    browser layer and a plone skin marker.
-    """
+from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 
 
-class ILayer(interface.Interface):
-    """Marker interface that defines a Zope 3 browser layer.
-    """
+class ITestCgwbLayer(IDefaultBrowserLayer):
+    """Marker interface that defines a browser layer."""

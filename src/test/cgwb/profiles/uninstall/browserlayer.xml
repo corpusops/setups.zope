@@ -1,5 +1,7 @@
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <layers>
-  <layer remove="true" name="test.cgwb-theme" interface="test.cgwb.interfaces.IThemeSpecific"/>
-  <layer remove="true" name="test.cgwb" interface="test.cgwb.interfaces.ILayer"/>
+  <layer
+      name="test.cgwb"
+      remove="true"
+      />
 </layers>

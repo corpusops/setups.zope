@@ -1,60 +1,42 @@
-<?xml version="1.0"?>
 <configure
     xmlns="http://namespaces.zope.org/zope"
-    xmlns:five="http://namespaces.zope.org/five"
+    xmlns:plone="http://namespaces.plone.org/plone"
     xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
     xmlns:i18n="http://namespaces.zope.org/i18n"
-    xmlns:cmf="http://namespaces.zope.org/cmf"
-    xmlns:browser="http://namespaces.zope.org/browser"
-    xmlns:plone="http://namespaces.plone.org/plone"
     i18n_domain="test.cgwb">
-  <include package="Products.Five" file="configure.zcml"/>
-  <include package="Products.CMFCore" file="permissions.zcml" />
-  <!-- safe check for dexterity or multilingual & tests -->
-  <include package="plone.app.contentmenu" />
-  <include package="plone.app.theming" file="configure.zcml" />
-  <include package="plone.app.themingplugins" file="configure.zcml" />
-  <include package="plone.app.dexterity" file="configure.zcml" />
-  <include package="plone.app.dexterity" file="meta.zcml" />
-  <!-- Load the ZCML configuration for the test.cgwb package.-->
-  <!--with_ploneproduct_galleria -->
-  <include package="collective.js.galleria" file="configure.zcml"/>
-  <include package="collective.galleria" file="configure.zcml"/>
-  <!--with_ploneproduct_cpembed -->
-  <include package="collective.portlet.embed" file="configure.zcml"/>
-  <!--with_ploneproduct_eeafn -->
-  <!--with_ploneproduct_eeatags -->
-  <!--with_ploneproduct_eeadaviz -->
-  <include package="eea.facetednavigation" file="meta.zcml"/>
-  <include package="eea.facetednavigation" file="configure.zcml"/>
-  <!--<includeOverrides package="eea.facetednavigation" file="overrides.zcml"-->
-  <include package="eea.tags" file="configure.zcml"/>
-  <!--with_ploneproduct_plomino -->
-  <!--with_ploneproduct_plominotinymce -->
-  <include package="plomino.tinymce" file="configure.zcml"/>
-  <include package="Products.CMFPlomino" file="configure.zcml"/>
-  <!--with_ploneproduct_pacaching -->
-  <include package="plone.app.caching" file="configure.zcml"/>
-  <!--with_ploneproduct_cgallery -->
-  <include package="collective.gallery" file="configure.zcml"/>
-  <include package="eea.relations" file="configure.zcml"/>
-  <include package="eea.daviz" file="configure.zcml"/>
-  <!--<includeOverrides package="eea.daviz[full]" file="overrides.zcml"-->
-  <include package="eea.daviz" file="full.zcml"/>
-  <!--with_ploneproduct_oembed -->
-  <include package="collective.oembed" file="configure.zcml"/>
-  <include package="collective.portlet.oembed" file="configure.zcml"/>
-  <!--with_ploneproduct_configviews -->
-  <include package="collective.configviews" file="configure.zcml"/>
-  <five:registerPackage package="." initialize=".initialize" />
-  <include package=".browser" />
-  <include file="profiles.zcml" />
+
   <i18n:registerTranslations directory="locales" />
-  
-  <cmf:registerDirectory
-       name="test_cgwb_custom"/>
-  
-  <include package="plone.resource" file="meta.zcml"/>
-  <plone:static directory="static" type="theme" name="test.cgwb" />
+
+  <includeDependencies package="." />
+
+  <include package=".browser" />
+
+  <plone:static
+      directory="theme"
+      type="theme"
+      name="cgwb"
+      />
+
+  <genericsetup:registerProfile
+      name="default"
+      title="Plone Theme: Cgwb"
+      directory="profiles/default"
+      description="Installs the Plone theme package test.cgwb."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.post_install"
+      />
+
+  <genericsetup:registerProfile
+      name="uninstall"
+      title="Uninstall: Plone Theme: Cgwb"
+      directory="profiles/uninstall"
+      description="Uninstalls the Plone theme package test.cgwb."
+      provides="Products.GenericSetup.interfaces.EXTENSION"
+      post_handler=".setuphandlers.uninstall"
+      />
+
+  <utility
+      factory=".setuphandlers.HiddenProfiles"
+      name="test.cgwb-hiddenprofiles" />
+
 </configure>
-<!-- vim:set ft=xml: -->

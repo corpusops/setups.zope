@@ -35,6 +35,9 @@ setup(
         'Products.GenericSetup>=1.8.2',
         'Products.DCWorkflowGraph',
         'setuptools',
+        'z3c.jbot',
+        'plone.app.theming',
+        'plone.app.themingplugins',
         # App requirements
         # 'collective.contact.core',
         # 'collective.instancebehavior',

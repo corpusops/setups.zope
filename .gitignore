@@ -1,4 +1,5 @@
 bin
+etc/sys/zeoauth.db
 /bootstrap.py
 cron_scripts/
 develop-eggs/

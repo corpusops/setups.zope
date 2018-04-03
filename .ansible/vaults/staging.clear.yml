@@ -1,5 +1,6 @@
 ---
-cops_zope_domain: "staging-myapp.makina-corpus.net"
+cops_zope_domain: "staging-myapp.foo.net"
+cops_zope_buildout_extends: "buildout-prod.cfg etc/sys/mailinglogger.cfg"
 # # set this to false to explicitly configure haproxy !
 # cops_zope_dynamic_haproxy: false
 # # realip

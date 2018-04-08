@@ -126,6 +126,7 @@ cops_zope_deb_runtime_packages:
   - tcl8.4
   - tcl8.5
   - wv
+  - lynx
   - zlib1g
   - wget
   - rsync

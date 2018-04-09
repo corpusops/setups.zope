@@ -147,5 +147,3 @@
           tar xjf "{{cops_zope_vars.ui}}/Plone-${plone_ver}-UnifiedInstaller/packages/buildout-cache.tar.bz2"
         register: cops_c_zope_ui_unpack_cache
         changed_when: "not 'AlreadyDone' in cops_c_zope_ui_unpack_cache.stderr"
-
-

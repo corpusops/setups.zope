@@ -1,0 +1,45 @@
+---
+version: '3.5'
+# Build with:
+#  docker build --squash -t corpusops/zope -f Dockerfile [--build-arg=SKIP_COPS_UPDATE=y]
+# Start with:
+#  docker-compose -f d*-compose.yml  up -t 0 -d --force-recreate zope
+networks: {corpusopsdev_net: {ipam: {config: [{subnet: "172.19.100.0/24"}], driver: default}, driver: bridge}}
+x-image: &image_template
+  image: &image "corpusops/zope"
+  environment:
+  - &image_env |
+    A_RECONFIGURE: |
+      ---
+      only_steps: true
+      cops_zope_lifecycle_app_push_code: false
+      cops_zope_s_docker_reconfigure: true
+      cops_zope_s_setup_configs: true
+      cops_zope_s_setup_reverse_proxy: true
+      corpusops_services_proxy_haproxy_do_prerequisites: false
+      corpusops_services_proxy_haproxy_do_services: false
+    A_POSTCONFIGURE: |
+      ---
+      only_steps: true
+      corpusops_services_proxy_haproxy_do_prerequisites: false
+      corpusops_services_proxy_haproxy_do_services: false
+      cops_zope_lifecycle_app_push_code: false
+      cops_zope_s_manage_content: true
+  command: /app_entry_point
+  # for now this is a bloat image-as-a-vm to make a dev env ligther than a vagrant VM
+  volumes: &image_volumes
+  # systemd
+  - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+  # data
+  - "./local/setup:/setup"
+  - "./local/data/blobstorage/storage:/srv/projects/zopeproject/data/var/blobstorage/storage"
+  - "./local/data/blobstorage/backup:/srv/projects/zopeproject/data/var/blobstorage/backup"
+  - "./local/data/filestorage:/srv/projects/zopeproject/data/var/filestorage"
+  - "./local/data/backups:/srv/projects/zopeproject/data/var/backups"
+  - "./local/data/snapshotbackups:/srv/projects/zopeproject/data/var/snapshotbackups"
+  - "./local/data/log:/srv/projects/zopeproject/data/var/log"
+  # Remember: /setup/rootfs/ is synced inside the container /
+services:
+  zope:
+    <<: *image_template
+    networks: {corpusopsdev_net: {ipv4_address: "172.19.100.2"}}

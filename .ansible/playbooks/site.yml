@@ -1,5 +1,7 @@
 ---
 - import_playbook: haproxy.yml
   tags: [play_zope_haproxy]
+  when: ["play_zope_haproxy|default(true)"]
 - import_playbook: app.yml
   tags: [play_zope_app]
+  when: ["play_zope_app|default(true)"]

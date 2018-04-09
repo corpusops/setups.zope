@@ -1,0 +1,47 @@
+---
+- name: "Deactivate all services for selecting those we need"
+  shell: |
+    # image specific stuff
+    export proot="{{cops_zope_vars.project_root}}"
+    supervisorconf="$proot/parts/supervisor/supervisord.conf"
+    sed -i -re "s/autostart.*=.*true/autostart = false/g" "$supervisorconf"
+- name: maybe disable some services
+  file:
+    state: absent
+    path: "{{item}}"
+  with_items: |-
+    {% set res = [] %}
+    {% set s = [] %}
+    {% if  not cops_zope_docker_has_nginx %}
+    {% set _ = s.append('nginx') %}
+    {% endif %}
+    {% if  not cops_zope_docker_has_front_haproxy %}
+    {% set _ = s.append('haproxy') %}
+    {% endif %}
+    {% for i in s %}
+    {%  set _ = ret.extend([
+      '/etc/systemd/system/multi-user.target.wants/{0}.service'.format(service),
+      '/lib/systemd/system/multi-user.target.wants/{0}.service'.format(service),
+      ])%}
+    {% endfor %}
+    {{ res|to_json }}
+- name: activate needed services
+  ini_file:
+    path: "{{cops_zope_vars.project_root}}/parts/supervisor/supervisord.conf"
+    section: "program:{{item}}"
+    option: "autostart"
+    value: true
+    mode: 0600
+    backup: false
+  with_items: |
+    {% set res = [] %}
+    {% if cops_zope_vars.docker_has_zeo %}
+    {%  set _ = res.append("zeo") %}
+    {% endif %}
+    {% if cops_zope_vars.docker_has_zope %}
+    {%  set _ = res.append("instance1") %}
+    {% endif %}
+    {% if cops_zope_vars.docker_has_balancer %}
+    {%  set _ = res.append("balancer") %}
+    {% endif %}
+    {{ res | to_json }}

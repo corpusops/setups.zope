@@ -1,6 +1,9 @@
 ---
 cops_app_name: zope
 cops_zope_zope_profile: "{{cops_app_name}}"
+# set to null to autogenerate on the remote box
+# or redefine to something more secret in your encrypted vault
+cops_zope_admin_password: verysecretbTj93w8324REdpJ
 #
 controller: localhost
 zope_servers: zope_servers
@@ -8,7 +11,6 @@ haproxy_servers: haproxy_servers
 app_servers: "{{zope_servers}}"
 cops_installer_mode: lazy
 cops_zope_name: "{{cops_app_name}}"
-cops_zope_servers_ips: [127.0.0.1]
 cops_zope_nginx_port: 180
 cops_zope_nginx_ssl_port: 1443
 corpusops_nginx_default_vhost_port: "{{cops_zope_nginx_port}}"

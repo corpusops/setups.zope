@@ -2,6 +2,7 @@
 - set_fact:
     cacheable: false
     only_steps: "{{only_steps|default(False)}}"
+    cops_zope_s_docker_reconfigure: "{{cops_zope_s_docker_reconfigure|default(False)}}"
 - set_fact:
     cacheable: false
     cops_zope_lifecycle_app_push_code:         "{{cops_zope_lifecycle_app_push_code|default(not only_steps)}}"
@@ -60,6 +61,8 @@
     cops_zope_s_first_fixperms: "{{cops_zope_s_first_fixperms|default(not only_steps)}}"
     cops_zope_s_end_fixperms:   "{{cops_zope_s_end_fixperms  |default(not only_steps)}}"
     cops_zope_s_workers_service:      "{{cops_zope_s_workers_service     |default(cops_zope_s_workers|default(cops_zope_lifecycle_app_setup|default(not only_steps)))}}"
+    cops_zope_s_entry_point_configs:  "{{cops_zope_s_entry_point_configs    |default(cops_zope_s_entry_point|default(cops_zope_lifecycle_app_setup|default(not only_steps))) and ansible_virtualization_type in ['docker']}}"
+    cops_zope_s_entry_point_services:  "{{cops_zope_s_entry_point_services  |default(cops_zope_s_entry_point|default(cops_zope_lifecycle_app_setup|default(not only_steps))) and ansible_virtualization_type in ['docker']}}"
 - set_fact:
     cacheable: false
     cops_zope_s_users_group: "{{cops_zope_s_users_group |default(cops_zope_s_first_fixperms or cops_zope_s_end_fixperms or cops_zope_lifecycle_app_push_code or cops_zope_s_users|default(cops_zope_lifecycle_app_setup|default(not only_steps)))}}"
@@ -74,7 +77,7 @@
       cops_zope_s_prerequisites_build_pkgs or
       cops_zope_s_prerequisites_pkgs)}}"
     cops_zope_s_workers:        "{{cops_zope_s_workers_service}}"
-    cops_zope_s_entry_point:    "{{cops_zope_s_entry_point   |default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
+    cops_zope_s_entry_point:    "{{(cops_zope_s_entry_point_configs or cops_zope_s_entry_point_services)}}"
     cops_zope_s_manage_content: "{{cops_zope_s_manage_content|default(cops_zope_lifecycle_app_setup|default(not only_steps))}}"
     cops_zope_s_setup_front:  "{{(
       cops_zope_s_setup_front_build or

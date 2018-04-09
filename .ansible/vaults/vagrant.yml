@@ -9,5 +9,3 @@ corpusops_services_http_nginx_ssl_port: 1443
 cops_zope_servers_ips: [127.0.0.1]
 cops_zope_http_port: "{{corpusops_services_http_nginx_port}}"
 cops_zope_https_port: "{{corpusops_services_http_nginx_ssl_port}}"
-# deactivate mailinglogger on test envs
-cops_zope_buildout_extends: "buildout-prod.cfg"

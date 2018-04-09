@@ -1,5 +1,12 @@
 ---
 - include_role: {name: corpusops.roles/configs, private: true}
   vars: {cops_configs_templates: "{{cops_zope_vars.ep_configs}}"}
-  tags: [cops_zope_s_entry_point]
-  when: [cops_zope_s_entry_point]
+  tags: [cops_zope_s_entry_point_configs]
+  when: [cops_zope_s_entry_point_configs]
+- cops_service:
+    enabled: "{{cops_zope_vars.activated | ternary(True, False)}}"
+    daemon_reload: yes
+    name: "{{item}}"
+  with_items: "{{cops_zope_vars.reconfigure_services}}"
+  tags: [cops_zope_s_entry_point_services]
+  when: [cops_zope_s_entry_point_services]

@@ -4,7 +4,7 @@ cops_app_name: myapp
 cops_zope_yarn_extra_steps: []
 # cops_zope_nginx_content_template: "{nginx_content_headless_template}"
 # cops_zope_lifecycle_haproxy: true
-cops_zope_nginx_content_template: "{nginx_content_headless_template}"
+# cops_zope_nginx_content_template: "{{vars['cops_zope_nginx_content_headless_template']}}"
 cops_zope_lifecycle_haproxy: true
 cops_gis_packages:
 - gdal-bin

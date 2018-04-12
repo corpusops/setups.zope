@@ -64,6 +64,45 @@ cops_zope_deb_gis_packages:
     {%- endif -%}"
   - libgeoip1
 cops_zope_deb_runtime_packages:
+  - apache2-utils
+  - bzip2
+  - gettext
+  - git
+  - groff
+  - libcurl3
+  - libfreetype6
+  - liblcms2-2
+  - libsqlite0
+  - libsqlite3-0
+  - libtiff5
+  - libtool
+  - python-setuptools
+  - python-numpy
+  - cython
+  - m4
+  - man-db
+  - pkg-config
+  - poppler-utils
+  - "{% if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >= '18.04'|copsf_looseversion )
+    %}tcl8.5{%else%}tcl8.4{%endif %}"
+  - tcl8.5
+  - wv
+  - lynx
+  - zlib1g
+  - wget
+  - rsync
+  - libcairo2
+  - libcairo-gobject2
+  - libcairo-script-interpreter2
+  - libxml2
+  - libxslt1.1
+  - python-passlib
+  - python3-passlib
+  - "{{cops_zope_pkg_ssl}}"
+  - "{{cops_zope_pkg_db}}"
+  - "python{{cops_zope_pkg_python_slug}}"
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion <=
@@ -80,65 +119,29 @@ cops_zope_deb_runtime_packages:
     {%- else -%}
     libsigc++-2.0-0v5
     {%- endif -%}"
-  - apache2-utils
-  - bzip2
-  - gettext
-  - git
-  - groff
-  - libcurl3
-  - libfreetype6
-  - liblcms2-2
-  - libsqlite0
-  - libsqlite3-0
-  - libtiff5
-  - libtool
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >=
           '18.04'|copsf_looseversion)
      %}libwebp6{%else
      %}libwebp5{%endif%}"
-  - libxml2
-  - libxslt1.1
-  - "python{{cops_zope_pkg_python_slug}}"
-  - python-passlib
-  - python3-passlib
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >=
           '18.04'|copsf_looseversion)
     %}python-pil{% else
     %}python-imaging{%endif%}"
-  - python-setuptools
-  - python-numpy
-  - cython
   - "{% if ansible_distribution_version|copsf_looseversion <= '14.04'|copsf_looseversion
 
     %}libopenjpeg2{% elif
         ansible_distribution_version|copsf_looseversion < '18.04'|copsf_looseversion
     %}libopenjpeg5{% else
     %}libopenjp2-7{% endif %}"
-  - m4
-  - man-db
-  - pkg-config
-  - poppler-utils
-  - tcl8.4
-  - tcl8.5
-  - wv
-  - lynx
-  - zlib1g
-  - wget
-  - rsync
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >=
           '18.04'|copsf_looseversion)
     %}libgdbm5{%else%}libgdbm3{%endif%}"
-  - "{{cops_zope_pkg_ssl}}"
-  - libcairo2
-  - libcairo-gobject2
-  - libcairo-script-interpreter2
-  - "{{cops_zope_pkg_db}}"
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >=

@@ -86,7 +86,7 @@ cops_zope_deb_runtime_packages:
   - "{% if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >= '18.04'|copsf_looseversion )
-    %}tcl8.5{%else%}tcl8.4{%endif %}"
+    %}tcl8.6{%else%}tcl8.5{%endif %}"
   - tcl8.5
   - wv
   - lynx
@@ -191,9 +191,14 @@ cops_zope_deb_build_packages___default:
      %}libopenjp2-7-dev{%else%}libopenjpeg-dev{%endif%}"
   - zlib1g-dev
   - libwebp-dev
-  - tcl8.5-dev
-  - tcl8.4-dev
-  - tk8.5-dev
+  - "{% if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >= '18.04'|copsf_looseversion )
+    %}tcl8.6-dev{%else%}tcl8.5-dev{%endif %}"
+  - "{% if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >= '18.04'|copsf_looseversion )
+    %}tk8.6-dev{%else%}tk8.5-dev{%endif %}"
 cops_zope_rh_build_packages: []
 cops_zope_rh_packages: "{{vars['cops_zope_rh_packages___default']}}"
 cops_zope_rh_packages___default: []

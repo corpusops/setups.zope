@@ -2,18 +2,18 @@
     xmlns="http://namespaces.zope.org/zope"
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:plone="http://namespaces.plone.org/plone"
-    i18n_domain="test.cgwb">
+    i18n_domain="plonetheme.cgwb">
 
   <!-- Set overrides folder for Just-a-Bunch-Of-Templates product -->
   <include package="z3c.jbot" file="meta.zcml" />
   <browser:jbot
       directory="overrides"
-      layer="test.cgwb.interfaces.ITestCgwbLayer"
+      layer="plonetheme.cgwb.interfaces.IPlonethemeCgwbLayer"
       />
 
   <!-- Publish static files -->
   <plone:static
-      name="test.cgwb"
+      name="plonetheme.cgwb"
       type="plone"
       directory="static"
       />

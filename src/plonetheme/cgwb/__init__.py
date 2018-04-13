@@ -4,4 +4,4 @@
 from zope.i18nmessageid import MessageFactory
 
 
-_ = MessageFactory('test.cgwb')
+_ = MessageFactory('plonetheme.cgwb')

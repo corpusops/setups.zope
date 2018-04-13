@@ -478,7 +478,7 @@ cops_zope_http_auth_restricted: false
 cops_zope_http_users:
 - {user: "{{vars['cops_zope_admin_user']}}", password: "{{vars['cops_zope_admin_password']}}"}
 #- {user: "myadmin", password: "mypassword"}
-cops_zope_rp_max_body_size: "100M"
+cops_zope_rp_max_body_size: "1000M"
 cops_zope_http_port: "80"
 cops_zope_https_port: "443"
 cops_zope_nginx: {}

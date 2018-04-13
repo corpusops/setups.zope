@@ -7,10 +7,10 @@ from plone.app.testing import IntegrationTesting
 from plone.app.testing import PloneSandboxLayer
 from plone.testing import z2
 
-import plonetheme.cgwb
+import test.cgwb
 
 
-class PlonethemeCgwbLayer(PloneSandboxLayer):
+class TestCgwbLayer(PloneSandboxLayer):
 
     defaultBases = (PLONE_APP_CONTENTTYPES_FIXTURE,)
 
@@ -18,32 +18,32 @@ class PlonethemeCgwbLayer(PloneSandboxLayer):
         # Load any other ZCML that is required for your tests.
         # The z3c.autoinclude feature is disabled in the Plone fixture base
         # layer.
-        self.loadZCML(package=plonetheme.cgwb)
+        self.loadZCML(package=test.cgwb)
 
     def setUpPloneSite(self, portal):
-        applyProfile(portal, 'plonetheme.cgwb:default')
+        applyProfile(portal, 'test.cgwb:default')
 
 
-PLONETHEME_CGWB_FIXTURE = PlonethemeCgwbLayer()
+TEST_CGWB_FIXTURE = TestCgwbLayer()
 
 
-PLONETHEME_CGWB_INTEGRATION_TESTING = IntegrationTesting(
-    bases=(PLONETHEME_CGWB_FIXTURE,),
-    name='PlonethemeCgwbLayer:IntegrationTesting'
+TEST_CGWB_INTEGRATION_TESTING = IntegrationTesting(
+    bases=(TEST_CGWB_FIXTURE,),
+    name='TestCgwbLayer:IntegrationTesting'
 )
 
 
-PLONETHEME_CGWB_FUNCTIONAL_TESTING = FunctionalTesting(
-    bases=(PLONETHEME_CGWB_FIXTURE,),
-    name='PlonethemeCgwbLayer:FunctionalTesting'
+TEST_CGWB_FUNCTIONAL_TESTING = FunctionalTesting(
+    bases=(TEST_CGWB_FIXTURE,),
+    name='TestCgwbLayer:FunctionalTesting'
 )
 
 
-PLONETHEME_CGWB_ACCEPTANCE_TESTING = FunctionalTesting(
+TEST_CGWB_ACCEPTANCE_TESTING = FunctionalTesting(
     bases=(
-        PLONETHEME_CGWB_FIXTURE,
+        TEST_CGWB_FIXTURE,
         REMOTE_LIBRARY_BUNDLE_FIXTURE,
         z2.ZSERVER_FIXTURE
     ),
-    name='PlonethemeCgwbLayer:AcceptanceTesting'
+    name='TestCgwbLayer:AcceptanceTesting'
 )

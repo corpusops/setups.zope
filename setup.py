@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Installer for the test.cgwb package."""
+"""Installer for the plonetheme.cgwb package."""
 
 from setuptools import find_packages
 from setuptools import setup
 
 setup(
-    name='test.cgwb',
+    name='plonetheme.cgwb',
     version='1.0a1',
     description="App project",
     long_description="",
@@ -22,7 +22,7 @@ setup(
     keywords='Python Plone',
     author='Makina Corpus',
     author_email='contact@makina-corpus.com',
-    url='https://pypi.python.org/pypi/test.cgwb',
+    url='https://pypi.python.org/pypi/plonetheme.cgwb',
     license='GPL version 2',
     packages=find_packages('src', exclude=['ez_setup']),
     namespace_packages=['test'],

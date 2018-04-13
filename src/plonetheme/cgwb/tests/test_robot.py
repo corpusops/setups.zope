@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from plone.app.testing import ROBOT_TEST_LEVEL
 from plone.testing import layered
-from test.cgwb.testing import TEST_CGWB_ACCEPTANCE_TESTING  # noqa
+from plonetheme.cgwb.testing import PLONETHEME_CGWB_ACCEPTANCE_TESTING  # noqa
 
 import os
 import robotsuite
@@ -22,7 +22,7 @@ def test_suite():
         suite.addTests([
             layered(
                 robottestsuite,
-                layer=TEST_CGWB_ACCEPTANCE_TESTING
+                layer=PLONETHEME_CGWB_ACCEPTANCE_TESTING
             ),
         ])
     return suite

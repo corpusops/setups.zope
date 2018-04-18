@@ -3,12 +3,12 @@ version: '3.5'
 # Build with (build stock first !):
 #  docker build --squash  -t corpusops/zope:dev -f Dockerfile.dev [--build-arg=SKIP_COPS_UPDATE=y]
 # Start with:
-#  SUPEREDITORS=$(id -u) docker-compose -f d*-compose.yml -f d*-compose-dev.yml up -t 0 -d --force-recreate zope
-networks: {corpusopsdev_net: {ipam: {config: [{subnet: "172.19.102.0/24"}], driver: default}, driver: bridge}}
+#  SUPEREDITORS=$(id -u) docker-compose -f d*-compose-dev.yml -f d*-compose-project.yml -f d*-compose-project-dev.yml up -t 0 -d --force-recreate zope
+#
 x-image: &image_template
-  image: &image "corpusops/zope:dev"
   environment:
   - SUPEREDITORS=$SUPEREDITORS
+  - "DOCKER_SKIP_START=${DOCKER_SKIP_START-}"
   - |
     A_RECONFIGURE=---
     only_steps: true
@@ -71,5 +71,4 @@ x-image: &image_template
   # - "./local/corpusops.bootstrap/docs:/srv/corpusops/corpusops.bootstrap/docs"
 services:
   zope:
-    <<: *image_template
-    networks: {corpusopsdev_net: {ipv4_address: "172.19.102.3"}}
+    <<:  [ *image_template ]

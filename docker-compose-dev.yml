@@ -63,6 +63,12 @@ x-image: &image_template
   - "./.ansible/playbooks:/provision_dir/.ansible/playbooks"
   - "./local/setups.zope:/provision_dir/local/setups.zope"
   # Remember: /setup/rootfs/ is synced inside the container /
+  # Need a bind mount in local/corpusops.bootstrap instead of the symlink
+  # - "./local/corpusops.bootstrap/bin:/srv/corpusops/corpusops.bootstrap/bin"
+  # - "./local/corpusops.bootstrap/hacking:/srv/corpusops/corpusops.bootstrap/hacking"
+  # - "./local/corpusops.bootstrap/roles:/srv/corpusops/corpusops.bootstrap/roles"
+  # - "./local/corpusops.bootstrap/requirements:/srv/corpusops/corpusops.bootstrap/requirements"
+  # - "./local/corpusops.bootstrap/docs:/srv/corpusops/corpusops.bootstrap/docs"
 services:
   zope:
     <<: *image_template

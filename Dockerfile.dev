@@ -18,13 +18,6 @@ ENV A_ENV_NAME=$APP_ENV_NAME
 ENV COPS_PROJECT_TYPE=$COPS_PROJECT_TYPE
 ENV TMPPLAYBOOK=$TMPPLAYBOOK
 ENV NONINTERACTIVE=1
-#
-ADD .ansible/scripts        /provision_dir/.ansible/scripts
-ADD .ansible/vaults         /provision_dir/.ansible/vaults
-ADD .ansible/filter_plugins /provision_dir/.ansible/filter_plugins
-# ADD enougth of ancestors for bootstraping (if submodules)
-ADD local/$COPS_ANCESTOR/.ansible/vaults         local/$COPS_ANCESTOR/.ansible/vaults
-ADD local/$COPS_ANCESTOR/.ansible/filter_plugins local/$COPS_ANCESTOR/.ansible/filter_plugins
 
 ## Uncomment to load inside the container
 ## local corpusops.bootstrap modifications
@@ -40,8 +33,11 @@ RUN bash -c '\
   rm -rf local/corpusops.bootstrap \
   && ln -sf $COPS_ROOT local/corpusops.bootstrap \
   && .ansible/scripts/download_corpusops.sh \
-  && .ansible/scripts/setup_ansible.sh \
-  && $_call_ansible .ansible/playbooks/site.yml \
+  && .ansible/scripts/setup_ansible.sh'
+
+# Install zope app
+RUN bash -c '\
+  $_call_ansible .ansible/playbooks/app.yml \
   -e "{cops_${COPS_PROJECT_TYPE}_s_healthchecks: false, \
        cops_${COPS_PROJECT_TYPE}_s_manage_content: false}"'
 

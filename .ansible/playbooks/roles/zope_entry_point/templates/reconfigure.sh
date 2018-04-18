@@ -40,7 +40,7 @@ if [[ -z "${DEFAULT_COPS_ANSIBLE_CALLER-}" ]];then
 fi
 COPS_ANSIBLE_CALLER="${COPS_ANSIBLE_CALLER:-$DEFAULT_COPS_ANSIBLE_CALLER}"
 if [[ -n $ANSIBLE_CWD ]];then cd "$ANSIBLE_CWD";fi
-if [[ -n "${A_ENV_NAME}" ]] && [ -e .ansible/scripts/setup_vaulmts.sh ];then
+if [[ -n "${A_ENV_NAME}" ]] && [ -e .ansible/scripts/setup_vaults.sh ];then
     .ansible/scripts/setup_vaults.sh
 fi
 if [[ -z ${NO_CONFIG-} ]];then

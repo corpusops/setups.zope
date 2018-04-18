@@ -4,7 +4,7 @@ version: '3.5'
 #  docker build --squash -t corpusops/zope -f Dockerfile [--build-arg=SKIP_COPS_UPDATE=y]
 # Start with:
 #  docker-compose -f d*-compose.yml  up -t 0 -d --force-recreate zope
-networks: {corpusopsdev_net: {ipam: {config: [{subnet: "172.19.100.0/24"}], driver: default}, driver: bridge}}
+networks: {corpusopsdev_net: {ipam: {config: [{subnet: "172.19.102.0/24"}], driver: default}, driver: bridge}}
 x-image: &image_template
   image: &image "corpusops/zope"
   environment:
@@ -42,4 +42,4 @@ x-image: &image_template
 services:
   zope:
     <<: *image_template
-    networks: {corpusopsdev_net: {ipv4_address: "172.19.100.2"}}
+    networks: {corpusopsdev_net: {ipv4_address: "172.19.102.2"}}

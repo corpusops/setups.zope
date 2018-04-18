@@ -622,7 +622,7 @@ cops_zope_admin_user: "admin"
 cops_zope_admin_password: null
 cops_zope_restarted: instance1
 cops_zope_eggver_setuptools: 33.1.1
-cops_zope_eggver_buildout: 2.9.5
+cops_zope_eggver_buildout: 2.11.3
 cops_zope_venv_site_packages: false
 cops_zope_venv_egg_develoo_args: "--no-deps"
 cops_zope_venv_eggs: "{{vars['cops_zope_venv_eggs___default']}}"
@@ -639,7 +639,8 @@ cops_zope_locations_blob_storage_dir: "{{vars['cops_zope_var_directory']}}/blobs
 cops_zope_locations_blob_storage: "{{vars['cops_zope_locations_blob_storage_dir']}}/storage"
 cops_zope_locations_blob_backup:  "{{vars['cops_zope_locations_blob_storage_dir']}}/backup"
 cops_zope_buildout_bootstrap: "bootstrap-buildout.py"
-cops_zope_buildout_bootstrap_args: "--setuptools-version={{vars['cops_zope_eggver_setuptools']}} -v {{vars['cops_zope_eggver_buildout']}}"
+# cops_zope_buildout_bootstrap_args: "--setuptools-version={{vars['cops_zope_eggver_setuptools']}} -v {{vars['cops_zope_eggver_buildout']}}"
+cops_zope_buildout_bootstrap_args: "--setuptools-version={{vars['cops_zope_eggver_setuptools']}} -v {{vars['cops_zope_eggver_buildout']}} -c {{vars['cops_zope_buildout_cfg']}}"
 cops_zope_buildout_cwd: "{{vars['cops_zope_zroot']}}"
 cops_zope_buildout_cmd: "{{vars['cops_zope_zroot']}}/bin/buildout"
 cops_zope_buildout_cmd_args: "-Nc"

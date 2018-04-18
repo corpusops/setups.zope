@@ -72,4 +72,4 @@ x-image: &image_template
 services:
   zope:
     <<: *image_template
-    networks: {corpusopsdev_net: {ipv4_address: "172.19.102.2"}}
+    networks: {corpusopsdev_net: {ipv4_address: "172.19.102.3"}}

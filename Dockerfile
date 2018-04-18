@@ -1,3 +1,4 @@
+# docker build --squash -t <your/project> . -f Dockerfile --build-arg=SKIP_COPS_UPDATE=y
 FROM corpusops/ubuntu:16.04
 # Rewarm apt cache
 RUN bash -c '\
@@ -22,7 +23,6 @@ ENV NONINTERACTIVE=1
 ## Uncomment to load inside the container
 ## local corpusops.bootstrap modifications
 ## rm local/corpusops.bootstrap;sudo mount -o bind ~/corpusops/corpusops.bootstrap local/corpusops.bootstrap
-## docker build --squash -t m . -f Dockerfile --build-arg=SKIP_COPS_UPDATE=y
 # ADD local/corpusops.bootstrap/hacking $COPS_ROOT/hacking/
 # ADD local/corpusops.bootstrap/bin     $COPS_ROOT/bin/
 # ADD local/corpusops.bootstrap/roles   $COPS_ROOT/roles/

@@ -6,23 +6,28 @@ version: '3.5'
 #  docker-compose -f d*-compose.yml -f d*-compose-project.yml up -t 0 -d --force-recreate zope
 x-image: &image_template
   environment:
-  - &image_env |
-    A_RECONFIGURE: |
-      ---
-      only_steps: true
-      cops_zope_lifecycle_app_push_code: false
-      cops_zope_s_docker_reconfigure: true
-      cops_zope_s_setup_configs: true
-      cops_zope_s_setup_reverse_proxy: true
-      corpusops_services_proxy_haproxy_do_prerequisites: false
-      corpusops_services_proxy_haproxy_do_services: false
-    A_POSTCONFIGURE: |
-      ---
-      only_steps: true
-      corpusops_services_proxy_haproxy_do_prerequisites: false
-      corpusops_services_proxy_haproxy_do_services: false
-      cops_zope_lifecycle_app_push_code: false
-      cops_zope_s_manage_content: true
+  - |
+    A_RECONFIGURE=---
+    ---
+    cops_zope_docker_has_front_haproxy: true
+    cops_zope_docker_has_nginx: true
+    cops_zope_docker_has_zeo: true
+    cops_zope_docker_has_zope: true
+    only_steps: true
+    cops_zope_lifecycle_app_push_code: false
+    cops_zope_s_docker_reconfigure: true
+    cops_zope_s_setup_configs: true
+    cops_zope_s_setup_reverse_proxy: true
+    corpusops_services_proxy_haproxy_do_prerequisites: false
+    corpusops_services_proxy_haproxy_do_services: false
+  - |
+    A_POSTCONFIGURE=---
+    ---
+    only_steps: true
+    corpusops_services_proxy_haproxy_do_prerequisites: false
+    corpusops_services_proxy_haproxy_do_services: false
+    cops_zope_lifecycle_app_push_code: false
+    cops_zope_s_manage_content: true
   command: >
     sh -c 'if [ "x$DOCKER_SKIP_START" != x ];
     then while true;do echo sleeping;sleep 65535;done

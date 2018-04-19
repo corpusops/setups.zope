@@ -11,6 +11,10 @@ x-image: &image_template
   - "DOCKER_SKIP_START=${DOCKER_SKIP_START-}"
   - |
     A_RECONFIGURE=---
+    cops_zope_docker_has_front_haproxy: true
+    cops_zope_docker_has_nginx: true
+    cops_zope_docker_has_zeo: true
+    cops_zope_docker_has_zope: true
     only_steps: true
     cops_zope_lifecycle_app_push_code: false
     cops_zope_s_docker_reconfigure: true

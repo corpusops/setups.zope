@@ -253,10 +253,10 @@ cops_zope_zope_bind_host: '127.0.0.1'
 cops_zope_provision_dir: /provision_dir
 cops_zope_ep_template: "../templates/app_entry_point"
 cops_zope_ep_playbook: ".ansible/playbooks/site.yml"
-cops_zope_docker_has_front_haproxy: true
-cops_zope_docker_has_nginx: true
-cops_zope_docker_has_zeo: true
-cops_zope_docker_has_zope: true
+cops_zope_docker_has_front_haproxy: false
+cops_zope_docker_has_nginx: false
+cops_zope_docker_has_zeo: false
+cops_zope_docker_has_zope: false
 cops_zope_docker_has_balancer: "{{cops_zope_docker_has_zope}}"
 # global orchestration steps (db, code sync, web & workers prereqs, zope config)
 cops_zope_become: true

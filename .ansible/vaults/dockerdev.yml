@@ -3,3 +3,4 @@ zope_servers: all
 haproxy_servers: all
 cops_zope_buildout_extends: "buildout.cfg"
 cops_zope_force_push_code: true
+cops_django_project_sdir: "zopeproject"

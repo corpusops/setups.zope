@@ -4,9 +4,14 @@ corpusops_core_projects_path: /srv/projects
 # users than have full right to edit file in the container
 # When this is enabled, the project user/group is also granted full perms
 # (attention, uids!)
-cops_zope__supereditors_paths:
-  - "{{vars['cops_zope_project_root']}}"
-  - "{{vars['cops_zope_data_root']}}"
+cops_zope__supereditors_paths: |-
+  {% set res = [
+    vars['cops_zope_project_root'],
+    vars['cops_zope_data_root']] %}
+  {% if ansible_virtualization_type in ['docker'] %}
+  {%  set _ = res.extend(['/srv/backups', '/setup']) %}
+  {% endif %}
+  {{ res | to_json }}
 # space separated string of uids to allow to write inside
 # projetct directories (used in development through posix ACLS setter)
 cops_zope__supereditors: >-

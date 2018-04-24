@@ -1,0 +1,42 @@
+---
+sudo: required
+dist: trusty
+env:
+  matrix:
+    - IMAGES="corpusops/setups.zope|Dockerfile corpusops/setups.zope:dev|Dockerfile.dev"
+      RELEASABLE_BRANCHES=project
+      PROJECT_SUBFOLDER=local/setups.zope
+language: python
+python: "2.7"
+before_install:
+  - sudo apt-get update -qq
+install:
+  - deactivate
+  - |
+    echo "TRAVIS_ENV_VARS:" >&2
+    env | grep TRAVIS | sort -u | sed -re "s/^/  /g" >&2
+  - .ansible/scripts/download_corpusops.sh && .ansible/scripts/setup_corpusops.sh
+  - sudo service docker stop
+  - >
+    cd local/corpusops.bootstrap
+    && bin/silent_run bin/cops_apply_role -vvvv --sudo roles/corpusops.roles/services_virt_docker/role.yml
+    && cd -
+script:
+  # only build project branches
+  - >
+    if [ "x${PROJECT_SUBFOLDER-}" != "x" ] && [ ! -e $PROJECT_SUBFOLDER ];then exit 0;
+    else for i in $IMAGES;do
+    ( TAG=${i//|*} DOCKERFILE=${i//*|}
+       local/corpusops.bootstrap/bin/silent_run local/corpusops.bootstrap/hacking/docker_test.sh; );
+    done;fi
+after_success:
+  # only build project branches
+  - >
+    if [ "x${PROJECT_SUBFOLDER-}" != "x" ] && [ ! -e $PROJECT_SUBFOLDER ];then exit 0;
+    else for i in $IMAGES;do
+    ( IMAGES=${i//|*} local/corpusops.bootstrap/hacking/docker_release; );
+    done;fi
+cache:
+  directories:
+    - $HOME/.cache/pip
+    - $HOME/corpusops

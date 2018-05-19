@@ -662,6 +662,7 @@ cops_zope_buildout_version: 2
 cops_zope_buildout_newest: false
 cops_zope_buildout_cfg: "{{vars['cops_zope_project_root']}}/buildout-ansible.cfg"
 cops_zope_buildout_develop_up: "bin/develop up -f"
+cops_zope_smtp_timeout: 60
 cops_zope_smtp_user: root
 cops_zope_smtp_password: null
 cops_zope_overrides_buildout_secret: {}

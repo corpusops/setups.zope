@@ -26,6 +26,9 @@
       {% set _ = r.update({'only_steps': only_steps|default(False)}) %}
       {% set only_steps = r['only_steps'] %}
       #
+      {% set _ = r.update({'cops_zope_s_setup_buildout_smtptimeout':        cops_zope_s_setup_buildout_smtptimeout                                                              |default(cops_zope_s_setup_buildout|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}) %}
+      {% set cops_zope_s_setup_buildout_smtptimeout = r['cops_zope_s_setup_buildout_smtptimeout'] %}
+      #
       {% set _ = r.update({'cops_zope_s_setup_buildout_up':        cops_zope_s_setup_buildout_up                                                              |default(cops_zope_s_setup_buildout|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps))))}) %}
       {% set cops_zope_s_setup_buildout_up = r['cops_zope_s_setup_buildout_up'] %}
       #
@@ -59,7 +62,7 @@
       {% set _ = r.update({'cops_zope_s_setup_front_build_yarn_build':       cops_zope_s_setup_front_build_yarn_build      |default(cops_zope_s_setup_front_build|default(cops_zope_s_setup_front|default(cops_zope_s_setup|default(cops_zope_lifecycle_app_setup|default(not only_steps)))))}) %}
       {% set cops_zope_s_setup_front_build_yarn_build = r['cops_zope_s_setup_front_build_yarn_build'] %}
       #
-      {% set _ = r.update({'cops_zope_s_setup_buildout': ( cops_zope_s_setup_buildout_configs or cops_zope_s_setup_buildout_bootstrap or cops_zope_s_setup_buildout_buildout or cops_zope_s_setup_buildout_up)}) %}
+      {% set _ = r.update({'cops_zope_s_setup_buildout': ( cops_zope_s_setup_buildout_configs or cops_zope_s_setup_buildout_bootstrap or cops_zope_s_setup_buildout_buildout or cops_zope_s_setup_buildout_up or cops_zope_s_setup_buildout_smtptimeout)}) %}
       {% set cops_zope_s_setup_buildout = r['cops_zope_s_setup_buildout'] %}
       #
       {% set _ = r.update({'cops_zope_s_setup_venv': ( cops_zope_s_setup_venv_venv or cops_zope_s_setup_venv_buildpy or cops_zope_s_setup_venv_requirements)}) %}

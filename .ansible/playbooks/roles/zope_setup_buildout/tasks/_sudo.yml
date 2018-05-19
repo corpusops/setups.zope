@@ -31,3 +31,12 @@
         cd {{d.buildout_cwd}}
         {{d.buildout_develop_up}}
       changed_when: false
+# fix mail default timeout (ovh uses an anormaly long timeout as antispam measure)
+- tags: [cops_zope_s_setup_buildout_smtptimeout]
+  when: [cops_zope_s_setup_buildout_smtptimeout]
+  shell: |-
+    {% set d = cops_zope_vars.eggs_directory %}
+    sed -i \
+      -re "s/socket.setdefaulttimeout\([0-9]+\)/socket.setdefaulttimeout({{cops_zope_vars.smtp_timeout}})/g" \
+      "{{d}}"/Products.CMFPlone*/Products/CMFPlone/controlpanel/browser/mail.py  \
+      "{{d}}"/plone.app.controlpanel*/plone/app/controlpanel/mail.py

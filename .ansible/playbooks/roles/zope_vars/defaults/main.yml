@@ -501,8 +501,6 @@ cops_zope_nginx_redirect_aliases: true
 cops_zope_nginx_port: "{{vars['cops_zope_http_port']}}"
 cops_zope_nginx_ssl_port: "{{vars['cops_zope_https_port']}}"
 cops_zope_nginx_content_headless_template: "../templates/zope.headless.nginx.conf"
-cops_zope_headless_api_same_domain: true
-cops_zope_headless_api_same_domain_path: api
 cops_zope_nginx_content_template: "../templates/zope.nginx.conf"
 cops_zope_nginx_top_template: "../templates/zope.nginx.top.conf"
 cops_zope_nginx_basename: "corpus-{{vars['cops_zope_name']}}"

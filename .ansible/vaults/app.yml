@@ -20,3 +20,6 @@ cops_zope_overrides_buildout_secret: {}
 cops_zope_overrides_buildout:
   v:
     mailinglogger-to: "myapp-list@lists.foo.com"
+# to use directly nginx (no front haproxy)
+# cops_zope_nginx_port: "{{cops_zope_http_port}}"
+# cops_zope_nginx_ssl_port: "{{cops_zope_https_port}}"

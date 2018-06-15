@@ -764,4 +764,6 @@ cops_zope_hosts_instance1: "${hosts:ip}"
 cops_zope_hosts_instance2: "${hosts:ip}"
 cops_zope_hosts_instance3: "${hosts:ip}"
 cops_zope_hosts_instance4: "${hosts:ip}"
+cops_zope_proxy_read_timeout: "60s"
+cops_zope_proxy_send_timeout: "60s"
 # vim:set ft=sls:

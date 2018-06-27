@@ -188,7 +188,7 @@
       {% set _ = r.update({'cops_zope_lifecycle_lc_1_steps': (cops_zope_lifecycle_haproxy or cops_zope_lifecycle_app)}) %}
       {% set cops_zope_lifecycle_lc_1_steps = r['cops_zope_lifecycle_lc_1_steps'] %}
       #
-      {% set _ = r.update({'cops_zope_s_vars': cops_zope_s_vars|default(cops_zope_lifecycle_lc_1_steps)}) %}
+      {% set _ = r.update({'cops_zope_s_vars': cops_zope_s_vars|default(cops_zope_lifecycle_lc_1_steps) or only_steps}) %}
       {% set cops_zope_s_vars = r['cops_zope_s_vars'] %}
       #
       {{ r|to_json }}

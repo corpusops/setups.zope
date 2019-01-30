@@ -508,7 +508,7 @@ cops_zope_nginx_top_template: "../templates/zope.nginx.top.conf"
 cops_zope_nginx_basename: "corpus-{{vars['cops_zope_name']}}"
 cops_zope_nginx_is_default_server: true
 cops_zope_nginx_htpasswd: "{{vars['cops_zope_htpasswd']}}"
-cops_zope_nginx_ssl_protected: false
+cops_zope_nginx_force_ssl: false
 cops_zope_nginx_ssl_cert: ""
 cops_zope_nginx_ssl_key: ""
 cops_zope_nginx_loglevel: crit
@@ -528,7 +528,7 @@ cops_zope_front_nginx_content_template: "../templates/front.nginx.conf"
 cops_zope_front_nginx_top_template: "../templates/front.nginx.top.conf"
 cops_zope_front_nginx_basename: "corpus-front-{{vars['cops_zope_name']}}"
 cops_zope_front_nginx_is_default_server: false
-cops_zope_front_nginx_ssl_protected: false
+cops_zope_front_nginx_force_ssl: "{{vars['cops_zope_nginx_force_ssl']}}"
 cops_zope_front_nginx_htpasswd: "{{vars['cops_zope_nginx_htpasswd']}}"
 cops_zope_front_nginx_ssl_cert: "{{vars['cops_zope_nginx_ssl_cert']}}"
 cops_zope_front_nginx_ssl_key: "{{vars['cops_zope_nginx_ssl_key']}}"
@@ -546,7 +546,7 @@ cops_zope_other_vhosts: []
 #  basename: "foovhost"
 #  is_default_server: true
 #  htpasswd: "{{vars['cops_zope_htpasswd']}}"
-#  ssl_protected: false
+#  force_ssl: "{{vars['cops_zope_nginx_force_ssl']}}"
 #  ssl_cert: ""
 #  ssl_key: ""
 #  loglevel: crit
@@ -565,7 +565,7 @@ cops_zope_other_vhosts: []
 #  basename: "epersyloisirs"
 #  is_default_server: false
 #  htpasswd: "{{vars['cops_zope_htpasswd']}}"
-#  ssl_protected: false
+#  force_ssl: "{{vars['cops_zope_nginx_force_ssl']}}"
 #  ssl_cert: ""
 #  ssl_key: ""
 #  loglevel: crit

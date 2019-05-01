@@ -9,7 +9,7 @@
   file:
     state: absent
     path: "{{item}}"
-  with_items: |-
+  loop: |-
     {% set res = [] %}
     {% set s = [] %}
     {% if  not cops_zope_docker_has_nginx %}
@@ -24,7 +24,7 @@
       '/lib/systemd/system/multi-user.target.wants/{0}.service'.format(service),
       ])%}
     {% endfor %}
-    {{ res|to_json }}
+    {{ res }}
 - name: activate needed services
   ini_file:
     path: "{{cops_zope_vars.project_root}}/parts/supervisor/supervisord.conf"
@@ -33,7 +33,7 @@
     value: true
     mode: 0600
     backup: false
-  with_items: |
+  loop: |
     {% set res = [] %}
     {% if cops_zope_vars.docker_has_zeo %}
     {%  set _ = res.append("zeo") %}
@@ -44,4 +44,4 @@
     {% if cops_zope_vars.docker_has_balancer %}
     {%  set _ = res.append("balancer") %}
     {% endif %}
-    {{ res | to_json }}
+    {{ res }}

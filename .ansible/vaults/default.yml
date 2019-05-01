@@ -28,7 +28,7 @@ corpusops_haproxy_registrations_registrations_zope:
         to_port: "{{cops_zope_nginx_port}}"
         ssl_terminated: true
 cops_zope_buildout_settings: "{{(
-  ( vars['cops_zope_buildout_settings___default']|copsf_deepcopy)
+  ( cops_zope_buildout_settings___default|copsf_deepcopy)
   | copsf_dictupdate(cops_zope_overrides_buildout)
   | copsf_dictupdate(cops_zope_overrides_buildout_secret)
   | to_json

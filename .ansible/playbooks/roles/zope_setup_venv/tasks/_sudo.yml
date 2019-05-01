@@ -18,6 +18,6 @@
   include_tasks: _setup_venv_eggs.yml
 - tags: [cops_zope_s_setup_venv_requirements]
   when: [cops_zope_s_setup_venv_requirements]
-  with_items: "{{cops_zope_vars.requirements}}"
+  loop: "{{cops_zope_vars.requirements}}"
   loop_control: {loop_var: requirements}
   include_tasks: _setup_venv_reqs.yml

@@ -8,7 +8,7 @@
     owner: "{{item.owner|default(omit)}}"
     group: "{{item.group|default(omit)}}"
     trim_blocks: "{{item.trim_blocks|default(False)}}"
-  with_list: "{{cops_zope_vars.fixperms_configs}}"
+  loop: "{{cops_zope_vars.fixperms_configs}}"
   tags: [cops_zope_s_fixperms_configs]
   when: [cops_zope_s_fixperms_configs]
 - name: run fixperms

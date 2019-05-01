@@ -23,7 +23,7 @@
       name: '{{item}}'
       state: present
     when: "(ansible_os_family.lower() in ['debian'])"
-    with_items: [libjpeg-dev]
+    loop: [libjpeg-dev]
   - name: update & install prerequisites
     package:
       cache_valid_time: '{{60*60}}'
@@ -33,7 +33,7 @@
     when: "(ansible_os_family.lower() in ['debian'] and
             cops_zope_vars.deb_packages is not none and
             cops_zope_vars.deb_packages|length > 0)"
-    with_items: "{{cops_zope_vars.deb_packages}}"
+    loop: "{{cops_zope_vars.deb_packages}}"
   - name: update & install prerequisites
     package:
       update_cache: yes
@@ -43,7 +43,7 @@
     when: "(ansible_os_family.lower() in ['redhat'] and
             cops_zope_vars.rh_packages is not none and
             cops_zope_vars.rh_packages|length > 0)"
-    with_items: "{{cops_zope_vars.rh_packages}}"
+    loop: "{{cops_zope_vars.rh_packages}}"
   - name: update & install prerequisites (venv)
     package:
       cache_valid_time: '{{60*60}}'
@@ -53,7 +53,7 @@
     when: "(ansible_os_family.lower() in ['debian'] and
             cops_zope_vars.venv_deb_packages is not none and
             cops_zope_vars.venv_deb_packages|length > 0)"
-    with_items: "{{cops_zope_vars.venv_deb_packages}}"
+    loop: "{{cops_zope_vars.venv_deb_packages}}"
   - name: update & install prerequisites (venv)
     package:
       update_cache: yes
@@ -63,7 +63,7 @@
     when: "(ansible_os_family.lower() in ['redhat'] and
             cops_zope_vars.venv_rh_packages is not none and
             cops_zope_vars.venv_rh_packages|length > 0)"
-    with_items: "{{cops_zope_vars.venv_rh_packages}}"
+    loop: "{{cops_zope_vars.venv_rh_packages}}"
 - when: [cops_zope_s_prerequisites_build_pkgs]
   tags: [cops_zope_s_prerequisites_build_pkgs]
   block:
@@ -76,7 +76,7 @@
     when: "(ansible_os_family.lower() in ['debian'] and
             cops_zope_vars.deb_build_packages is not none and
             cops_zope_vars.deb_build_packages|length > 0)"
-    with_items: "{{cops_zope_vars.deb_build_packages}}"
+    loop: "{{cops_zope_vars.deb_build_packages}}"
   - name: update & install build prerequisites
     package:
       update_cache: yes
@@ -86,7 +86,7 @@
     when: "(ansible_os_family.lower() in ['redhat'] and
             cops_zope_vars.rh_build_packages is not none and
             cops_zope_vars.rh_build_packages|length > 0)"
-    with_items: "{{cops_zope_vars.rh_build_packages}}"
+    loop: "{{cops_zope_vars.rh_build_packages}}"
 
 # Download unified installer related to buildout for having egg cache
 - when: [cops_zope_s_prerequisites_ui]

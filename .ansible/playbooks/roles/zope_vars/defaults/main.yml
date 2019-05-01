@@ -6,8 +6,8 @@ corpusops_core_projects_path: /srv/projects
 # (attention, uids!)
 cops_zope__supereditors_paths: |-
   {% set res = [
-    vars['cops_zope_project_root'],
-    vars['cops_zope_data_root']] %}
+    cops_zope_project_root,
+    cops_zope_data_root] %}
   {% if ansible_virtualization_type in ['docker'] %}
   {%  set _ = res.extend(['/srv/backups', '/setup']) %}
   {% endif %}
@@ -18,8 +18,8 @@ cops_zope__supereditors: >-
   {{ ansible_env.get(
       'SUPEREDITORS', cops_supereditors|default('')
      ) | copsf_splitstrip | to_json }}
-cops_zope_supereditors_paths: "{{vars['cops_zope__supereditors_paths']}}"
-cops_zope_supereditors: "{{vars['cops_zope__supereditors']}}"
+cops_zope_supereditors_paths: "{{cops_zope__supereditors_paths}}"
+cops_zope_supereditors: "{{cops_zope__supereditors}}"
 # on old ubuntu "virtualenv" does not exists, we isolate venv install
 cops_zope_venv_deb_packages: [virtualenv, python-virtualenv]
 cops_zope_venv_rh_packages: [virtualenv]
@@ -159,7 +159,7 @@ cops_zope_deb_runtime_packages:
         ansible_distribution_version|copsf_looseversion >=
           '18.04'|copsf_looseversion)
     %}libreadline7{%else%}libreadline6{%endif%}"
-cops_zope_packages: "{{vars['cops_zope_deb_packages___default']}}"
+cops_zope_packages: "{{cops_zope_deb_packages___default}}"
 cops_zope_deb_packages___default: "{{
   (cops_zope_deb_runtime_packages + cops_zope_deb_gis_packages)
   | to_json
@@ -169,7 +169,7 @@ cops_zope_pkg_python_slug: ""
 cops_zope_pkg_mysql: "libmysqlclient20"
 cops_zope_pkg_ssl: "libssl1.0.0"
 cops_zope_pkg_db: "libdb5.3"
-cops_zope_deb_build_packages: "{{vars['cops_zope_deb_build_packages___default']}}"
+cops_zope_deb_build_packages: "{{cops_zope_deb_build_packages___default}}"
 cops_zope_deb_build_packages___default:
   - "libpython{{cops_zope_pkg_python_slug}}-dev"
   - "python{{cops_zope_pkg_python_slug}}-dev"
@@ -212,7 +212,7 @@ cops_zope_deb_build_packages___default:
         ansible_distribution_version|copsf_looseversion >= '18.04'|copsf_looseversion )
     %}tk8.6-dev{%else%}tk8.5-dev{%endif %}"
 cops_zope_rh_build_packages: []
-cops_zope_rh_packages: "{{vars['cops_zope_rh_packages___default']}}"
+cops_zope_rh_packages: "{{cops_zope_rh_packages___default}}"
 cops_zope_rh_packages___default: []
 # extra conf to add to pgconf (directly added to a tuning conf file (string))
 cops_zope_sysctls: []
@@ -225,16 +225,16 @@ cops_zope_query_host: "127.0.0.1"
 cops_zope_restart_check_retries: 60
 cops_zope_internal_host: "127.0.0.1"
 cops_zope_name: 'zope'
-cops_zope_user: "{{vars['cops_zope_name']}}-user"
-cops_zope_group: "{{vars['cops_zope_name']}}-group"
+cops_zope_user: "{{cops_zope_name}}-user"
+cops_zope_group: "{{cops_zope_name}}-group"
 cops_zope_projects_dir: "{{corpusops_vars.projects_path}}"
-cops_zope_project_sdir: "{{vars['cops_zope_name']}}"
-cops_zope_project_dir: "{{vars['cops_zope_projects_dir']}}/{{vars['cops_zope_project_sdir']}}"
-cops_zope_project_root: "{{vars['cops_zope_project_dir']}}/project"
-cops_zope_data_root: "{{vars['cops_zope_project_dir']}}/data"
-cops_zope_cfg: "{{vars['cops_zope_data_root']}}/config"
-cops_zope_fixperms: "{{vars['cops_zope_project_dir']}}/fixperms.sh"
-cops_zope_fixperms_cron: "/etc/cron.d/{{vars['cops_zope_name']}}-fixperms"
+cops_zope_project_sdir: "{{cops_zope_name}}"
+cops_zope_project_dir: "{{cops_zope_projects_dir}}/{{cops_zope_project_sdir}}"
+cops_zope_project_root: "{{cops_zope_project_dir}}/project"
+cops_zope_data_root: "{{cops_zope_project_dir}}/data"
+cops_zope_cfg: "{{cops_zope_data_root}}/config"
+cops_zope_fixperms: "{{cops_zope_project_dir}}/fixperms.sh"
+cops_zope_fixperms_cron: "/etc/cron.d/{{cops_zope_name}}-fixperms"
 cops_zope_fixperms_cron_periodicity: "30 1 * * *"
 cops_zope_secret_variables:
   - admin_password
@@ -249,7 +249,7 @@ cops_zope_cops_sub_namespaces:
   s: {}
   lifecycle: {}
 cops_zope_use_etc_hosts: false
-cops_zope_zope_uri: "http://{{vars['cops_zope_domain']}}"
+cops_zope_zope_uri: "http://{{cops_zope_domain}}"
 cops_zope_env_overrides: {}
 cops_zope_env: {}
 cops_zope_zope_bind_host: '127.0.0.1'
@@ -270,11 +270,11 @@ cops_zope_yarn_install_args: ""
 cops_zope_yarn_build_args: ""
 cops_zope_yarn_extra_steps: []
 jango_yarn_extra_steps: []
-#  - "add --force file:{{vars['cops_zope_project_root']}}/develop/plone.restapi-angular"
+#  - "add --force file:{{cops_zope_project_root}}/develop/plone.restapi-angular"
 cops_zope_ep_main_ep: "/entry_point"
 # service
-cops_zope_service: "supervisor.{{vars['cops_zope_name']}}"
-cops_zope_services: ["{{vars['cops_zope_service']}}", "nginx"]
+cops_zope_service: "supervisor.{{cops_zope_name}}"
+cops_zope_services: ["{{cops_zope_service}}", "nginx"]
 cops_zope_services_nginx_reload_state: "reloaded"
 # cops_zope_rhandlers: [restart_cops_zope]
 cops_zope_rhandlers: [restart_cops_zope_systemd, restart_cops_zope]
@@ -282,167 +282,167 @@ cops_zope_rhandlers: [restart_cops_zope_systemd, restart_cops_zope]
 cops_zope_reconfigure_services: |-
   {% set ret = [] %}
   {% if ansible_virtualization_type in ['docker'] %}
-  {% set _ = ret.append("post-start-{{vars['cops_zope_service']}}") %}
+  {% set _ = ret.append("post-start-{{cops_zope_service}}") %}
   {% endif %}
   {{ ret | to_json }}
 cops_zope_activated: true
 # Layout, files & configs
 cops_zope_stickymode: "2"
-cops_zope_files: "{{vars['cops_zope_files___default']}}"
+cops_zope_files: "{{cops_zope_files___default}}"
 cops_zope_files___default:
-  - {path: "{{vars['cops_zope_projects_dir']}}",
+  - {path: "{{cops_zope_projects_dir}}",
      owner: root, group: root, state: directory}
-  - {path: "{{vars['cops_zope_project_dir']}}",
+  - {path: "{{cops_zope_project_dir}}",
      owner: root, group: root, state: directory}
-  - {path: "{{vars['cops_zope_project_root']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_data_root']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}751"}
-  - {path: "{{vars['cops_zope_project_root']}}/bin",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_project_root']}}/sbin",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {src: "{{vars['cops_zope_project_root']}}/bin",
-     path: "{{vars['cops_zope_data_root']}}/bin",
+  - {path: "{{cops_zope_project_root}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_data_root}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}751"}
+  - {path: "{{cops_zope_project_root}}/bin",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_project_root}}/sbin",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {src: "{{cops_zope_project_root}}/bin",
+     path: "{{cops_zope_data_root}}/bin",
      state: link, force: true}
-  - {path: "{{vars['cops_zope_front_doc_root']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_doc_root']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_ui']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_buildout_cache']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_locations_blob_storage']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_locations_blob_backup']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_parts_directory']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_buildout_cache']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_cache_directory']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_var_directory']}}/buildout-cache",
-     src: "{{vars['cops_zope_cache_directory']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: link, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_eggs_directory']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_downloads_directory']}}",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {path: "{{vars['cops_zope_var_directory']}}/project-parts",
-     src: "{{vars['cops_zope_zroot']}}/parts",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: link, mode: "{{vars['cops_zope_stickymode']}}750"}
-  - {src: "{{vars['cops_zope_var_directory']}}",
-     path: "{{vars['cops_zope_zroot']}}/var",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: link, mode: "{{vars['cops_zope_stickymode']}}750"}
-cops_zope_parts_directory: "{{vars['cops_zope_project_root']}}/parts"
-cops_zope_buildout_cache: "{{vars['cops_zope_zroot']}}/buildout_download_cache"
+  - {path: "{{cops_zope_front_doc_root}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_doc_root}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_ui}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_buildout_cache}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_locations_blob_storage}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_locations_blob_backup}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_parts_directory}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_buildout_cache}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_cache_directory}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_var_directory}}/buildout-cache",
+     src: "{{cops_zope_cache_directory}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: link, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_eggs_directory}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_downloads_directory}}",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+  - {path: "{{cops_zope_var_directory}}/project-parts",
+     src: "{{cops_zope_zroot}}/parts",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: link, mode: "{{cops_zope_stickymode}}750"}
+  - {src: "{{cops_zope_var_directory}}",
+     path: "{{cops_zope_zroot}}/var",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: link, mode: "{{cops_zope_stickymode}}750"}
+cops_zope_parts_directory: "{{cops_zope_project_root}}/parts"
+cops_zope_buildout_cache: "{{cops_zope_zroot}}/buildout_download_cache"
 # Config files
-cops_zope_configs: "{{vars['cops_zope_configs___default']}}"
+cops_zope_configs: "{{cops_zope_configs___default}}"
 cops_zope_configs___default:
   - {src: "../templates/crons",
-     dest: "/etc/cron.d/zope-{{vars['cops_zope_name']}}",
+     dest: "/etc/cron.d/zope-{{cops_zope_name}}",
      mode: "0644",
      owner: "root",
      group: "root"}
   - {src: "../templates/restart.sh",
-     dest: "{{vars['cops_zope_data_root']}}/restart.sh",
+     dest: "{{cops_zope_data_root}}/restart.sh",
      mode: "0755",
-     owner: "{{vars['cops_zope_user']}}",
-     group: "{{vars['cops_zope_group']}}"}
+     owner: "{{cops_zope_user}}",
+     group: "{{cops_zope_group}}"}
   - {src: "../templates/logrotate.conf",
-     dest: "{{vars['cops_zope_logrotate_conf']}}",
+     dest: "{{cops_zope_logrotate_conf}}",
      mode: "0640",
      owner: "root",
      group: "root"}
   - {src: "../templates/zeoauth.db",
-     dest: "{{vars['cops_zope_authentication_db']}}",
+     dest: "{{cops_zope_authentication_db}}",
      mode: "0640",
-     owner: "{{vars['cops_zope_user']}}",
-     group: "{{vars['cops_zope_group']}}"}
+     owner: "{{cops_zope_user}}",
+     group: "{{cops_zope_group}}"}
   - {src: "../templates/supervisor.service",
-     dest: "/etc/systemd/system/supervisor.{{vars['cops_zope_name']}}.service",
+     dest: "/etc/systemd/system/supervisor.{{cops_zope_name}}.service",
      mode: "0644",
      owner: "root",
      group: "root"}
-cops_zope_venv_files: "{{vars['cops_zope_venv_files___default']}}"
+cops_zope_venv_files: "{{cops_zope_venv_files___default}}"
 cops_zope_venv_files___default:
-  - {path: "{{vars['cops_zope_data_root']}}/bin",
-     owner: "{{vars['cops_zope_user']}}", group: "{{vars['cops_zope_group']}}",
-     state: directory, mode: "{{vars['cops_zope_stickymode']}}750"}
-cops_zope_venv_configs: "{{vars['cops_zope_venv_configs___default']}}"
+  - {path: "{{cops_zope_data_root}}/bin",
+     owner: "{{cops_zope_user}}", group: "{{cops_zope_group}}",
+     state: directory, mode: "{{cops_zope_stickymode}}750"}
+cops_zope_venv_configs: "{{cops_zope_venv_configs___default}}"
 cops_zope_venv_configs___default:
   - {src: "../templates/buildpy.sh",
-     dest: "{{vars['cops_zope_data_root']}}/bin/buildpy.sh",
+     dest: "{{cops_zope_data_root}}/bin/buildpy.sh",
      mode: "0755",
-     owner: "{{vars['cops_zope_user']}}",
-     group: "{{vars['cops_zope_group']}}"}
-cops_zope_fixperms_configs: "{{vars['cops_zope_fixperms_configs___default']}}"
+     owner: "{{cops_zope_user}}",
+     group: "{{cops_zope_group}}"}
+cops_zope_fixperms_configs: "{{cops_zope_fixperms_configs___default}}"
 cops_zope_fixperms_configs___default:
   - {src: "../templates/fixperms.sh",
-     dest: "{{vars['cops_zope_fixperms']}}", mode: "0755",
+     dest: "{{cops_zope_fixperms}}", mode: "0755",
      owner: root, group: root}
-cops_zope_ep_configs: "{{vars['cops_zope_ep_configs___default']}}"
+cops_zope_ep_configs: "{{cops_zope_ep_configs___default}}"
 cops_zope_ep_configs___default:
   # script to reconfigure image before and often after
   # image entry point (generally systemd) is launched
   - {src: "../templates/reconfigure.sh",
-     dest: "{{vars['cops_zope_reconfigure']}}",
+     dest: "{{cops_zope_reconfigure}}",
      mode: "0755",
      owner: "root",
      group: "root"}
   - {src: "../templates/post-start-reconfigure.service",
-     dest: "/etc/systemd/system/post-start-{{vars['cops_zope_service']}}.service",
+     dest: "/etc/systemd/system/post-start-{{cops_zope_service}}.service",
      mode: "0644",
      owner: "root",
      group: "root"}
-  - {src: "{{vars['cops_zope_ep_template']}}",
+  - {src: "{{cops_zope_ep_template}}",
      dest: "/app_entry_point", mode: "0755",
      owner: root, group: root}
-cops_zope_buildoutconfigs: "{{vars['cops_zope_buildoutconfigs___default']}}"
+cops_zope_buildoutconfigs: "{{cops_zope_buildoutconfigs___default}}"
 cops_zope_buildoutconfigs___default:
 - {src: "../templates/buildout.cfg",
-   dest: "{{vars['cops_zope_buildout_cfg']}}",
+   dest: "{{cops_zope_buildout_cfg}}",
    mode: "0640",
-   owner: "{{vars['cops_zope_user']}}",
-   group: "{{vars['cops_zope_group']}}"}
+   owner: "{{cops_zope_user}}",
+   group: "{{cops_zope_group}}"}
 - {src: "../templates/buildout-local.cfg",
-   dest: "{{vars['cops_zope_project_root']}}/etc/sys/settings-local.cfg",
+   dest: "{{cops_zope_project_root}}/etc/sys/settings-local.cfg",
    mode: "0640",
-   owner: "{{vars['cops_zope_user']}}",
-   group: "{{vars['cops_zope_group']}}"}
+   owner: "{{cops_zope_user}}",
+   group: "{{cops_zope_group}}"}
 # SystemD based reconfigure unit settings
 cops_zope_reconfigure_service_stderr: ""
 cops_zope_reconfigure_service_stdout: ""
-cops_zope_reconfigure_unit_after: "network.target {{vars['cops_zope_service']}}.service"
+cops_zope_reconfigure_unit_after: "network.target {{cops_zope_service}}.service"
 cops_zope_reconfigure_install_wantedby: "multi-user.target"
-cops_zope_reconfigure: "{{vars['cops_zope_provision_dir']}}/ansible_reconfigure.sh"
+cops_zope_reconfigure: "{{cops_zope_provision_dir}}/ansible_reconfigure.sh"
 cops_zope_reconfigure_passenv: >
   COPS_ROOT COPS_IMG NO_SILENT NO_OUTPUT NONINTERACTIVE
   ANSIBLE_CWD ANSIBLE_PLAY ANSIBLE_VARARGS ANSIBLE_ARGS
   A_VAULTS_FOLDERS A_VAULTS A_EXTRA_VAULTS
   A_INVENTORY A_ENV_NAME NO_DEFAULT_VAULTS
 # Code synchronnisation settings (FORCE_COPS_PROVISION_PUSH_CODE to force)
-cops_zope_push_codes_cwd: "{{vars['cops_cwd']}}"
+cops_zope_push_codes_cwd: "{{cops_cwd}}"
 cops_zope_push_codes_sync_mode: "{{ (
   cops_installer_mode in ['vagrant'] or
   ansible_virtualization_type in ['docker']
@@ -458,14 +458,14 @@ cops_zope_push_codes_rsync_submodule_opts:
   rsync: ["-azv", "--exclude", "*.retry"]
 cops_zope_force_push_code: false
 cops_zope_push_codes:
-- path: "{{vars['cops_zope_project_root']}}"
-  origin_path: "{{vars['cops_zope_push_codes_cwd']}}"
+- path: "{{cops_zope_project_root}}"
+  origin_path: "{{cops_zope_push_codes_cwd}}"
   force_sync: "{{cops_zope_force_push_code}}"
   sync_mode: "{{cops_zope_push_codes_sync_mode}}"
   rsync_opts: "{{cops_zope_push_codes_rsync_opts[cops_zope_push_codes_sync_mode]}}"
   file_tests: "{{cops_zope_push_codes_file_tests[cops_zope_push_codes_sync_mode]}}"
-  owner: "{{vars['cops_zope_user']}}"
-  group: "{{vars['cops_zope_group']}}"
+  owner: "{{cops_zope_user}}"
+  group: "{{cops_zope_group}}"
   sub_paths:
   - path: local/setups.zope
     force_sync: "{{cops_zope_force_push_code}}"
@@ -483,137 +483,137 @@ cops_deploy_ssh_key_paths:
     # -----END RSA PRIVATE KEY-----
 # Reverse proxy Nginx
 cops_zope_default_vhost_is_default_server: false
-cops_zope_logrotate_conf: "/etc/logrotate.d/cops_{{vars['cops_zope_name']}}.conf"
+cops_zope_logrotate_conf: "/etc/logrotate.d/cops_{{cops_zope_name}}.conf"
 cops_zope_logrotate_rotate: 365
 cops_zope_logrotate_size: 10M
-cops_zope_htpasswd: "/etc/nginx/{{vars['cops_zope_name']}}-htpasswd"
+cops_zope_htpasswd: "/etc/nginx/{{cops_zope_name}}-htpasswd"
 cops_zope_http_auth_restricted: false
 cops_zope_http_users:
-- {user: "{{vars['cops_zope_admin_user']}}", password: "{{vars['cops_zope_admin_password']}}"}
+- {user: "{{cops_zope_admin_user}}", password: "{{cops_zope_admin_password}}"}
 #- {user: "myadmin", password: "mypassword"}
 cops_zope_rp_max_body_size: "1000M"
 cops_zope_http_port: "80"
 cops_zope_https_port: "443"
 cops_zope_nginx: {}
-cops_zope_nginx_domain: "{{vars['cops_zope_domain']}}"
-cops_zope_nginx_server_aliases: ["www.{{vars['cops_zope_domain']}}"]
+cops_zope_nginx_domain: "{{cops_zope_domain}}"
+cops_zope_nginx_server_aliases: ["www.{{cops_zope_domain}}"]
 cops_zope_nginx_redirect_aliases: true
-cops_zope_nginx_port: "{{vars['cops_zope_http_port']}}"
-cops_zope_nginx_ssl_port: "{{vars['cops_zope_https_port']}}"
+cops_zope_nginx_port: "{{cops_zope_http_port}}"
+cops_zope_nginx_ssl_port: "{{cops_zope_https_port}}"
 cops_zope_nginx_content_headless_template: "../templates/zope.headless.nginx.conf"
 cops_zope_headless_api_same_domain: true
 cops_zope_headless_api_same_domain_path: api
 cops_zope_nginx_content_template: "../templates/zope.nginx.conf"
 cops_zope_nginx_top_template: "../templates/zope.nginx.top.conf"
-cops_zope_nginx_basename: "corpus-{{vars['cops_zope_name']}}"
+cops_zope_nginx_basename: "corpus-{{cops_zope_name}}"
 cops_zope_nginx_is_default_server: true
-cops_zope_nginx_htpasswd: "{{vars['cops_zope_htpasswd']}}"
+cops_zope_nginx_htpasswd: "{{cops_zope_htpasswd}}"
 cops_zope_nginx_force_ssl: false
 cops_zope_nginx_ssl_cert: ""
 cops_zope_nginx_ssl_key: ""
 cops_zope_nginx_loglevel: crit
-cops_zope_nginx_upstream_name: "{{vars['cops_zope_name']}}"
-cops_zope_nginx_doc_root: "{{vars['cops_zope_doc_root']}}"
-cops_zope_front_dist_folder: "{{vars['cops_zope_project_root']}}/dist"
+cops_zope_nginx_upstream_name: "{{cops_zope_name}}"
+cops_zope_nginx_doc_root: "{{cops_zope_doc_root}}"
+cops_zope_front_dist_folder: "{{cops_zope_project_root}}/dist"
 cops_zope_front_nginx: {}
 cops_zope_front_nginx_domain: null
-# cops_zope_front_nginx_domain: "front.{{vars['cops_zope_domain']}}"
+# cops_zope_front_nginx_domain: "front.{{cops_zope_domain}}"
 cops_zope_front_nginx_server_aliases: []
 # if front domain isnt activated, the vhost wont be installed (or link removed)
 cops_zope_front_nginx_install: "{{cops_zope_front_nginx_domain|copsf_asbool}}"
 cops_zope_front_nginx_redirect_aliases: true
-cops_zope_front_nginx_port: "{{vars['cops_zope_http_port']}}"
-cops_zope_front_nginx_ssl_port: "{{vars['cops_zope_https_port']}}"
+cops_zope_front_nginx_port: "{{cops_zope_http_port}}"
+cops_zope_front_nginx_ssl_port: "{{cops_zope_https_port}}"
 cops_zope_front_nginx_content_template: "../templates/front.nginx.conf"
 cops_zope_front_nginx_top_template: "../templates/front.nginx.top.conf"
-cops_zope_front_nginx_basename: "corpus-front-{{vars['cops_zope_name']}}"
+cops_zope_front_nginx_basename: "corpus-front-{{cops_zope_name}}"
 cops_zope_front_nginx_is_default_server: false
-cops_zope_front_nginx_force_ssl: "{{vars['cops_zope_nginx_force_ssl']}}"
-cops_zope_front_nginx_htpasswd: "{{vars['cops_zope_nginx_htpasswd']}}"
-cops_zope_front_nginx_ssl_cert: "{{vars['cops_zope_nginx_ssl_cert']}}"
-cops_zope_front_nginx_ssl_key: "{{vars['cops_zope_nginx_ssl_key']}}"
-cops_zope_front_nginx_loglevel: "{{vars['cops_zope_nginx_loglevel']}}"
-cops_zope_front_nginx_upstream_name: "{{vars['cops_zope_nginx_upstream_name']}}"
-cops_zope_front_nginx_doc_root: "{{vars['cops_zope_front_doc_root']}}"
+cops_zope_front_nginx_force_ssl: "{{cops_zope_nginx_force_ssl}}"
+cops_zope_front_nginx_htpasswd: "{{cops_zope_nginx_htpasswd}}"
+cops_zope_front_nginx_ssl_cert: "{{cops_zope_nginx_ssl_cert}}"
+cops_zope_front_nginx_ssl_key: "{{cops_zope_nginx_ssl_key}}"
+cops_zope_front_nginx_loglevel: "{{cops_zope_nginx_loglevel}}"
+cops_zope_front_nginx_upstream_name: "{{cops_zope_nginx_upstream_name}}"
+cops_zope_front_nginx_doc_root: "{{cops_zope_front_doc_root}}"
 cops_zope_other_vhosts: []
-#- domain: "{{vars['cops_zope_domain']}}"
-#  server_aliases: ["www.{{vars['cops_zope_domain']}}"]
+#- domain: "{{cops_zope_domain}}"
+#  server_aliases: ["www.{{cops_zope_domain}}"]
 #  redirect_aliases: true
-#  port: "{{vars['cops_zope_http_port']}}"
-#  ssl_port: "{{vars['cops_zope_https_port']}}"
+#  port: "{{cops_zope_http_port}}"
+#  ssl_port: "{{cops_zope_https_port}}"
 #  content_template: "../templates/plone.conf"
 #  top_template: "../templates/plone.top.conf"
 #  basename: "foovhost"
 #  is_default_server: true
-#  htpasswd: "{{vars['cops_zope_htpasswd']}}"
-#  force_ssl: "{{vars['cops_zope_nginx_force_ssl']}}"
+#  htpasswd: "{{cops_zope_htpasswd}}"
+#  force_ssl: "{{cops_zope_nginx_force_ssl}}"
 #  ssl_cert: ""
 #  ssl_key: ""
 #  loglevel: crit
 #  upstream_name: "{basename}"
-#  doc_root: "{{vars['cops_zope_doc_root']}}"
+#  doc_root: "{{cops_zope_doc_root}}"
 #  plonesite: Plone
 #  http_auth_restricted: false
 #- domain: "www.foo.net"
 #  http_auth_restricted: false
 #  server_aliases: ["foo.bet"]
 #  redirect_aliases: true
-#  port: "{{vars['cops_zope_http_port']}}"
-#  ssl_port: "{{vars['cops_zope_https_port']}}"
+#  port: "{{cops_zope_http_port}}"
+#  ssl_port: "{{cops_zope_https_port}}"
 #  content_template: "../templates/redirect.conf"
 #  top_template: "../templates/redirect.top.conf"
 #  basename: "epersyloisirs"
 #  is_default_server: false
-#  htpasswd: "{{vars['cops_zope_htpasswd']}}"
-#  force_ssl: "{{vars['cops_zope_nginx_force_ssl']}}"
+#  htpasswd: "{{cops_zope_htpasswd}}"
+#  force_ssl: "{{cops_zope_nginx_force_ssl}}"
 #  ssl_cert: ""
 #  ssl_key: ""
 #  loglevel: crit
 #  upstream_name: "{basename}"
-#  doc_root: "{{vars['cops_zope_doc_root']}}"
+#  doc_root: "{{cops_zope_doc_root}}"
 #  redirects:
 #  - "http://www.otherfoo.net"
 #
-cops_zope_pip_root: "{{vars['cops_zope_project_root']}}"
+cops_zope_pip_root: "{{cops_zope_project_root}}"
 # only needed when wanting to build Python from source
 cops_zope_build_py: false
-cops_zope_py_full_ver: "{{vars['cops_zope_py_ver']}}.13"
+cops_zope_py_full_ver: "{{cops_zope_py_ver}}.13"
 cops_zope_py_ver: "2.7"
-cops_zope_py_inst: "{{vars['cops_zope_data_root']}}/python"
+cops_zope_py_inst: "{{cops_zope_data_root}}/python"
 cops_zope_orig_py: null
 cops_zope_venv_bin: virtualenv
 cops_zope_force_ssl: false
-cops_zope_doc_root: "{{vars['cops_zope_data_root']}}/www"
-cops_zope_front_doc_root: "{{vars['cops_zope_doc_root']}}"
-cops_zope_var_directory: "{{vars['cops_zope_data_root']}}/var"
-cops_zope_cache_directory: "{{vars['cops_zope_buildout_cache']}}/buildout-cache"
-cops_zope_downloads_directory: "{{vars['cops_zope_cache_directory']}}/downloads"
-cops_zope_eggs_directory: "{{vars['cops_zope_cache_directory']}}/eggs"
+cops_zope_doc_root: "{{cops_zope_data_root}}/www"
+cops_zope_front_doc_root: "{{cops_zope_doc_root}}"
+cops_zope_var_directory: "{{cops_zope_data_root}}/var"
+cops_zope_cache_directory: "{{cops_zope_buildout_cache}}/buildout-cache"
+cops_zope_downloads_directory: "{{cops_zope_cache_directory}}/downloads"
+cops_zope_eggs_directory: "{{cops_zope_cache_directory}}/eggs"
 cops_zope_cron_hour: 1
 cops_zope_cron_minute: 5
-cops_zope_cron_periodicity_pack: "{{ cops_zope_cron_minute + 0  }} {{vars['cops_zope_cron_hour']}} * * 6"
-cops_zope_cron_periodicity_backup_inc: "{{ cops_zope_cron_minute + 15 }} {{vars['cops_zope_cron_hour']}} * * *"
+cops_zope_cron_periodicity_pack: "{{ cops_zope_cron_minute + 0  }} {{cops_zope_cron_hour}} * * 6"
+cops_zope_cron_periodicity_backup_inc: "{{ cops_zope_cron_minute + 15 }} {{cops_zope_cron_hour}} * * *"
 cops_zope_cron_periodicity_backup_snap: "{{ cops_zope_cron_minute + 45 }} * * * 6"
-cops_zope_cron_periodicity_restart: "{{ cops_zope_cron_minute + 30 }}  {{vars['cops_zope_cron_hour']}} * * *"
+cops_zope_cron_periodicity_restart: "{{ cops_zope_cron_minute + 30 }}  {{cops_zope_cron_hour}} * * *"
 cops_zope_authentication_user: admin
 cops_zope_authentication_password: secret
 cops_zope_authentication_realm: ZEO
-cops_zope_authentication_db: "{{vars['cops_zope_zroot']}}/etc/sys/zeoauth.db"
-cops_zope_crons: "{{vars['cops_zope_crons___default']}}"
+cops_zope_authentication_db: "{{cops_zope_zroot}}/etc/sys/zeoauth.db"
+cops_zope_crons: "{{cops_zope_crons___default}}"
 cops_zope_crons___default:
   - "# MAILTO=foobar"
   - "# weekly pack"
-  - "{{vars['cops_zope_cron_periodicity_pack']}}        {{vars['cops_zope_user']}} {{vars['cops_zope_project_root']}}/bin/zeoserver-zeopack 2>&1 >/dev/null"
+  - "{{cops_zope_cron_periodicity_pack}}        {{cops_zope_user}} {{cops_zope_project_root}}/bin/zeoserver-zeopack 2>&1 >/dev/null"
   - "# daily restart"
-  - "{{vars['cops_zope_cron_periodicity_restart']}}     {{vars['cops_zope_user']}} {{vars['cops_zope_data_root']}}/restart.sh           2>&1 >/dev/null"
+  - "{{cops_zope_cron_periodicity_restart}}     {{cops_zope_user}} {{cops_zope_data_root}}/restart.sh           2>&1 >/dev/null"
   - "# daily incremental save"
-  - "{{vars['cops_zope_cron_periodicity_backup_inc']}}  {{vars['cops_zope_user']}} {{vars['cops_zope_project_root']}}/bin/backup            2>&1 >/dev/null"
+  - "{{cops_zope_cron_periodicity_backup_inc}}  {{cops_zope_user}} {{cops_zope_project_root}}/bin/backup            2>&1 >/dev/null"
   - "#  weekly full save"
-  - "{{vars['cops_zope_cron_periodicity_backup_snap']}} {{vars['cops_zope_user']}} {{vars['cops_zope_project_root']}}/bin/snapshotbackup    2>&1 >/dev/null"
+  - "{{cops_zope_cron_periodicity_backup_snap}} {{cops_zope_user}} {{cops_zope_project_root}}/bin/snapshotbackup    2>&1 >/dev/null"
 # does the front and the instances autoconfigure themselves
 cops_zope_nbinstances: 4
 cops_zope_autostart: 'true'
-cops_zope_autostart1: "{{vars['cops_zope_autostart']}}"
+cops_zope_autostart1: "{{cops_zope_autostart}}"
 cops_zope_autostart2: 'false'
 cops_zope_autostart3: 'false'
 cops_zope_autostart4: 'false'
@@ -622,14 +622,14 @@ cops_zope_supervision_unit_restartsec: "50s"
 cops_zope_supervision_unit_stopsec: "50s"
 cops_zope_cluster_front_host: "localhost"
 cops_zope_cluster_front_port: "8083"
-cops_zope_ui: "{{vars['cops_zope_project_root']}}/unifiedinstaller_cache"
+cops_zope_ui: "{{cops_zope_project_root}}/unifiedinstaller_cache"
 cops_zope_installer_url: "http://launchpad.net/plone/${plone_major}/${plone_ver}/+download/Plone-${plone_ver}-UnifiedInstaller.tgz"
-cops_zope_plone_arc: "{{vars['cops_zope_ui']}}/unifiedinstaller.tgz"
-cops_zope_zroot: "{{vars['cops_zope_project_root']}}"
-cops_zope_py_root: "{{vars['cops_zope_project_root']}}/venv"
-cops_zope_py: "{{vars['cops_zope_py_root']}}/bin/python"
+cops_zope_plone_arc: "{{cops_zope_ui}}/unifiedinstaller.tgz"
+cops_zope_zroot: "{{cops_zope_project_root}}"
+cops_zope_py_root: "{{cops_zope_project_root}}/venv"
+cops_zope_py: "{{cops_zope_py_root}}/bin/python"
 cops_zope_requirements:
-- "{{vars['cops_zope_project_root']}}/requirements.txt"
+- "{{cops_zope_project_root}}/requirements.txt"
 cops_zope_skip_eggs_cache: false
 # head |tail (default head)
 cops_zope_link_selector_mode: head
@@ -640,29 +640,29 @@ cops_zope_eggver_setuptools: 33.1.1
 cops_zope_eggver_buildout: 2.11.3
 cops_zope_venv_site_packages: false
 cops_zope_venv_egg_develoo_args: "--no-deps"
-cops_zope_venv_eggs: "{{vars['cops_zope_venv_eggs___default']}}"
+cops_zope_venv_eggs: "{{cops_zope_venv_eggs___default}}"
 cops_zope_venv_eggs___default:
   - "pip"
-  - "zc.buildout=={{vars['cops_zope_eggver_buildout']}}"
-  - "setuptools=={{vars['cops_zope_eggver_setuptools']}}"
+  - "zc.buildout=={{cops_zope_eggver_buildout}}"
+  - "setuptools=={{cops_zope_eggver_setuptools}}"
 cops_zope_buildout_extends: "buildout-prod.cfg"
 # EG: To activate mailinglogger
 # cops_zope_buildout_extends: "buildout-prod.cfg etc/sys/mailinglogger.cfg"
 # Or to use dev mode
 # cops_zope_buildout_extends: "buildout.cfg"
-cops_zope_locations_blob_storage_dir: "{{vars['cops_zope_var_directory']}}/blobstorage"
-cops_zope_locations_blob_storage: "{{vars['cops_zope_locations_blob_storage_dir']}}/storage"
-cops_zope_locations_blob_backup:  "{{vars['cops_zope_locations_blob_storage_dir']}}/backup"
+cops_zope_locations_blob_storage_dir: "{{cops_zope_var_directory}}/blobstorage"
+cops_zope_locations_blob_storage: "{{cops_zope_locations_blob_storage_dir}}/storage"
+cops_zope_locations_blob_backup:  "{{cops_zope_locations_blob_storage_dir}}/backup"
 cops_zope_buildout_bootstrap: "bootstrap-buildout.py"
-# cops_zope_buildout_bootstrap_args: "--setuptools-version={{vars['cops_zope_eggver_setuptools']}} -v {{vars['cops_zope_eggver_buildout']}}"
-cops_zope_buildout_bootstrap_args: "--setuptools-version={{vars['cops_zope_eggver_setuptools']}} -v {{vars['cops_zope_eggver_buildout']}} -c {{vars['cops_zope_buildout_cfg']}}"
-cops_zope_buildout_cwd: "{{vars['cops_zope_zroot']}}"
-cops_zope_buildout_cmd: "{{vars['cops_zope_zroot']}}/bin/buildout"
+# cops_zope_buildout_bootstrap_args: "--setuptools-version={{cops_zope_eggver_setuptools}} -v {{cops_zope_eggver_buildout}}"
+cops_zope_buildout_bootstrap_args: "--setuptools-version={{cops_zope_eggver_setuptools}} -v {{cops_zope_eggver_buildout}} -c {{cops_zope_buildout_cfg}}"
+cops_zope_buildout_cwd: "{{cops_zope_zroot}}"
+cops_zope_buildout_cmd: "{{cops_zope_zroot}}/bin/buildout"
 cops_zope_buildout_cmd_args: "-Nc"
-cops_zope_buildout_args: "{{vars['cops_zope_buildout_cmd_args']}} {{vars['cops_zope_buildout_cfg']}}"
+cops_zope_buildout_args: "{{cops_zope_buildout_cmd_args}} {{cops_zope_buildout_cfg}}"
 cops_zope_buildout_version: 2
 cops_zope_buildout_newest: false
-cops_zope_buildout_cfg: "{{vars['cops_zope_project_root']}}/buildout-ansible.cfg"
+cops_zope_buildout_cfg: "{{cops_zope_project_root}}/buildout-ansible.cfg"
 cops_zope_buildout_develop_up: "bin/develop up -f"
 cops_zope_smtp_timeout: 60
 cops_zope_smtp_user: root
@@ -678,17 +678,17 @@ cops_zope_ldap_binddn: ""
 # cops_zope_ldap_binddn: "uid=f,dc=e,dc=e"
 cops_zope_ldap_binddn_passwd: "foo"
 # XXX
-cops_zope_buildout_settings: "{{vars['cops_zope_buildout_settings___default']}}"
+cops_zope_buildout_settings: "{{cops_zope_buildout_settings___default}}"
 cops_zope_buildout_settings___default:
     buildout:
-      extends: "{{vars['cops_zope_buildout_extends']}}"
+      extends: "{{cops_zope_buildout_extends}}"
       newest: "false"
       unzip: "true"
-      cache-directory: "{{vars['cops_zope_cache_directory']}}"
-      download-cache: "{{vars['cops_zope_downloads_directory']}}"
-      download-directory: "{{vars['cops_zope_downloads_directory']}}"
-      eggs-directory: "{{vars['cops_zope_eggs_directory']}}"
-      parts-directory: "{{vars['cops_zope_parts_directory']}}"
+      cache-directory: "{{cops_zope_cache_directory}}"
+      download-cache: "{{cops_zope_downloads_directory}}"
+      download-directory: "{{cops_zope_downloads_directory}}"
+      eggs-directory: "{{cops_zope_eggs_directory}}"
+      parts-directory: "{{cops_zope_parts_directory}}"
     v:
       mailinglogger-smtp-server: "localhost:25"
       mailinglogger-smtp-use-tls: "no"
@@ -696,17 +696,17 @@ cops_zope_buildout_settings___default:
       mailinglogger-smtp-password: "{{cops_zope_smtp_password}}"
       mailinglogger-to: "${v:mailinglogger-smtp-user}"
       mailinglogger-from: "${v:mailinglogger-smtp-user}"
-      sys-user: "{{vars['cops_zope_user']}}"
-      sys-group: "{{vars['cops_zope_group']}}"
-      admin-user: "{{vars['cops_zope_admin_user']}}"
-      admin-password: "{{vars['cops_zope_admin_password']}}"
-      project: "{{vars['cops_zope_name']}}"
+      sys-user: "{{cops_zope_user}}"
+      sys-group: "{{cops_zope_group}}"
+      admin-user: "{{cops_zope_admin_user}}"
+      admin-password: "{{cops_zope_admin_password}}"
+      project: "{{cops_zope_name}}"
       proxycache_size: '256M'
       anon_cache_time: '600s'
-      autostart_instance1: "{{vars['cops_zope_autostart1']}}"
-      autostart_instance2: "{{vars['cops_zope_autostart2']}}"
-      autostart_instance3: "{{vars['cops_zope_autostart3']}}"
-      autostart_instance4: "{{vars['cops_zope_autostart4']}}"
+      autostart_instance1: "{{cops_zope_autostart1}}"
+      autostart_instance2: "{{cops_zope_autostart2}}"
+      autostart_instance3: "{{cops_zope_autostart3}}"
+      autostart_instance4: "{{cops_zope_autostart4}}"
       plonesite: 'site'
       zeo-pack-days: '0'
       z2-log-level: 'INFO'
@@ -721,18 +721,18 @@ cops_zope_buildout_settings___default:
       supervisor-nodaemon: 'true'
     # zeoserver 5 does not support passwordauth anymore
     # zeoserver:
-    #   authentication-database: "{{vars['cops_zope_authentication_db']}}"
+    #   authentication-database: "{{cops_zope_authentication_db}}"
     #   authentication-realm: "{authentication_realm}"
     #   pack-password: "{authentication_password}"
     #   pack-user: "{authentication_user}"
     versions:
-      zc.buildout: "{{vars['cops_zope_eggver_buildout']}}"
-      setuptools: "{{vars['cops_zope_eggver_setuptools']}}"
+      zc.buildout: "{{cops_zope_eggver_buildout}}"
+      setuptools: "{{cops_zope_eggver_setuptools}}"
     ports:
       supervisor: '8081'
       zeo: '8082'
       instance: '8084'
-      balancer: "{{vars['cops_zope_cluster_front_port']}}"
+      balancer: "{{cops_zope_cluster_front_port}}"
       instance1: '8085'
       instance2: '8086'
       instance3: '8087'
@@ -743,18 +743,18 @@ cops_zope_buildout_settings___default:
     locations:
       locations-tmp: '${buildout:directory}/var/tmp'
       # attention, must be compatible with mc_project var interpolation !
-      locations-blob-storage: "{{vars['cops_zope_locations_blob_storage']}}"
-      locations-blob-backup:  "{{vars['cops_zope_locations_blob_backup']}}"
+      locations-blob-storage: "{{cops_zope_locations_blob_storage}}"
+      locations-blob-backup:  "{{cops_zope_locations_blob_backup}}"
     hosts:
-      syslog:     "{{vars['cops_zope_hosts_syslog']}}"
-      zeo:        "{{vars['cops_zope_hosts_zeo']}}"
-      supervisor: "{{vars['cops_zope_hosts_supervisor']}}"
-      balancer:   "{{vars['cops_zope_hosts_balancer']}}"
-      instance:   "{{vars['cops_zope_hosts_instance']}}"
-      instance1:  "{{vars['cops_zope_hosts_instance1']}}"
-      instance2:  "{{vars['cops_zope_hosts_instance2']}}"
-      instance3:  "{{vars['cops_zope_hosts_instance3']}}"
-      instance4:  "{{vars['cops_zope_hosts_instance4']}}"
+      syslog:     "{{cops_zope_hosts_syslog}}"
+      zeo:        "{{cops_zope_hosts_zeo}}"
+      supervisor: "{{cops_zope_hosts_supervisor}}"
+      balancer:   "{{cops_zope_hosts_balancer}}"
+      instance:   "{{cops_zope_hosts_instance}}"
+      instance1:  "{{cops_zope_hosts_instance1}}"
+      instance2:  "{{cops_zope_hosts_instance2}}"
+      instance3:  "{{cops_zope_hosts_instance3}}"
+      instance4:  "{{cops_zope_hosts_instance4}}"
 cops_zope_hosts_syslog: "${hosts:ip}"
 cops_zope_hosts_zeo: "${hosts:ip}"
 cops_zope_hosts_supervisor: "${hosts:ip}"

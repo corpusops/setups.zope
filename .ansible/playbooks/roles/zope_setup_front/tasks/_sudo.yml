@@ -33,7 +33,7 @@
           {{cops_zope_vars.yarn_cmd}} {{cops_zope_c_yarn_extra_step}}
         tags: [cops_zope_s_setup_front_build_yarn_extra_steps]
         when: [cops_zope_s_setup_front_build_yarn_extra_steps]
-        with_items: "{{cops_zope_vars.yarn_extra_steps}}"
+        loop: "{{cops_zope_vars.yarn_extra_steps}}"
         loop_control: {loop_var: cops_zope_c_yarn_extra_step}
       - shell: |
           set -ex

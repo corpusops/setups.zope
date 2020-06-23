@@ -2,6 +2,19 @@
 - become: true
   become_user: "{{cops_zope_vars.user}}"
   block:
+  - stat: {path: "{{cops_zope_vars.py_root}}/bin/python"}
+    register: venvexists
+  # test if venv is usable, or redo it
+  - when: venvexists.stat.exists
+    shell: |-
+      set -e
+      {{cops_zope_vars.py_root}}/bin/python -c "from pip import main"
+    register: testpyusable
+    failed_when: false
+  - when: 'venvexists.stat.exists and testpyusable.rc != 0'
+    file:
+      state: absent
+      path: "{{cops_zope_vars.py_root}}"
   - pip:
       name: "{{cops_zope_vars.venv_eggs}}"
       state: present

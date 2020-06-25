@@ -16,28 +16,37 @@
 
 # Set the cops_zope_vars var from defaults/main.yml
 - name: "zope registry init"
-  include_role: {name: corpusops.roles/vars_registry}
-  vars: {cops_vars_registry_target: cops_zope}
+  include_jinja_vars:
+    content: |
+      {%- set prefix = 'cops_zope_' %}
+      {%- set p = prefix + 'vars' %}
+      {%- set registry = lookup('cops_registry', prefix) %}
+      {{ {p: registry[p]}|to_json}}
+  tags: [zope, vars, zope_vars]
   no_log: "{{not (cops_vars_debug|default(false))}}"
 
 # Post process some variables
 - name: "zope registry - postprocess"
   include_jinja_vars:
     content: |
-      ---
-      {% set p = 'cops_zope_vars' %}
-      {% set _vars = {p: vars[p]} %}
-      {% set env = _vars[p].env %}
-      {% set _ = env.update(_vars[p].env_overrides) %}
-      {# filter user env #}
-      {% for i, val in vars.get('ansible_env', {}).items() %}
-      {%  if not i.startswith(
+      {%- set prefix = 'cops_zope_' %}
+      {%- set p = prefix + 'vars' %}
+      {%- set namespaced = vars[p] %}
+      {%- set registry = {p: namespaced} %}
+      {%- set env = registry[p].env %}
+      {%- set _ = env.update(registry[p].env_overrides) %}
+      {#- filter user env #}
+      {%- for i, val in vars.get('ansible_env', {}).items() %}
+      {%-  if not i.startswith(
               ('OLDPWD', 'CWD', 'PWD',
                'TERM', 'USER', 'HOME', 'PS1',
                'PATH', 'ANSIBLE', 'SSH', 'LS')) %}
-      {%    set _ = env.update({i: val})%}
-      {%  endif %}
-      {% endfor %}
-      {{ _vars | to_json }}
+      {%-    set _ = env.update({i: val})%}
+      {%-  endif %}
+      {%- endfor %}
+      {%- for name, val in namespaced.items() %}
+      {%-    set _ = registry.update({prefix+name: val}) %}
+      {%- endfor %}
+      {{ registry | to_json }}
   tags: [zope, vars, zope_vars]
   no_log: "{{not (cops_vars_debug|default(false))}}"

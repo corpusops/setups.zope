@@ -2,7 +2,7 @@
 # HAPROXY: get the ip of load balancers to configure nginx
 # realip module
 - hosts: "{{haproxy_servers|default('all')}}"
-  gather_facts: no
+  gather_facts: yes
   tasks:
     - when: >
          (cops_zope_lifecycle_haproxy|default(false)) and
@@ -11,7 +11,9 @@
 # APP
 - hosts: "{{zope_servers|default('all')}}"
   roles: [corpusops.roles/ansible_plugins]
+  gather_facts: yes
   tasks:
+  - setup: {}
   - when: ["cops_zope_lifecycle_app|default(true)"]
     tags: ["cops_zope_lifecycle_app"]
     include_role: {name: zope_app_vars,  allow_duplicates: false}

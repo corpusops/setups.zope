@@ -134,7 +134,7 @@
             | {{cops_zope_vars.link_selector_mode}} -n1 \
             | sed -re "s/.*dist.plone.org\/release\/(([0-9]+\.?){1,3})/\1/g")"
           cd "{{cops_zope_vars.buildout_cache}}"
-          if test -e {{cops_zope_vars.buildout.settings.buildout['eggs-directory']}}/Products.CMFCore*;then
+          if ls {{cops_zope_vars.buildout.settings.buildout['eggs-directory']}}/Products.CMFCore*;then
            echo "AlreadyDone" >&2;exit 0
           fi
           tar xjf "{{cops_zope_vars.ui}}/Plone-${plone_ver}-UnifiedInstaller/packages/buildout-cache.tar.bz2"

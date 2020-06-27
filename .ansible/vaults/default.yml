@@ -31,6 +31,5 @@ cops_zope_buildout_settings: "{{(
   ( cops_zope_buildout_settings___default|copsf_deepcopy)
   | copsf_dictupdate(cops_zope_overrides_buildout)
   | copsf_dictupdate(cops_zope_overrides_buildout_secret)
-  | to_json
   )}}"
 # vim:set ft=sls:

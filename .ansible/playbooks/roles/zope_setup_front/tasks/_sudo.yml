@@ -20,7 +20,8 @@
         rescue:
         - become: true
           become_user: root
-          include_role: {name: corpusops.roles/localsettings_nodejs}
+          block:
+          - include_role: {name: corpusops.roles/localsettings_nodejs}
       - shell: |
           set -ex
           cd "{{cops_zope_vars.project_root}}"

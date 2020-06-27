@@ -2,7 +2,7 @@
 - tags: [cops_zope_s_setup_buildout_configs]
   when: [cops_zope_s_setup_buildout_configs]
   block:
-    - include_role: {name: corpusops.roles/configs, private: true}
+    - include_role: {name: corpusops.roles/configs, public: false}
       vars: {cops_configs_templates: "{{cops_zope_vars.buildoutconfigs}}"}
 - tags: [cops_zope_s_setup_buildout_bootstrap]
   when: [cops_zope_s_setup_buildout_bootstrap]

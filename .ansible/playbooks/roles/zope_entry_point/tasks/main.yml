@@ -1,5 +1,5 @@
 ---
-- include_role: {name: corpusops.roles/configs, private: true}
+- include_role: {name: corpusops.roles/configs, public: false}
   vars: {cops_configs_templates: "{{cops_zope_vars.ep_configs}}"}
   tags: [cops_zope_s_entry_point_configs]
   when: [cops_zope_s_entry_point_configs]

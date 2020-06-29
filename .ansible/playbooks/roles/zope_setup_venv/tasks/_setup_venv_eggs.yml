@@ -12,9 +12,17 @@
     register: testpyusable
     failed_when: false
   - when: 'venvexists.stat.exists and testpyusable.rc != 0'
-    file:
-      state: absent
-      path: "{{cops_zope_vars.py_root}}"
+    block:
+    - file:
+        state: absent
+        path: "{{cops_zope_vars.py_root}}"
+    - shell: |-
+        set -e
+        {% set d = cops_zope_vars.eggs_directory %}
+        if [ -e "{{d}}" ];then
+          cd "{{d}}"
+          rm -rfv *linux-x86_64.egg
+        fi
   - pip:
       name: "{{cops_zope_vars.venv_eggs}}"
       state: present

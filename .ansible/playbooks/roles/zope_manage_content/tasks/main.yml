@@ -1,4 +1,5 @@
 ---
 - become: true
   become_user: "{{cops_zope_vars.user}}"
-  include_tasks: _sudo.yml
+  block:
+  - include_tasks: _sudo.yml

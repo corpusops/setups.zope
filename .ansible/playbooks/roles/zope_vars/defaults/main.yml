@@ -21,7 +21,16 @@ cops_zope__supereditors: >-
 cops_zope_supereditors_paths: "{{cops_zope__supereditors_paths}}"
 cops_zope_supereditors: "{{cops_zope__supereditors}}"
 # on old ubuntu "virtualenv" does not exists, we isolate venv install
-cops_zope_venv_deb_packages: [virtualenv, python-virtualenv]
+cops_zope_venv_deb_packages:
+  - virtualenv
+  - "{%- if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <
+          '20.04'|copsf_looseversion) -%}
+    python-virtualenv
+    {%- else -%}
+    python3-virtualenv
+    {%- endif -%}"
 cops_zope_venv_rh_packages: [virtualenv]
 # cops_zope_deb_packages is initialised on behalf of cops_registry voodoo
 # and let users override the list easily
@@ -37,8 +46,13 @@ cops_zope_deb_gis_packages:
         ansible_distribution_version|copsf_looseversion <=
           '16.04'|copsf_looseversion) -%}
     libgdal1i
-    {%- else -%}
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <
+          '20.04'|copsf_looseversion) -%}
     libgdal20
+    {%- else -%}
+    libgdal26
     {%- endif -%}"
   - geoip-bin
   - "{%- if (
@@ -64,8 +78,13 @@ cops_zope_deb_gis_packages:
         ansible_distribution_version|copsf_looseversion <=
           '16.04'|copsf_looseversion) -%}
     libgeos-3.5.0
-    {%- else -%}
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <
+          '20.04'|copsf_looseversion) -%}
     libgeos-3.6.2
+    {%- else -%}
+    libgeos-3.8.0
     {%- endif -%}"
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
@@ -81,7 +100,10 @@ cops_zope_deb_runtime_packages:
   - gettext
   - git
   - groff
-  - libcurl3
+  - "{% if (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >= '20.04'|copsf_looseversion )
+    %}libcurl3-gnutls{%else%}libcurl3{%endif %}"
   - libfreetype6
   - liblcms2-2
   - libsqlite0
@@ -99,7 +121,6 @@ cops_zope_deb_runtime_packages:
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >= '18.04'|copsf_looseversion )
     %}tcl8.6{%else%}tcl8.5{%endif %}"
-  - tcl8.5
   - wv
   - lynx
   - zlib1g
@@ -152,22 +173,44 @@ cops_zope_deb_runtime_packages:
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >=
-          '18.04'|copsf_looseversion)
-    %}libgdbm5{%else%}libgdbm3{%endif%}"
+          '20.04'|copsf_looseversion) -%}
+    libgdbm6
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >=
+          '18.04'|copsf_looseversion) -%}
+    libgdbm5
+    {%- else -%}
+    libgdbm3
+    {%- endif -%}"
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >=
-          '18.04'|copsf_looseversion)
-    %}libreadline7{%else%}libreadline6{%endif%}"
+          '20.04'|copsf_looseversion) -%}
+    libreadline8
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion >=
+          '18.04'|copsf_looseversion) -%}
+    libreadline7
+    {%- else -%}
+    libreadline6
+    {%- endif -%}"
 cops_zope_packages: "{{cops_zope_deb_packages___default}}"
 cops_zope_deb_packages___default: "{{
   (cops_zope_deb_runtime_packages + cops_zope_deb_gis_packages)
   | to_json
   }}"
 # either null string or "3"
-cops_zope_pkg_python_slug: ""
+cops_zope_pkg_python_slug: "{%- if (
+    ansible_distribution.lower() in ['ubuntu'] and
+    ansible_distribution_version|copsf_looseversion >= '20.04'|copsf_looseversion)
+  %}3{%else%}{%endif%}"
 cops_zope_pkg_mysql: "libmysqlclient20"
-cops_zope_pkg_ssl: "libssl1.0.0"
+cops_zope_pkg_ssl: "{%- if (
+    ansible_distribution.lower() in ['ubuntu'] and
+    ansible_distribution_version|copsf_looseversion >= '20.04'|copsf_looseversion)
+  %}libssl1.1{%else%}libssl1.0.0{%endif%}"
 cops_zope_pkg_db: "libdb5.3"
 cops_zope_deb_build_packages: "{{cops_zope_deb_build_packages___default}}"
 cops_zope_deb_build_packages___default:

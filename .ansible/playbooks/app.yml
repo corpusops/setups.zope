@@ -16,7 +16,8 @@
   - setup: {}
   - when: ["cops_zope_lifecycle_app|default(true)"]
     tags: ["cops_zope_lifecycle_app"]
-    include_role: {name: zope_app_vars,  allow_duplicates: false}
+    block:
+    - include_role: {name: zope_app_vars,  allow_duplicates: false}
   - when: ["cops_zope_lifecycle_app"]
     tags: ["cops_zope_lifecycle_app"]
     block:

@@ -47,6 +47,15 @@
   block:
     - stat: {path: "{{cops_zope_vars.front_dist_folder}}"}
       register: cops_c_zope_force_sync_d
+    - name: "create container if not existing"
+      stat:
+        path: "{{cops_zope_vars.front_doc_root}}"
+      register: frontcontainer
+    - name: "create container if not existing"
+      file:
+        state: directory
+        path: "{{cops_zope_vars.front_doc_root}}"
+      when: not frontcontainer.stat.exists
     - name: "{{cops_zope_vars.name}}-front-doc-root"
       when: cops_c_zope_force_sync_d.stat.exists
       synchronize:
@@ -64,4 +73,4 @@
         rsync_opts:  ["-Aa", "--delete"]
         src: "{{cops_zope_vars.project_root}}/angular/robots.txt"
         dest: "{{cops_zope_vars.front_doc_root}}/robots.txt"
-      delegate_to: "{{inventory_hostname}}" 
+      delegate_to: "{{inventory_hostname}}"

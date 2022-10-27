@@ -11,7 +11,8 @@
         set -ex
         {% set d = cops_zope_vars %}
         cd {{d.buildout_cwd}}
-        {{d.py}} {{d.buildout_bootstrap}} {{d.buildout_bootstrap_args}}
+        {{d.py}} -m pip install zc.buildout=={{cops_zope_eggver_buildout}} setuptools=={{cops_zope_eggver_setuptools}}
+        $(dirname {{d.py}})/buildout bootstrap {{d.buildout_bootstrap_args}}
       changed_when: false
 - tags: [cops_zope_s_setup_buildout_buildout]
   when: [cops_zope_s_setup_buildout_buildout]

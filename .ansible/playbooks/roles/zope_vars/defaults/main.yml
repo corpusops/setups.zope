@@ -51,8 +51,13 @@ cops_zope_deb_gis_packages:
         ansible_distribution_version|copsf_looseversion <
           '20.04'|copsf_looseversion) -%}
     libgdal20
-    {%- else -%}
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <
+          '22.04'|copsf_looseversion) -%}
     libgdal26
+    {%- else -%}
+    libgdal30
     {%- endif -%}"
   - geoip-bin
   - "{%- if (
@@ -83,8 +88,13 @@ cops_zope_deb_gis_packages:
         ansible_distribution_version|copsf_looseversion <
           '20.04'|copsf_looseversion) -%}
     libgeos-3.6.2
-    {%- else -%}
+    {%- elif (
+        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution_version|copsf_looseversion <
+          '22.04'|copsf_looseversion) -%}
     libgeos-3.8.0
+    {%- else -%}
+    libgeos3.10.2
     {%- endif -%}"
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
@@ -111,8 +121,8 @@ cops_zope_deb_runtime_packages:
   - libtiff5
   - libtool
   - python-setuptools
-  - python-numpy
-  - cython
+  - "python{{cops_zope_pkg_python_slug}}-numpy"
+  - "cython{{cops_zope_pkg_python_slug}}"
   - m4
   - man-db
   - pkg-config
@@ -131,7 +141,7 @@ cops_zope_deb_runtime_packages:
   - libcairo-script-interpreter2
   - libxml2
   - libxslt1.1
-  - python-passlib
+  - "python{{cops_zope_pkg_python_slug}}-passlib"
   - python3-passlib
   - "{{cops_zope_pkg_ssl}}"
   - "{{cops_zope_pkg_db}}"
@@ -153,16 +163,19 @@ cops_zope_deb_runtime_packages:
     libsigc++-2.0-0v5
     {%- endif -%}"
   - "{%- if (
-        ansible_distribution.lower() in ['ubuntu'] and
+        ansible_distribution.lower() in ['ubuntu'])%}{% if (
+        ansible_distribution_version|copsf_looseversion >=
+          '22.04'|copsf_looseversion)
+     %}libwebp7{%elif (
         ansible_distribution_version|copsf_looseversion >=
           '18.04'|copsf_looseversion)
      %}libwebp6{%else
-     %}libwebp5{%endif%}"
+     %}libwebp5{%endif%}{%endif%}"
   - "{%- if (
         ansible_distribution.lower() in ['ubuntu'] and
         ansible_distribution_version|copsf_looseversion >=
           '18.04'|copsf_looseversion)
-    %}python-pil{% else
+    %}python{{cops_zope_pkg_python_slug}}-pil{% else
     %}python-imaging{%endif%}"
   - "{% if ansible_distribution_version|copsf_looseversion <= '14.04'|copsf_looseversion
 
@@ -208,9 +221,11 @@ cops_zope_pkg_python_slug: "{%- if (
   %}3{%else%}{%endif%}"
 cops_zope_pkg_mysql: "libmysqlclient20"
 cops_zope_pkg_ssl: "{%- if (
-    ansible_distribution.lower() in ['ubuntu'] and
+    ansible_distribution.lower() in ['ubuntu'])%}{% if (
+    ansible_distribution_version|copsf_looseversion >= '22.04'|copsf_looseversion)
+  %}libssl3{% elif (
     ansible_distribution_version|copsf_looseversion >= '20.04'|copsf_looseversion)
-  %}libssl1.1{%else%}libssl1.0.0{%endif%}"
+  %}libssl1.1{%endif%}{%else%}libssl1.0.0{%endif%}"
 cops_zope_pkg_db: "libdb5.3"
 cops_zope_deb_build_packages: "{{cops_zope_deb_build_packages___default}}"
 cops_zope_deb_build_packages___default:
